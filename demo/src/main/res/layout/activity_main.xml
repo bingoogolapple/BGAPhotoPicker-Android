@@ -3,6 +3,17 @@
     style="@style/MatchMatch.Vertical">
 
     <TextView
+        android:id="@+id/tv_main_single_choice"
         style="@style/MatchWrapTv"
-        android:text="BGAPhotoPickerDemo" />
+        android:text="单选图片" />
+
+    <TextView
+        android:id="@+id/tv_main_multiple_choice"
+        style="@style/MatchWrapTv"
+        android:text="多选图片" />
+
+    <TextView
+        android:id="@+id/tv_main_photo_preview"
+        style="@style/MatchWrapTv"
+        android:text="图片预览" />
 </LinearLayout>
