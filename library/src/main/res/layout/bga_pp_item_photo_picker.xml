@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#303d42">
+
+    <cn.bingoogolapple.photopicker.widget.BGASquareImageView
+        android:id="@+id/iv_item_photo_picker_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        tools:src="@mipmap/bga_pp_ic_gallery_camera" />
+
+    <TextView
+        android:id="@+id/tv_item_photo_picker_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iv_item_photo_picker_photo"
+        android:layout_marginBottom="@dimen/bga_pp_size_level3"
+        android:gravity="center"
+        android:text="@string/bga_pp_take_picture"
+        android:textColor="#adb2bb"
+        android:textSize="@dimen/bga_pp_textSize_level1" />
+
+    <ImageView
+        android:id="@+id/iv_item_photo_picker_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:paddingBottom="@dimen/bga_pp_size_level2"
+        android:paddingLeft="@dimen/bga_pp_size_level2"
+        android:paddingRight="@dimen/bga_pp_size_level1"
+        android:paddingTop="@dimen/bga_pp_size_level1"
+        android:src="@mipmap/bga_pp_ic_cb_normal" />
+
+</RelativeLayout>

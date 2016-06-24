@@ -5,9 +5,9 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.ViewStubCompat;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewStub;
 
 import cn.bingoogolapple.photopicker.R;
 
@@ -53,7 +53,7 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity implements 
         mToolbar = getViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ViewStub viewStub = getViewById(R.id.viewStub);
+        ViewStubCompat viewStub = getViewById(R.id.viewStub);
         viewStub.setLayoutResource(layoutResID);
         viewStub.inflate();
     }

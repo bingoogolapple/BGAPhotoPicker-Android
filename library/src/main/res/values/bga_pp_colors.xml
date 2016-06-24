@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bga_pp_activity_bg">#1A1A1A</color>
+    <color name="bga_pp_photo_selected_color">#4D000000</color>
+    <color name="bga_pp_btn_confirm_enabled">#17C7D1</color>
+    <color name="bga_pp_btn_confirm_disabled">#8017C7D1</color>
+</resources>

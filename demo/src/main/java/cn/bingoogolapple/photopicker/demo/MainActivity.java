@@ -1,7 +1,6 @@
 package cn.bingoogolapple.photopicker.demo;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -47,7 +46,7 @@ public class MainActivity extends BGAPPToolbarActivity implements EasyPermission
     private void singleChoice() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            startActivity(new Intent(this, BGAPhotoPickerActivity.class));
+            startActivity(BGAPhotoPickerActivity.newIntent(this, null, 1, null, "保存"));
         } else {
             EasyPermissions.requestPermissions(this, "选择图片需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_SINGLE_CHOICE_PERMISSION, perms);
         }
@@ -57,7 +56,7 @@ public class MainActivity extends BGAPPToolbarActivity implements EasyPermission
     private void multipleChoice() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            startActivity(new Intent(this, BGAPhotoPickerActivity.class));
+            startActivity(BGAPhotoPickerActivity.newIntent(this, null, 3, null, "保存"));
         } else {
             EasyPermissions.requestPermissions(this, "选择图片需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_MULTIPLE_CHOICE_PERMISSION, perms);
         }

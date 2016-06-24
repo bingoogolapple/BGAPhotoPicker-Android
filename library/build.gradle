@@ -11,7 +11,11 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'cn.bingoogolapple:bga-adapter:1.0.9@aar'
+    compile 'com.github.chrisbanes:PhotoView:1.2.6'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 }
 
 // gradle uploadArchives

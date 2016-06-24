@@ -13,7 +13,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <ViewStub
+    <android.support.v7.widget.ViewStubCompat
         android:id="@+id/viewStub"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
