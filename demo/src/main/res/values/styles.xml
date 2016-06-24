@@ -1,0 +1,37 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!-- toolbar（actionbar）背景颜色 -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <!-- 底部导航栏的颜色 -->
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/navigationBarColor</item>
+    </style>
+
+    <style name="MatchWrapTv" parent="MatchWrap">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_btn_orange</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:onClick">onClick</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="AutoWrapTv" parent="AutoWrap">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_btn_orange</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:onClick">onClick</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+</resources>
