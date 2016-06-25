@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
+import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.R;
@@ -26,7 +26,7 @@ import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
  * 创建时间:16/6/24 下午6:19
  * 描述:选择图片目录的PopupWindow
  */
-public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnItemChildClickListener {
+public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnRVItemClickListener {
     public static final int ANIM_DURATION = 300;
     private LinearLayout mRootLl;
     private RecyclerView mContentRv;
@@ -49,7 +49,7 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnItemChi
     protected void setListener() {
         mRootLl.setOnClickListener(this);
         mFolderAdapter = new FolderAdapter(mContentRv);
-        mFolderAdapter.setOnItemChildClickListener(this);
+        mFolderAdapter.setOnRVItemClickListener(this);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnItemChi
     }
 
     @Override
-    public void onItemChildClick(ViewGroup viewGroup, View view, int position) {
+    public void onRVItemClick(ViewGroup viewGroup, View view, int position) {
         if (mDelegate != null && mCurrentPosition != position) {
             mDelegate.onSelectedFolder(position);
         }
