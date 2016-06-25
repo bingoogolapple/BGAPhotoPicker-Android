@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.ViewStubCompat;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import cn.bingoogolapple.photopicker.R;
 
@@ -49,6 +50,20 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity implements 
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(R.layout.bga_pp_toolbar_viewstub);
+        mToolbar = getViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ViewStubCompat viewStub = getViewById(R.id.viewStub);
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) viewStub.getLayoutParams();
+        lp.addRule(RelativeLayout.BELOW, R.id.toolbar);
+
+        viewStub.setLayoutResource(layoutResID);
+        viewStub.inflate();
+    }
+
+    public void setNoLinearContentView(@LayoutRes int layoutResID) {
         super.setContentView(R.layout.bga_pp_toolbar_viewstub);
         mToolbar = getViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
