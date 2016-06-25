@@ -4,5 +4,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bga_pp_activity_bg"
-    android:orientation="vertical"
-    android:overScrollMode="never" />
+    android:overScrollMode="never"
+    android:scrollbars="none" />

@@ -39,7 +39,7 @@ import cn.bingoogolapple.photopicker.util.BGASpaceItemDecoration;
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/6/24 下午2:55
- * 描述:
+ * 描述:图片选择界面
  */
 public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAOnItemChildClickListener {
     private static final String EXTRA_IMAGE_DIR = "EXTRA_IMAGE_DIR";
@@ -208,7 +208,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
     private void showPhotoFolderPw() {
         if (mPhotoFolderPw == null) {
-            mPhotoFolderPw = new BGAPhotoFolderPw(this, mToolbar, new BGAPhotoFolderPw.Callback() {
+            mPhotoFolderPw = new BGAPhotoFolderPw(this, mToolbar, new BGAPhotoFolderPw.Delegate() {
                 @Override
                 public void onSelectedFolder(int position) {
                     reloadPhotos(position);
@@ -403,9 +403,8 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         }
     }
 
-    public class PhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
+    private class PhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
         private ArrayList<String> mSelectedImages = new ArrayList<>();
-        private ArrayList<String> mDatas;
         private int mImageWidth;
         private int mImageHeight;
 

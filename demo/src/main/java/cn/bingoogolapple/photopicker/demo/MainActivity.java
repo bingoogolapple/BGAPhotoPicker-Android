@@ -18,7 +18,7 @@ public class MainActivity extends BGAPPToolbarActivity implements EasyPermission
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setNoLinearContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
     }
 
     @Override
