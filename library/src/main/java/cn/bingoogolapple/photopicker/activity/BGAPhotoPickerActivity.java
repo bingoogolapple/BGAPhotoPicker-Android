@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -229,7 +228,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
      * 显示只能选择 mMaxChooseCount 张图的提示
      */
     private void toastMaxCountTip() {
-        Toast.makeText(this, getString(R.string.bga_pp_toast_photo_picker_max, mMaxChooseCount), Toast.LENGTH_SHORT).show();
+        BGAPhotoPickerUtil.show(this, getString(R.string.bga_pp_toast_photo_picker_max, mMaxChooseCount));
     }
 
     /**
@@ -239,7 +238,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         try {
             startActivityForResult(mImageCaptureManager.getTakePictureIntent(), REQUEST_CODE_TAKE_PHOTO);
         } catch (Exception e) {
-            Toast.makeText(this, R.string.bga_pp_photo_not_support, Toast.LENGTH_SHORT).show();
+            BGAPhotoPickerUtil.show(this, R.string.bga_pp_photo_not_support);
         }
     }
 

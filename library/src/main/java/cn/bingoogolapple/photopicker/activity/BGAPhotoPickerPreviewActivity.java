@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -190,7 +189,7 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
                 renderTopRightBtn();
             } else {
                 if (mMaxChooseCount == mSelectedImages.size()) {
-                    Toast.makeText(this, getString(R.string.bga_pp_toast_photo_picker_max, mMaxChooseCount), Toast.LENGTH_SHORT).show();
+                    BGAPhotoPickerUtil.show(this, getString(R.string.bga_pp_toast_photo_picker_max, mMaxChooseCount));
                 } else {
                     mSelectedImages.add(currentImage);
                     mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_checked, 0, 0, 0);
@@ -209,13 +208,15 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
     }
 
     private void handlePageSelectedStatus() {
-        if (mTitleTv != null) {
-            mTitleTv.setText((mContentHvp.getCurrentItem() + 1) + "/" + mPreviewImages.size());
-            if (mSelectedImages.contains(mPreviewImages.get(mContentHvp.getCurrentItem()))) {
-                mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_checked, 0, 0, 0);
-            } else {
-                mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_normal, 0, 0, 0);
-            }
+        if (mTitleTv == null) {
+            return;
+        }
+
+        mTitleTv.setText((mContentHvp.getCurrentItem() + 1) + "/" + mPreviewImages.size());
+        if (mSelectedImages.contains(mPreviewImages.get(mContentHvp.getCurrentItem()))) {
+            mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_checked, 0, 0, 0);
+        } else {
+            mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_normal, 0, 0, 0);
         }
     }
 
@@ -311,4 +312,5 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
             return view == object;
         }
     }
+
 }

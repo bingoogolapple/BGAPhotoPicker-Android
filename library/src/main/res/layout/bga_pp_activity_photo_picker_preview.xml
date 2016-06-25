@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bga_pp_activity_bg">
@@ -8,7 +7,8 @@
     <cn.bingoogolapple.photopicker.widget.BGAHackyViewPager
         android:id="@+id/hvp_photo_picker_preview_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
 
     <RelativeLayout
         android:id="@+id/rl_photo_picker_preview_choose"
