@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BGAImageView">
+        <!-- 默认图片资源，默认为null -->
+        <attr name="android:src" />
+        <!-- 是否是圆形，默认值为false -->
+        <attr name="bga_iv_isCircle" format="boolean" />
+        <!-- 圆角矩形的半径，默认值为0dp -->
+        <attr name="bga_iv_cornerRadius" format="reference|dimension" />
+        <!-- 是否是矩形，默认值为false -->
+        <attr name="bga_iv_isSquare" format="boolean" />
+        <!-- 描边的宽度，默认值为0dp -->
+        <attr name="bga_iv_borderWidth" format="reference|dimension" />
+        <!-- 描边的颜色，默认值为Color.WHITE -->
+        <attr name="bga_iv_borderColor" format="reference|color" />
+    </declare-styleable>
+</resources>

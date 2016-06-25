@@ -4,4 +4,5 @@
     <string name="bga_pp_toast_photo_picker_max">最多只能选择 %1$s 张图片</string>
     <string name="bga_pp_all_image">所有图片</string>
     <string name="bga_pp_confirm">确定</string>
+    <string name="bga_pp_choose">选择</string>
 </resources>

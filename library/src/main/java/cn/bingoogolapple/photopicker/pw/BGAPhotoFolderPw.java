@@ -10,14 +10,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.R;
+import cn.bingoogolapple.photopicker.imageloader.BGAImage;
 import cn.bingoogolapple.photopicker.model.BGAImageFolderModel;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 
@@ -134,7 +133,7 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnItemChi
         protected void fillData(BGAViewHolderHelper helper, int position, BGAImageFolderModel model) {
             helper.setText(R.id.tv_item_photo_folder_name, model.name);
             helper.setText(R.id.tv_item_photo_folder_count, String.valueOf(model.getCount()));
-            Glide.with(mActivity).load(model.coverPath).placeholder(R.mipmap.bga_pp_ic_holder_light).error(R.mipmap.bga_pp_ic_holder_light).into(helper.getImageView(R.id.iv_item_photo_folder_photo));
+            BGAImage.displayImage(helper.getImageView(R.id.iv_item_photo_folder_photo), model.coverPath, R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, mImageWidth, mImageHeight, null);
         }
     }
 

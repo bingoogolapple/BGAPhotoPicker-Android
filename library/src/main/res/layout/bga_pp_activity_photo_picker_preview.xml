@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/bga_pp_activity_bg">
 
-</LinearLayout>
+    <cn.bingoogolapple.photopicker.widget.BGAHackyViewPager
+        android:id="@+id/hvp_photo_picker_preview_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/rl_photo_picker_preview_choose"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/colorPrimary">
+
+        <TextView
+            android:id="@+id/tv_photo_picker_preview_choose"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/bga_pp_size_level2"
+            android:clickable="true"
+            android:drawableLeft="@mipmap/bga_pp_ic_cb_normal"
+            android:drawablePadding="@dimen/bga_pp_textSize_level1"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/bga_pp_size_level2"
+            android:paddingRight="@dimen/bga_pp_size_level2"
+            android:text="@string/bga_pp_choose"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

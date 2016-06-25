@@ -18,8 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +28,7 @@ import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.R;
+import cn.bingoogolapple.photopicker.imageloader.BGAImage;
 import cn.bingoogolapple.photopicker.model.BGAImageFolderModel;
 import cn.bingoogolapple.photopicker.pw.BGAPhotoFolderPw;
 import cn.bingoogolapple.photopicker.util.BGAImageCaptureManager;
@@ -432,7 +431,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
             } else {
                 helper.setVisibility(R.id.tv_item_photo_picker_tip, View.INVISIBLE);
                 helper.getImageView(R.id.iv_item_photo_picker_photo).setScaleType(ImageView.ScaleType.CENTER_CROP);
-                Glide.with(helper.getConvertView().getContext()).load(model).placeholder(R.mipmap.bga_pp_ic_holder_dark).error(R.mipmap.bga_pp_ic_holder_dark).into(helper.getImageView(R.id.iv_item_photo_picker_photo));
+                BGAImage.displayImage(helper.getImageView(R.id.iv_item_photo_picker_photo), model, R.mipmap.bga_pp_ic_holder_dark,R.mipmap.bga_pp_ic_holder_dark, mImageWidth, mImageHeight, null);
 
                 helper.setVisibility(R.id.iv_item_photo_picker_flag, View.VISIBLE);
 

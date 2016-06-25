@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_photo_picker_preview_submit"
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/bga_pp_size_level2"
+        android:background="@drawable/bga_pp_selector_btn_confirm"
+        android:clickable="true"
+        android:gravity="center"
+        android:minWidth="80dp"
+        android:paddingLeft="@dimen/bga_pp_size_level2"
+        android:paddingRight="@dimen/bga_pp_size_level2"
+        android:singleLine="true"
+        android:text="@string/bga_pp_confirm" />
+
+    <TextView
+        android:id="@+id/tv_photo_picker_preview_title"
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxEms="8"
+        android:paddingRight="@dimen/bga_pp_size_level1"
+        android:singleLine="true"
+        tools:background="#71CE7E"
+        tools:text="1/12" />
+
+</RelativeLayout>

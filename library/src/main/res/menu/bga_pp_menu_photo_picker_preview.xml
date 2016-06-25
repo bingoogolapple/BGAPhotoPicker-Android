@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_photo_picker_preview_title"
+        android:orderInCategory="100"
+        android:title=""
+        app:actionLayout="@layout/bga_pp_al_photo_picker_preview"
+        app:showAsAction="always" />
+</menu>
