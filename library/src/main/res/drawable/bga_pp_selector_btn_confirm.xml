@@ -6,6 +6,12 @@
             <corners android:radius="@dimen/bga_pp_size_level1" />
         </shape>
     </item>
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/bga_pp_btn_confirm_pressed" />
+            <corners android:radius="@dimen/bga_pp_size_level1" />
+        </shape>
+    </item>
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/bga_pp_btn_confirm_enabled" />

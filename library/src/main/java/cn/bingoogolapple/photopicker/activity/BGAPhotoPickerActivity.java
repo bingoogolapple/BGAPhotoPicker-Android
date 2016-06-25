@@ -436,7 +436,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
                 if (mSelectedImages.contains(model)) {
                     helper.setImageResource(R.id.iv_item_photo_picker_flag, R.mipmap.bga_pp_ic_cb_checked);
-                    helper.getImageView(R.id.iv_item_photo_picker_photo).setColorFilter(getResources().getColor(R.color.bga_pp_photo_selected_color));
+                    helper.getImageView(R.id.iv_item_photo_picker_photo).setColorFilter(getResources().getColor(R.color.bga_pp_photo_selected_mask));
                 } else {
                     helper.setImageResource(R.id.iv_item_photo_picker_flag, R.mipmap.bga_pp_ic_cb_normal);
                     helper.getImageView(R.id.iv_item_photo_picker_photo).setColorFilter(null);

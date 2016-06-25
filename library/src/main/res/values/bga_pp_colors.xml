@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 状态栏的颜色 -->
+    <color name="bga_pp_colorPrimaryDark">@android:color/black</color>
+    <!-- 导航栏的颜色 -->
+    <color name="bga_pp_navigationBarColor">@android:color/black</color>
+    <!-- Toolbar的颜色 -->
+    <color name="bga_pp_colorPrimary">#303D42</color>
+
+    <!-- 图片选择器库里所有Activity界面的背景色 -->
     <color name="bga_pp_activity_bg">#1A1A1A</color>
-    <color name="bga_pp_photo_selected_color">#4D000000</color>
-    <color name="bga_pp_btn_confirm_enabled">#17C7D1</color>
+
+    <!-- 图片处于选中状态时的遮罩层颜色 -->
+    <color name="bga_pp_photo_selected_mask">#4D000000</color>
+
+    <!-- 右上角确认按钮不可用时的颜色 -->
     <color name="bga_pp_btn_confirm_disabled">#8017C7D1</color>
+    <!-- 右上角确认按钮可用时的颜色 -->
+    <color name="bga_pp_btn_confirm_enabled">#17C7D1</color>
+    <!-- 右上角确认按钮按下时的颜色 -->
+    <color name="bga_pp_btn_confirm_pressed">#CC17C7D1</color>
 </resources>
