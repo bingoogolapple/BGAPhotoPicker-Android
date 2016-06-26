@@ -16,7 +16,7 @@
     <!-- Toolbar的颜色 -->
     <color name="bga_pp_colorPrimary">@color/colorPrimary</color>
     <!-- 图片选择器库里所有Activity界面的背景色 -->
-    <color name="bga_pp_activity_bg">@android:color/white</color>
+    <color name="bga_pp_activity_bg">@android:color/black</color>
 
 
     <!-- 右上角确认按钮不可用时的颜色 -->
