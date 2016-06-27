@@ -3,7 +3,6 @@ package cn.bingoogolapple.photopicker.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
@@ -11,7 +10,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,10 +17,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cn.bingoogolapple.photopicker.R;
-import cn.bingoogolapple.photopicker.imageloader.BGAImage;
+import cn.bingoogolapple.photopicker.adapter.BGAPhotoPageAdapter;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 import cn.bingoogolapple.photopicker.widget.BGAHackyViewPager;
-import cn.bingoogolapple.photopicker.widget.BGAImageView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
@@ -45,7 +42,7 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
     private TextView mChooseTv;
 
     private ArrayList<String> mSelectedImages;
-    private ArrayList<String> mPreviewImages;
+    private BGAPhotoPageAdapter mPhotoPageAdapter;
     private int mMaxChooseCount = 1;
     /**
      * 右上角按钮文本
@@ -122,19 +119,19 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         }
 
         mSelectedImages = getIntent().getStringArrayListExtra(EXTRA_SELECTED_IMAGES);
-        mPreviewImages = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_IMAGES);
-        if (TextUtils.isEmpty(mPreviewImages.get(0))) {
-            // 从MQPhotoPickerActivity跳转过来时，如果有开启拍照功能，则第0项为""
-            mPreviewImages.remove(0);
+        ArrayList<String> previewImages = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_IMAGES);
+        if (TextUtils.isEmpty(previewImages.get(0))) {
+            // 从BGAPhotoPickerActivity跳转过来时，如果有开启拍照功能，则第0项为""
+            previewImages.remove(0);
         }
 
         // 处理是否是拍完照后跳转过来
         mIsFromTakePhoto = getIntent().getBooleanExtra(EXTRA_IS_FROM_TAKE_PHOTO, false);
         if (mIsFromTakePhoto) {
-            String photoPath = mPreviewImages.get(0);
-            mPreviewImages.clear();
+            String photoPath = previewImages.get(0);
+            previewImages.clear();
             mSelectedImages.clear();
-            mPreviewImages.add(photoPath);
+            previewImages.add(photoPath);
             mSelectedImages.add(photoPath);
 
             // 如果是拍完照后跳转过来，一直隐藏底部选择栏
@@ -145,7 +142,9 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         mTopRightBtnText = getIntent().getStringExtra(EXTRA_TOP_RIGHT_BTN_TEXT);
 
         int currentPosition = getIntent().getIntExtra(EXTRA_CURRENT_POSITION, 0);
-        mContentHvp.setAdapter(new ImagePageAdapter());
+
+        mPhotoPageAdapter = new BGAPhotoPageAdapter(this, previewImages);
+        mContentHvp.setAdapter(mPhotoPageAdapter);
         mContentHvp.setCurrentItem(currentPosition);
 
 
@@ -182,7 +181,7 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
             setResult(RESULT_OK, intent);
             finish();
         } else if (v.getId() == R.id.tv_photo_picker_preview_choose) {
-            String currentImage = mPreviewImages.get(mContentHvp.getCurrentItem());
+            String currentImage = mPhotoPageAdapter.getItem(mContentHvp.getCurrentItem());
             if (mSelectedImages.contains(currentImage)) {
                 mSelectedImages.remove(currentImage);
                 mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_normal, 0, 0, 0);
@@ -208,12 +207,12 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
     }
 
     private void handlePageSelectedStatus() {
-        if (mTitleTv == null) {
+        if (mTitleTv == null || mPhotoPageAdapter == null) {
             return;
         }
 
-        mTitleTv.setText((mContentHvp.getCurrentItem() + 1) + "/" + mPreviewImages.size());
-        if (mSelectedImages.contains(mPreviewImages.get(mContentHvp.getCurrentItem()))) {
+        mTitleTv.setText((mContentHvp.getCurrentItem() + 1) + "/" + mPhotoPageAdapter.getCount());
+        if (mSelectedImages.contains(mPhotoPageAdapter.getItem(mContentHvp.getCurrentItem()))) {
             mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_checked, 0, 0, 0);
         } else {
             mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_normal, 0, 0, 0);
@@ -274,42 +273,6 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
 
         if (!mIsFromTakePhoto) {
             ViewCompat.animate(mChooseRl).alpha(0).setInterpolator(new DecelerateInterpolator(2)).start();
-        }
-    }
-
-    private class ImagePageAdapter extends PagerAdapter {
-
-        @Override
-        public int getCount() {
-            return mPreviewImages.size();
-        }
-
-        @Override
-        public View instantiateItem(ViewGroup container, int position) {
-            BGAImageView imageView = new BGAImageView(container.getContext());
-            container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            final PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(imageView);
-            photoViewAttacher.setOnViewTapListener(BGAPhotoPickerPreviewActivity.this);
-            imageView.setDelegate(new BGAImageView.Delegate() {
-                @Override
-                public void onDrawableChanged() {
-                    photoViewAttacher.update();
-                }
-            });
-
-            BGAImage.displayImage(imageView, mPreviewImages.get(position), R.mipmap.bga_pp_ic_holder_dark, R.mipmap.bga_pp_ic_holder_dark, BGAPhotoPickerUtil.getScreenWidth(imageView.getContext()), BGAPhotoPickerUtil.getScreenHeight(imageView.getContext()), null);
-
-            return imageView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
         }
     }
 

@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,13 +18,13 @@ import java.io.File;
 import java.util.ArrayList;
 
 import cn.bingoogolapple.photopicker.R;
+import cn.bingoogolapple.photopicker.adapter.BGAPhotoPageAdapter;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
 import cn.bingoogolapple.photopicker.imageloader.BGAImageLoader;
-import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 import cn.bingoogolapple.photopicker.util.BGAAsyncTask;
+import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 import cn.bingoogolapple.photopicker.util.BGASavePhotoTask;
 import cn.bingoogolapple.photopicker.widget.BGAHackyViewPager;
-import cn.bingoogolapple.photopicker.widget.BGAImageView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
@@ -44,8 +42,8 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
     private TextView mTitleTv;
     private ImageView mDownloadIv;
     private BGAHackyViewPager mContentHvp;
+    private BGAPhotoPageAdapter mPhotoPageAdapter;
 
-    private ArrayList<String> mPreviewImages;
     private boolean mIsSinglePreview;
 
     private File mSaveImgDir;
@@ -113,19 +111,19 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
     protected void processLogic(Bundle savedInstanceState) {
         mSaveImgDir = (File) getIntent().getSerializableExtra(EXTRA_SAVE_IMG_DIR);
 
-
-        mPreviewImages = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_IMAGES);
+        ArrayList<String> previewImages = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_IMAGES);
 
         mIsSinglePreview = getIntent().getBooleanExtra(EXTRA_IS_SINGLE_PREVIEW, false);
         if (mIsSinglePreview) {
-            mPreviewImages = new ArrayList<>();
-            mPreviewImages.add(getIntent().getStringExtra(EXTRA_PHOTO_PATH));
+            previewImages = new ArrayList<>();
+            previewImages.add(getIntent().getStringExtra(EXTRA_PHOTO_PATH));
         }
 
         int currentPosition = getIntent().getIntExtra(EXTRA_CURRENT_POSITION, 0);
-        mContentHvp.setAdapter(new ImagePageAdapter());
-        mContentHvp.setCurrentItem(currentPosition);
 
+        mPhotoPageAdapter = new BGAPhotoPageAdapter(this, previewImages);
+        mContentHvp.setAdapter(mPhotoPageAdapter);
+        mContentHvp.setCurrentItem(currentPosition);
 
         // 过2秒隐藏标题栏
         mToolbar.postDelayed(new Runnable() {
@@ -156,14 +154,14 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
     }
 
     private void renderTitleTv() {
-        if (mTitleTv == null) {
+        if (mTitleTv == null || mPhotoPageAdapter == null) {
             return;
         }
 
         if (mIsSinglePreview) {
             mTitleTv.setText(R.string.bga_pp_view_photo);
         } else {
-            mTitleTv.setText((mContentHvp.getCurrentItem() + 1) + "/" + mPreviewImages.size());
+            mTitleTv.setText((mContentHvp.getCurrentItem() + 1) + "/" + mPhotoPageAdapter.getCount());
         }
     }
 
@@ -211,7 +209,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
             return;
         }
 
-        final String url = mPreviewImages.get(mContentHvp.getCurrentItem());
+        final String url = mPhotoPageAdapter.getItem(mContentHvp.getCurrentItem());
         File file;
         if (url.startsWith("file")) {
             file = new File(url.replace("file://", ""));
@@ -261,41 +259,4 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         }
         super.onDestroy();
     }
-
-    private class ImagePageAdapter extends PagerAdapter {
-
-        @Override
-        public int getCount() {
-            return mPreviewImages.size();
-        }
-
-        @Override
-        public View instantiateItem(ViewGroup container, int position) {
-            BGAImageView imageView = new BGAImageView(container.getContext());
-            container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            final PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(imageView);
-            photoViewAttacher.setOnViewTapListener(BGAPhotoPreviewActivity.this);
-            imageView.setDelegate(new BGAImageView.Delegate() {
-                @Override
-                public void onDrawableChanged() {
-                    photoViewAttacher.update();
-                }
-            });
-
-            BGAImage.displayImage(imageView, mPreviewImages.get(position), R.mipmap.bga_pp_ic_holder_dark, R.mipmap.bga_pp_ic_holder_dark, BGAPhotoPickerUtil.getScreenWidth(imageView.getContext()), BGAPhotoPickerUtil.getScreenHeight(imageView.getContext()), null);
-
-            return imageView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-    }
-
 }
