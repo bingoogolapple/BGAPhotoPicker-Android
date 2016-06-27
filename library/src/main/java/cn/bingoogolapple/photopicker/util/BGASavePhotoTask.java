@@ -10,6 +10,7 @@ import android.os.Build;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.SoftReference;
 
 import cn.bingoogolapple.photopicker.R;
 
@@ -20,7 +21,7 @@ import cn.bingoogolapple.photopicker.R;
  */
 public class BGASavePhotoTask extends BGAAsyncTask<Void, Void> {
     private Application mApplication;
-    private Bitmap mBitmap;
+    private SoftReference<Bitmap> mBitmap;
     private File mNewFile;
 
     public BGASavePhotoTask(Callback<Void> callback, Application application, File newFile) {
@@ -30,7 +31,7 @@ public class BGASavePhotoTask extends BGAAsyncTask<Void, Void> {
     }
 
     public void setBitmapAndPerform(Bitmap bitmap) {
-        mBitmap = bitmap;
+        mBitmap = new SoftReference<>(bitmap);
 
         if (Build.VERSION.SDK_INT >= 11) {
             executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -44,7 +45,7 @@ public class BGASavePhotoTask extends BGAAsyncTask<Void, Void> {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(mNewFile);
-            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            mBitmap.get().compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.flush();
 
             // 通知图库更新
@@ -61,7 +62,22 @@ public class BGASavePhotoTask extends BGAAsyncTask<Void, Void> {
                     BGAPhotoPickerUtil.showSafe(mApplication, R.string.bga_pp_save_img_failure);
                 }
             }
+            recycleBitmap();
         }
         return null;
     }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        recycleBitmap();
+    }
+
+    private void recycleBitmap() {
+        if (mBitmap != null && mBitmap.get() != null && !mBitmap.get().isRecycled()) {
+            mBitmap.get().recycle();
+            mBitmap = null;
+        }
+    }
+
 }

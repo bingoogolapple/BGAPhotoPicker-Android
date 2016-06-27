@@ -14,14 +14,14 @@ public abstract class BGAAsyncTask<Params, Result> extends AsyncTask<Params, Voi
         mCallback = callback;
     }
 
-    final public void cancelTask() {
+    public void cancelTask() {
         if (getStatus() != Status.FINISHED) {
             cancel(true);
         }
     }
 
     @Override
-    final protected void onPostExecute(Result result) {
+    protected void onPostExecute(Result result) {
         super.onPostExecute(result);
         if (mCallback != null) {
             mCallback.onPostExecute(result);
@@ -29,7 +29,7 @@ public abstract class BGAAsyncTask<Params, Result> extends AsyncTask<Params, Voi
     }
 
     @Override
-    final protected void onCancelled() {
+    protected void onCancelled() {
         super.onCancelled();
         if (mCallback != null) {
             mCallback.onCancled();
