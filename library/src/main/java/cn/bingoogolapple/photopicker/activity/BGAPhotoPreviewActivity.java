@@ -57,7 +57,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
     private long mLastShowHiddenTime;
 
     /**
-     * 获取查看图片的intent
+     * 获取查看多张图片的intent
      *
      * @param context
      * @param saveImgDir      保存图片的目录，如果传null，则没有保存图片功能
@@ -75,7 +75,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
     }
 
     /**
-     * 获取查看图片的intent
+     * 获取查看单张图片的intent
      *
      * @param context
      * @param saveImgDir 保存图片的目录，如果传null，则没有保存图片功能
