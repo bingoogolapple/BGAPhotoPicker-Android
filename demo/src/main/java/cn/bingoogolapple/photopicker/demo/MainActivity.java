@@ -66,7 +66,8 @@ public class MainActivity extends BGAPPToolbarActivity implements EasyPermission
     private void multipleChoice() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            startActivityForResult(BGAPhotoPickerActivity.newIntent(this, null, 3, null), REQUEST_CODE_CHOOSE_PHOTO);
+            File testTakePhotoDir = new File(Environment.getExternalStorageDirectory(), "testTakePhoto");
+            startActivityForResult(BGAPhotoPickerActivity.newIntent(this, testTakePhotoDir, 3, null), REQUEST_CODE_CHOOSE_PHOTO);
         } else {
             EasyPermissions.requestPermissions(this, "选择图片需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_MULTIPLE_CHOICE_PERMISSION, perms);
         }
