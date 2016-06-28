@@ -7,10 +7,18 @@
 - [x] 单图选择
 - [x] 多图选择
 - [x] 拍照选择
-- [x] 图片选择预览
-- [x] 图片预览
+- [x] 图片选择预览、缩放查看
+- [x] 图片预览、缩放查看
 - [x] 支持 glide、picasso、universal-image-loader、xutils 图片加载库
+- [x] 覆盖相应的资源文件来定制界面
 
+## 效果图与示例 apk
+
+![PhotoPicker-Demo](http://7xk9dj.com1.z0.glb.clouddn.com//photopicker/bga-photopicker.gif?imageView2/2/w/320)
+
+[点击下载 BGAPhotoPickerDemo.apk](http://fir.im/PhotoPickerDemo) 或扫描下面的二维码安装
+
+![BGAPhotoPickerDemo apk文件二维](http://7xk9dj.com1.z0.glb.clouddn.com//photopicker/BGAPhotoPickerDemo.png)
 
 ### Gradle 依赖
 
