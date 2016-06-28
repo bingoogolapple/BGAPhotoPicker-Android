@@ -1,4 +1,4 @@
-package cn.bingoogolapple.photopicker.util;
+package cn.bingoogolapple.photopicker.imageloader;
 
 import android.content.Context;
 import android.graphics.Bitmap;

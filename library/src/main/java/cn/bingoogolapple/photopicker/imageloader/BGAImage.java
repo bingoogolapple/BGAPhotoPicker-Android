@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
-import cn.bingoogolapple.photopicker.util.BGAUILImageLoader;
-
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/6/25 下午5:03
@@ -14,9 +12,12 @@ import cn.bingoogolapple.photopicker.util.BGAUILImageLoader;
 public class BGAImage {
     private static BGAImageLoader sImageLoader;
 
+    private BGAImage() {
+    }
+
     private static final BGAImageLoader getImageLoader() {
         if (sImageLoader == null) {
-            synchronized (BGAImageLoader.class) {
+            synchronized (BGAImage.class) {
                 if (sImageLoader == null) {
                     if (isClassExists("com.bumptech.glide.Glide")) {
                         sImageLoader = new BGAGlideImageloader();
