@@ -21,8 +21,8 @@ dependencies {
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
 
 
-    compile project(':library')
-//    compile 'com.github.bingoogolapple:BGAPhotoPicker-Android:1.0.0'
+//    compile project(':library')
+    compile 'com.github.bingoogolapple:BGAPhotoPicker-Android:1.0.0'
 
 
     // 必须依赖下面四个图片加载库中的某一个
