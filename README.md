@@ -14,7 +14,7 @@
 
 ## 效果图与示例 apk
 
-![PhotoPicker-Demo](http://7xk9dj.com1.z0.glb.clouddn.com//photopicker/bga-photopicker.gif?imageView2/2/w/320)
+![PhotoPicker-Demo](http://7xk9dj.com1.z0.glb.clouddn.com//photopicker/bga-photopicker.gif)
 
 [点击下载 BGAPhotoPickerDemo.apk](http://fir.im/PhotoPickerDemo) 或扫描下面的二维码安装
 
