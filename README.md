@@ -23,7 +23,7 @@ allprojects {
 }
 ```
 
-[![](https://jitpack.io/v/bingoogolapple/BGAPhotoPicker-Android.svg)](https://jitpack.io/#bingoogolapple/BGAPhotoPicker-Android) 「latestVersion」指的是左边这个 jitpack 徽章后面的「数字」，请自行替换。请不要再来问我「latestVersion」是什么了
+[![](https://jitpack.io/v/bingoogolapple/BGAPhotoPicker-Android.svg)](https://jitpack.io/#bingoogolapple/BGAPhotoPicker-Android) 「latestVersion」指的是左边这个 jitpack 徽章后面的「绿色部分」，请自行替换。请不要再来问我「latestVersion」是什么了
 
 ```groovy
 dependencies {
