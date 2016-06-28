@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,8 @@ public class MainActivity extends BGAPPToolbarActivity implements EasyPermission
     private void singleChoice() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            startActivityForResult(BGAPhotoPickerActivity.newIntent(this, Environment.getExternalStorageDirectory(), 1, null, "确认"), REQUEST_CODE_CHOOSE_PHOTO);
+            File testTakePhotoDir = new File(Environment.getExternalStorageDirectory(), "testTakePhoto");
+            startActivityForResult(BGAPhotoPickerActivity.newIntent(this, testTakePhotoDir, 1, null), REQUEST_CODE_CHOOSE_PHOTO);
         } else {
             EasyPermissions.requestPermissions(this, "选择图片需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_SINGLE_CHOICE_PERMISSION, perms);
         }
@@ -64,23 +66,24 @@ public class MainActivity extends BGAPPToolbarActivity implements EasyPermission
     private void multipleChoice() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            startActivityForResult(BGAPhotoPickerActivity.newIntent(this, null, 3, null, "保存"), REQUEST_CODE_CHOOSE_PHOTO);
+            startActivityForResult(BGAPhotoPickerActivity.newIntent(this, null, 3, null), REQUEST_CODE_CHOOSE_PHOTO);
         } else {
             EasyPermissions.requestPermissions(this, "选择图片需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_MULTIPLE_CHOICE_PERMISSION, perms);
         }
     }
 
-    @AfterPermissionGranted(REQUEST_CODE_SINGLE_CHOICE_PERMISSION)
+    @AfterPermissionGranted(REQUEST_CODE_PHOTO_PREVIEW_PERMISSION)
     private void photoPreview() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
+            File testDownloadDir = new File(Environment.getExternalStorageDirectory(), "testDownload");
             if (mSelectedImages.size() == 1) {
-                startActivity(BGAPhotoPreviewActivity.newIntent(this, Environment.getExternalStorageDirectory(), mSelectedImages.get(0)));
+                startActivity(BGAPhotoPreviewActivity.newIntent(this, testDownloadDir, mSelectedImages.get(0)));
             } else if (mSelectedImages.size() > 1) {
-                startActivity(BGAPhotoPreviewActivity.newIntent(this, Environment.getExternalStorageDirectory(), mSelectedImages, 0));
+                startActivity(BGAPhotoPreviewActivity.newIntent(this, testDownloadDir, mSelectedImages, 0));
             }
         } else {
-            EasyPermissions.requestPermissions(this, "查看图片需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_SINGLE_CHOICE_PERMISSION, perms);
+            EasyPermissions.requestPermissions(this, "查看图片需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_PHOTO_PREVIEW_PERMISSION, perms);
         }
     }
 

@@ -29,6 +29,9 @@ public class BGAImageCaptureManager {
     public BGAImageCaptureManager(Context context, File imageDir) {
         mContext = context;
         mImageDir = imageDir;
+        if (!mImageDir.exists()) {
+            mImageDir.mkdirs();
+        }
     }
 
     private File createImageFile() throws IOException {

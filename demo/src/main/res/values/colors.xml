@@ -5,24 +5,4 @@
     <color name="navigationBarColor">#f46444</color>
 
     <color name="colorPrimaryDarkTrans">#CCf57257</color>
-
-
-    <!-- 自定义图库颜色 -->
-
-    <!-- 状态栏的颜色 -->
-    <color name="bga_pp_colorPrimaryDark">@color/colorPrimaryDark</color>
-    <!-- 导航栏的颜色 -->
-    <color name="bga_pp_navigationBarColor">@color/navigationBarColor</color>
-    <!-- Toolbar的颜色 -->
-    <color name="bga_pp_colorPrimary">@color/colorPrimary</color>
-    <!-- 图片选择器库里所有Activity界面的背景色 -->
-    <color name="bga_pp_activity_bg">@android:color/black</color>
-
-
-    <!-- 右上角确认按钮不可用时的颜色 -->
-    <color name="bga_pp_btn_confirm_disabled">#80BBCD22</color>
-    <!-- 右上角确认按钮可用时的颜色 -->
-    <color name="bga_pp_btn_confirm_enabled">#BBCD22</color>
-    <!-- 右上角确认按钮按下时的颜色 -->
-    <color name="bga_pp_btn_confirm_pressed">#CCBBCD22</color>
 </resources>

@@ -32,7 +32,6 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
     private static final String EXTRA_SELECTED_IMAGES = "EXTRA_SELECTED_IMAGES";
     private static final String EXTRA_MAX_CHOOSE_COUNT = "EXTRA_MAX_CHOOSE_COUNT";
     private static final String EXTRA_CURRENT_POSITION = "EXTRA_CURRENT_POSITION";
-    private static final String EXTRA_TOP_RIGHT_BTN_TEXT = "EXTRA_TOP_RIGHT_BTN_TEXT";
     private static final String EXTRA_IS_FROM_TAKE_PHOTO = "EXTRA_IS_FROM_TAKE_PHOTO";
 
     private TextView mTitleTv;
@@ -65,17 +64,15 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
      * @param selectedImages  当前已选中的图片路径集合，可以传null
      * @param previewImages   当前预览的图片目录里的图片路径集合
      * @param currentPosition 当前预览图片的位置
-     * @param topRightBtnText 右上角按钮的文本
      * @param isFromTakePhoto 是否是拍完照后跳转过来
      * @return
      */
-    public static Intent newIntent(Context context, int maxChooseCount, ArrayList<String> selectedImages, ArrayList<String> previewImages, int currentPosition, String topRightBtnText, boolean isFromTakePhoto) {
+    public static Intent newIntent(Context context, int maxChooseCount, ArrayList<String> selectedImages, ArrayList<String> previewImages, int currentPosition, boolean isFromTakePhoto) {
         Intent intent = new Intent(context, BGAPhotoPickerPreviewActivity.class);
         intent.putStringArrayListExtra(EXTRA_SELECTED_IMAGES, selectedImages);
         intent.putStringArrayListExtra(EXTRA_PREVIEW_IMAGES, previewImages);
         intent.putExtra(EXTRA_MAX_CHOOSE_COUNT, maxChooseCount);
         intent.putExtra(EXTRA_CURRENT_POSITION, currentPosition);
-        intent.putExtra(EXTRA_TOP_RIGHT_BTN_TEXT, topRightBtnText);
         intent.putExtra(EXTRA_IS_FROM_TAKE_PHOTO, isFromTakePhoto);
         return intent;
     }
@@ -137,11 +134,11 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
             // 如果是拍完照后跳转过来，一直隐藏底部选择栏
             mChooseRl.setVisibility(View.INVISIBLE);
         }
+        int currentPosition = getIntent().getIntExtra(EXTRA_CURRENT_POSITION, 0);
 
         // 获取右上角按钮文本
-        mTopRightBtnText = getIntent().getStringExtra(EXTRA_TOP_RIGHT_BTN_TEXT);
+        mTopRightBtnText = getString(R.string.bga_pp_confirm);
 
-        int currentPosition = getIntent().getIntExtra(EXTRA_CURRENT_POSITION, 0);
 
         mPhotoPageAdapter = new BGAPhotoPageAdapter(this, previewImages);
         mContentHvp.setAdapter(mPhotoPageAdapter);

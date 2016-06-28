@@ -110,6 +110,9 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mSaveImgDir = (File) getIntent().getSerializableExtra(EXTRA_SAVE_IMG_DIR);
+        if (mSaveImgDir != null && !mSaveImgDir.exists()) {
+            mSaveImgDir.mkdirs();
+        }
 
         ArrayList<String> previewImages = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_IMAGES);
 
