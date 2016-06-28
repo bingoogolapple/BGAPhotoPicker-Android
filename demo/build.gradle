@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
-    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
-        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
-        targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
-        versionCode VERSION_CODE as int
-        versionName VERSION_NAME
+        minSdkVersion 14
+        targetSdkVersion 24
+        versionCode 100
+        versionName "1.0.0"
     }
 }
 
@@ -19,6 +19,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.0.0'
     compile 'cn.bingoogolapple:bga-adapter:1.0.9@aar'
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
+//    compile 'com.github.bingoogolapple:BGAPhotoPicker-Android:v1.0.0'
 
     // 必须依赖下面四个图片加载库中的某一个
     compile 'com.github.bumptech.glide:glide:3.7.0'
