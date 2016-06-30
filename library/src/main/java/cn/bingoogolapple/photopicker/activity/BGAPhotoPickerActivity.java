@@ -242,21 +242,21 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
-                // 更新图库
-                mImageCaptureManager.refreshGallery();
-
-                String photoPath = mImageCaptureManager.getCurrentPhotoPath();
-                mPicAdapter.getSelectedImages().add(photoPath);
-                mPicAdapter.getDatas().add(0, photoPath);
-                renderTopRightBtn();
-
-                startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mMaxChooseCount, mPicAdapter.getSelectedImages(), (ArrayList<String>) mPicAdapter.getDatas(), 0, true), REQUEST_CODE_PREVIEW);
+                ArrayList<String> photos = new ArrayList<>();
+                photos.add(mImageCaptureManager.getCurrentPhotoPath());
+                startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, 1, photos, photos, 0, true), REQUEST_CODE_PREVIEW);
             } else if (requestCode == REQUEST_CODE_PREVIEW) {
                 returnSelectedImages(BGAPhotoPickerPreviewActivity.getSelectedImages(data));
             }
         } else if (resultCode == RESULT_CANCELED && requestCode == REQUEST_CODE_PREVIEW) {
-            mPicAdapter.setSelectedImages(BGAPhotoPickerPreviewActivity.getSelectedImages(data));
-            renderTopRightBtn();
+            if (BGAPhotoPickerPreviewActivity.getIsFromTakePhoto(data)) {
+                // 从拍照预览界面返回，删除之前拍的照片
+
+                mImageCaptureManager.deletePhotoFile();
+            } else {
+                mPicAdapter.setSelectedImages(BGAPhotoPickerPreviewActivity.getSelectedImages(data));
+                renderTopRightBtn();
+            }
         }
     }
 
@@ -367,20 +367,72 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
     @Override
     public void onItemChildClick(ViewGroup viewGroup, View view, int position) {
         if (view.getId() == R.id.iv_item_photo_picker_flag) {
-            String image = mPicAdapter.getItem(position);
-            if (!mPicAdapter.getSelectedImages().contains(image) && mPicAdapter.getSelectedCount() == mMaxChooseCount) {
+            handleClickSelectFlagIv(position);
+        } else if (view.getId() == R.id.iv_item_photo_picker_photo) {
+            handleClickPreviewIv(position);
+        }
+    }
+
+    /**
+     * 处理点击选择按钮事件
+     *
+     * @param position 当前点击的item的索引位置
+     */
+    private void handleClickSelectFlagIv(int position) {
+        String currentImage = mPicAdapter.getItem(position);
+        if (mMaxChooseCount == 1) {
+            // 单选
+
+            if (mPicAdapter.getSelectedCount() > 0) {
+                String selectedImage = mPicAdapter.getSelectedImages().remove(0);
+                if (TextUtils.equals(selectedImage, currentImage)) {
+                    mPicAdapter.notifyItemChanged(position);
+                } else {
+                    int preSelectedImagePosition = mPicAdapter.getDatas().indexOf(selectedImage);
+                    mPicAdapter.notifyItemChanged(preSelectedImagePosition);
+                    mPicAdapter.getSelectedImages().add(currentImage);
+                    mPicAdapter.notifyItemChanged(position);
+                }
+            } else {
+                mPicAdapter.getSelectedImages().add(currentImage);
+                mPicAdapter.notifyItemChanged(position);
+            }
+            renderTopRightBtn();
+        } else {
+            // 多选
+
+            if (!mPicAdapter.getSelectedImages().contains(currentImage) && mPicAdapter.getSelectedCount() == mMaxChooseCount) {
                 toastMaxCountTip();
             } else {
-                if (mPicAdapter.getSelectedImages().contains(image)) {
-                    mPicAdapter.getSelectedImages().remove(image);
+                if (mPicAdapter.getSelectedImages().contains(currentImage)) {
+                    mPicAdapter.getSelectedImages().remove(currentImage);
                 } else {
-                    mPicAdapter.getSelectedImages().add(image);
+                    mPicAdapter.getSelectedImages().add(currentImage);
                 }
                 mPicAdapter.notifyItemChanged(position);
 
                 renderTopRightBtn();
             }
-        } else if (view.getId() == R.id.iv_item_photo_picker_photo) {
+        }
+    }
+
+    /**
+     * 处理点击预览按钮事件
+     *
+     * @param position 当前点击的item的索引位置
+     */
+    private void handleClickPreviewIv(int position) {
+        if (mMaxChooseCount == 1) {
+            // 单选
+
+            if (mCurrentImageFolderModel.isTakePhotoEnabled() && position == 0) {
+                takePhoto();
+            } else {
+                changeToPreview(position);
+            }
+        } else {
+            // 多选
+
             if (mCurrentImageFolderModel.isTakePhotoEnabled() && position == 0) {
                 if (mPicAdapter.getSelectedCount() == mMaxChooseCount) {
                     toastMaxCountTip();
@@ -388,12 +440,21 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
                     takePhoto();
                 }
             } else {
-                int currentPosition = position;
-                if (mCurrentImageFolderModel.isTakePhotoEnabled()) {
-                    currentPosition--;
-                }
-                startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mMaxChooseCount, mPicAdapter.getSelectedImages(), (ArrayList<String>) mPicAdapter.getDatas(), currentPosition, false), REQUEST_CODE_PREVIEW);
+                changeToPreview(position);
             }
         }
+    }
+
+    /**
+     * 跳转到图片选择预览界面
+     *
+     * @param position 当前点击的item的索引位置
+     */
+    private void changeToPreview(int position) {
+        int currentPosition = position;
+        if (mCurrentImageFolderModel.isTakePhotoEnabled()) {
+            currentPosition--;
+        }
+        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mMaxChooseCount, mPicAdapter.getSelectedImages(), (ArrayList<String>) mPicAdapter.getDatas(), currentPosition, false), REQUEST_CODE_PREVIEW);
     }
 }

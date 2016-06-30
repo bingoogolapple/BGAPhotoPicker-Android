@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
+    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 24
-        versionCode 100
-        versionName "1.0.0"
+        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
+        targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
     }
 }
 
@@ -21,8 +21,8 @@ dependencies {
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
 
 
-//    compile project(':library')
-    compile 'com.github.bingoogolapple:BGAPhotoPicker-Android:1.0.1'
+    compile project(':library')
+//    compile 'cn.bingoogolapple:bga-photopicker:1.0.0@aar'
 
 
     // 必须依赖下面四个图片加载库中的某一个
