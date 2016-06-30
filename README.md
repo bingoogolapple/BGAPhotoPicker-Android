@@ -22,6 +22,8 @@
 
 ### Gradle 依赖
 
+由于该库依赖的最新版的 PhotoView 是传到 jitpack 的，所以需要在项目根 build.gradle 文件中加入下面的配置。如果你使用的是小于1.2.6的版本，则不需要添加改配置
+
 ```groovy
 allprojects {
     repositories {
@@ -31,7 +33,7 @@ allprojects {
 }
 ```
 
-[![](https://jitpack.io/v/bingoogolapple/BGAPhotoPicker-Android.svg)](https://jitpack.io/#bingoogolapple/BGAPhotoPicker-Android) 「latestVersion」指的是左边这个 jitpack 徽章后面的「绿色部分」，请自行替换。请不要来问我「latestVersion」是什么
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker) 「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。请不要再来问我「latestVersion」是什么了
 
 ```groovy
 dependencies {
@@ -40,7 +42,7 @@ dependencies {
     compile 'cn.bingoogolapple:bga-adapter:1.0.9@aar'
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
 
-    compile 'com.github.bingoogolapple:BGAPhotoPicker-Android:latestVersion'
+    compile 'cn.bingoogolapple:bga-photopicker:latestVersion@aar'
 
     // 必须依赖下面四个图片加载库中的某一个
     compile 'com.github.bumptech.glide:glide:3.7.0'
