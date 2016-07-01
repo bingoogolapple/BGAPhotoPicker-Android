@@ -64,7 +64,7 @@ public class BGAImageCaptureManager {
      * 刷新图库
      */
     public void refreshGallery() {
-        if (mCurrentPhotoPath != null) {
+        if (!TextUtils.isEmpty(mCurrentPhotoPath)) {
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             mediaScanIntent.setData(Uri.fromFile(new File(mCurrentPhotoPath)));
             mContext.sendBroadcast(mediaScanIntent);
