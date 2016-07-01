@@ -246,12 +246,16 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
                 photos.add(mImageCaptureManager.getCurrentPhotoPath());
                 startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, 1, photos, photos, 0, true), REQUEST_CODE_PREVIEW);
             } else if (requestCode == REQUEST_CODE_PREVIEW) {
+                if (BGAPhotoPickerPreviewActivity.getIsFromTakePhoto(data)) {
+                    // 从拍照预览界面返回，刷新图库
+                    mImageCaptureManager.refreshGallery();
+                }
+
                 returnSelectedImages(BGAPhotoPickerPreviewActivity.getSelectedImages(data));
             }
         } else if (resultCode == RESULT_CANCELED && requestCode == REQUEST_CODE_PREVIEW) {
             if (BGAPhotoPickerPreviewActivity.getIsFromTakePhoto(data)) {
                 // 从拍照预览界面返回，删除之前拍的照片
-
                 mImageCaptureManager.deletePhotoFile();
             } else {
                 mPicAdapter.setSelectedImages(BGAPhotoPickerPreviewActivity.getSelectedImages(data));
