@@ -20,7 +20,7 @@
 
 ![BGAPhotoPickerDemo apk文件二维](http://7xk9dj.com1.z0.glb.clouddn.com//photopicker/BGAPhotoPickerDemo.png)
 
-### Gradle 依赖
+## Gradle 依赖
 
 由于该库依赖的最新版的 PhotoView 是传到 jitpack 的，所以需要在项目根 build.gradle 文件中加入下面的配置。如果你使用的是小于1.2.6的版本，则不需要添加改配置
 
@@ -100,7 +100,56 @@ public static Intent newIntent(Context context, File saveImgDir, ArrayList<Strin
 public static Intent newIntent(Context context, File saveImgDir, String photoPath)
 ```
 
-#### 详细用法请查看 [Demo](https://github.com/bingoogolapple/BGAPhotoPicker-Android/tree/master/demo):feet:
+## 详细用法请查看 [Demo](https://github.com/bingoogolapple/BGAPhotoPicker-Android/tree/master/demo):feet:
+
+## Proguard
+
+```java
+## ----------------------------------
+##      UIL相关
+## ----------------------------------
+-keep class com.nostra13.universalimageloader.** { *; }
+-keepclassmembers class com.nostra13.universalimageloader.** {*;}
+-dontwarn com.nostra13.universalimageloader.**
+
+## ----------------------------------
+##      Glide相关
+## ----------------------------------
+-keep class com.bumptech.glide.Glide { *; }
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+-dontwarn com.bumptech.glide.**
+
+## ----------------------------------
+##      Picasso相关
+## ----------------------------------
+-keep class com.squareup.picasso.Picasso { *; }
+-dontwarn com.squareup.okhttp.**
+-dontwarn com.squareup.picasso.**
+
+## ----------------------------------
+##      xUtils3相关
+## ----------------------------------
+-keepattributes Signature,*Annotation*
+-keep public class org.xutils.** {
+    public protected *;
+}
+-keep public interface org.xutils.** {
+    public protected *;
+}
+-keepclassmembers class * extends org.xutils.** {
+    public protected *;
+}
+-keepclassmembers @org.xutils.db.annotation.* class * {*;}
+-keepclassmembers @org.xutils.http.annotation.* class * {*;}
+-keepclassmembers class * {
+    @org.xutils.view.annotation.Event <methods>;
+}
+-dontwarn org.xutils.**
+```
 
 ## 关于我
 
