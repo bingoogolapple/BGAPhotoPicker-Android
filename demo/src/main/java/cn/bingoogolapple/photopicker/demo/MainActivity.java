@@ -61,6 +61,11 @@ public class MainActivity extends BGAPPToolbarActivity implements EasyPermission
         });
         mContentSnpl.setDelegate(new BGASortableNinePhotoLayout.Delegate() {
             @Override
+            public void onClickAddNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, List<String> models) {
+                choicePhoto();
+            }
+
+            @Override
             public void onClickDeleteNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, List<String> models) {
                 mContentSnpl.removeItem(position);
                 mContentNpl.setData(mContentSnpl.getData());
