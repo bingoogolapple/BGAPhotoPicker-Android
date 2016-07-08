@@ -19,13 +19,8 @@ public class BGASpaceItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        int position = parent.getChildAdapterPosition(view);
-        if (position % 3 != 0) {
-            outRect.left = mSpace;
-        }
-        if (position % 3 != 2) {
-            outRect.right = mSpace;
-        }
+        outRect.left = mSpace;
+        outRect.right = mSpace;
         outRect.top = mSpace;
         outRect.bottom = mSpace;
     }

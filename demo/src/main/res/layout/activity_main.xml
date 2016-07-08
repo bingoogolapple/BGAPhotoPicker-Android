@@ -36,6 +36,11 @@
         style="@style/MatchWrapTv"
         android:text="选择图片" />
 
+    <cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
+        android:id="@+id/snpl_main_content"
+        style="@style/WrapWrap"
+        android:layout_margin="10dp" />
+
     <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
         android:id="@+id/npl_main_content"
         style="@style/WrapWrap"

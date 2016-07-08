@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -11,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAAdapterViewAdapter;
-import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
-import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
@@ -23,7 +22,7 @@ import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
  * 创建时间:16/7/8 下午2:41
  * 描述:
  */
-public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, View.OnClickListener, View.OnLongClickListener {
+public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, View.OnClickListener, View.OnLongClickListener {
     private PhotoAdapter mPhotoAdapter;
     private ImageView mPhotoIv;
     private BGAHeightWrapGridView mPhotoGv;
@@ -51,9 +50,9 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
         mPhotoGv.setHorizontalSpacing(spacing);
         mPhotoGv.setVerticalSpacing(spacing);
         mPhotoGv.setNumColumns(3);
+        mPhotoGv.setOnItemClickListener(this);
+        mPhotoGv.setOnItemLongClickListener(this);
         mPhotoAdapter = new PhotoAdapter(context);
-        mPhotoAdapter.setOnItemChildClickListener(this);
-        mPhotoAdapter.setOnItemChildLongClickListener(this);
         mPhotoGv.setAdapter(mPhotoAdapter);
 
         addView(mPhotoIv);
@@ -61,22 +60,18 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
     }
 
     @Override
-    public void onItemChildClick(ViewGroup parent, View childView, int position) {
-        if (childView.getId() == R.id.iv_item_nine_photo_photo) {
-            mCurrentClickItemPosition = position;
-            if (mDelegate != null) {
-                mDelegate.onClickNinePhotoItem(this, childView, mCurrentClickItemPosition, mPhotoAdapter.getItem(mCurrentClickItemPosition), mPhotoAdapter.getDatas());
-            }
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        mCurrentClickItemPosition = position;
+        if (mDelegate != null) {
+            mDelegate.onClickNinePhotoItem(this, view, mCurrentClickItemPosition, mPhotoAdapter.getItem(mCurrentClickItemPosition), mPhotoAdapter.getDatas());
         }
     }
 
     @Override
-    public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
-        if (childView.getId() == R.id.iv_item_nine_photo_photo) {
-            mCurrentClickItemPosition = position;
-            if (mDelegate != null) {
-                return mDelegate.onLongClickNinePhotoItem(this, childView, position, mPhotoAdapter.getItem(position), mPhotoAdapter.getDatas());
-            }
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+        mCurrentClickItemPosition = position;
+        if (mDelegate != null) {
+            return mDelegate.onLongClickNinePhotoItem(this, view, position, mPhotoAdapter.getItem(position), mPhotoAdapter.getDatas());
         }
         return false;
     }
@@ -98,7 +93,7 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
         return false;
     }
 
-    public void setData(final ArrayList<String> photos) {
+    public void setData(ArrayList<String> photos) {
         int itemWidth = BGAPhotoPickerUtil.getScreenWidth(getContext()) / 4;
         if (photos.size() == 0) {
             setVisibility(GONE);
@@ -168,12 +163,6 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
         }
 
         @Override
-        protected void setItemChildListener(BGAViewHolderHelper helper) {
-            helper.setItemChildClickListener(R.id.iv_item_nine_photo_photo);
-            helper.setItemChildLongClickListener(R.id.iv_item_nine_photo_photo);
-        }
-
-        @Override
         protected void fillData(BGAViewHolderHelper helper, int position, String model) {
             BGAImage.displayImage(helper.getImageView(R.id.iv_item_nine_photo_photo), model, R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, mImageWidth, mImageHeight, null);
         }
@@ -183,5 +172,12 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
         void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models);
 
         boolean onLongClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models);
+    }
+
+    public abstract static class SimpleDelegate implements Delegate {
+        @Override
+        public boolean onLongClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+            return false;
+        }
     }
 }
