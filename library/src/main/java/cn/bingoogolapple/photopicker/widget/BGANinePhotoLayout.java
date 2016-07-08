@@ -72,6 +72,7 @@ public class BGANinePhotoLayout extends FrameLayout {
         } else if (photos.size() == 1) {
             setVisibility(VISIBLE);
             mPicGv.setVisibility(GONE);
+            mPicAdapter.setDatas(photos);
             mPicIv.setVisibility(VISIBLE);
 
             ViewGroup.LayoutParams layoutParams = mPicIv.getLayoutParams();
