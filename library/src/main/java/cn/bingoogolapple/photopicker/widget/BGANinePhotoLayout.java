@@ -23,7 +23,7 @@ import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
  * 创建时间:16/7/8 下午2:41
  * 描述:
  */
-public class BGANinePhotoLayout extends FrameLayout {
+public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, View.OnClickListener, View.OnLongClickListener {
     private PicAdapter mPicAdapter;
     private ImageView mPicIv;
     private BGAHeightWrapGridView mPicGv;
@@ -43,39 +43,59 @@ public class BGANinePhotoLayout extends FrameLayout {
         mPicIv = new ImageView(context);
         mPicIv.setClickable(true);
         mPicIv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        mPicIv.setOnClickListener(this);
+        mPicIv.setOnLongClickListener(this);
+
         mPicGv = new BGAHeightWrapGridView(context);
         int spacing = context.getResources().getDimensionPixelSize(R.dimen.bga_pp_size_photo_divider);
         mPicGv.setHorizontalSpacing(spacing);
         mPicGv.setVerticalSpacing(spacing);
         mPicGv.setNumColumns(3);
         mPicAdapter = new PicAdapter(context);
-        mPicAdapter.setOnItemChildClickListener(new BGAOnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(ViewGroup parent, View childView, int position) {
-                if (childView.getId() == R.id.iv_item_nine_photo_photo) {
-                    mCurrentClickItemPosition = position;
-                    if (mDelegate != null) {
-                        mDelegate.onClickNinePhotoItem(BGANinePhotoLayout.this, childView, position, mPicAdapter.getItem(position), mPicAdapter.getDatas());
-                    }
-                }
-            }
-        });
-        mPicAdapter.setOnItemChildLongClickListener(new BGAOnItemChildLongClickListener() {
-            @Override
-            public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
-                if (childView.getId() == R.id.iv_item_nine_photo_photo) {
-                    mCurrentClickItemPosition = position;
-                    if (mDelegate != null) {
-                        return mDelegate.onLongClickNinePhotoItem(BGANinePhotoLayout.this, childView, position, mPicAdapter.getItem(position), mPicAdapter.getDatas());
-                    }
-                }
-                return false;
-            }
-        });
+        mPicAdapter.setOnItemChildClickListener(this);
+        mPicAdapter.setOnItemChildLongClickListener(this);
         mPicGv.setAdapter(mPicAdapter);
 
         addView(mPicIv);
         addView(mPicGv);
+    }
+
+    @Override
+    public void onItemChildClick(ViewGroup parent, View childView, int position) {
+        if (childView.getId() == R.id.iv_item_nine_photo_photo) {
+            mCurrentClickItemPosition = position;
+            if (mDelegate != null) {
+                mDelegate.onClickNinePhotoItem(this, childView, mCurrentClickItemPosition, mPicAdapter.getItem(mCurrentClickItemPosition), mPicAdapter.getDatas());
+            }
+        }
+    }
+
+    @Override
+    public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
+        if (childView.getId() == R.id.iv_item_nine_photo_photo) {
+            mCurrentClickItemPosition = position;
+            if (mDelegate != null) {
+                return mDelegate.onLongClickNinePhotoItem(this, childView, position, mPicAdapter.getItem(position), mPicAdapter.getDatas());
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onClick(View view) {
+        mCurrentClickItemPosition = 0;
+        if (mDelegate != null) {
+            mDelegate.onClickNinePhotoItem(this, view, mCurrentClickItemPosition, mPicAdapter.getItem(mCurrentClickItemPosition), mPicAdapter.getDatas());
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        mCurrentClickItemPosition = 0;
+        if (mDelegate != null) {
+            return mDelegate.onLongClickNinePhotoItem(this, view, mCurrentClickItemPosition, mPicAdapter.getItem(mCurrentClickItemPosition), mPicAdapter.getDatas());
+        }
+        return false;
     }
 
     public void setData(final ArrayList<String> photos) {
@@ -91,26 +111,6 @@ public class BGANinePhotoLayout extends FrameLayout {
             ViewGroup.LayoutParams layoutParams = mPicIv.getLayoutParams();
             layoutParams.width = itemWidth * 2;
             layoutParams.height = itemWidth * 2;
-
-            mPicIv.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mCurrentClickItemPosition = 0;
-                    if (mDelegate != null) {
-                        mDelegate.onClickNinePhotoItem(BGANinePhotoLayout.this, v, mCurrentClickItemPosition, photos.get(mCurrentClickItemPosition), photos);
-                    }
-                }
-            });
-            mPicIv.setOnLongClickListener(new OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    mCurrentClickItemPosition = 0;
-                    if (mDelegate != null) {
-                        return mDelegate.onLongClickNinePhotoItem(BGANinePhotoLayout.this, view, mCurrentClickItemPosition, mPicAdapter.getItem(mCurrentClickItemPosition), mPicAdapter.getDatas());
-                    }
-                    return false;
-                }
-            });
 
             BGAImage.displayImage(mPicIv, photos.get(0), R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, itemWidth, itemWidth, null);
         } else {
