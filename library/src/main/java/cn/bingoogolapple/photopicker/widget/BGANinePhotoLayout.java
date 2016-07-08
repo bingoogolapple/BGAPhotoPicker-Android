@@ -24,9 +24,9 @@ import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
  * 描述:
  */
 public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildClickListener, BGAOnItemChildLongClickListener, View.OnClickListener, View.OnLongClickListener {
-    private PicAdapter mPicAdapter;
-    private ImageView mPicIv;
-    private BGAHeightWrapGridView mPicGv;
+    private PhotoAdapter mPhotoAdapter;
+    private ImageView mPhotoIv;
+    private BGAHeightWrapGridView mPhotoGv;
     private Delegate mDelegate;
     private int mCurrentClickItemPosition;
 
@@ -40,24 +40,24 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
 
     public BGANinePhotoLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mPicIv = new ImageView(context);
-        mPicIv.setClickable(true);
-        mPicIv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        mPicIv.setOnClickListener(this);
-        mPicIv.setOnLongClickListener(this);
+        mPhotoIv = new ImageView(context);
+        mPhotoIv.setClickable(true);
+        mPhotoIv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        mPhotoIv.setOnClickListener(this);
+        mPhotoIv.setOnLongClickListener(this);
 
-        mPicGv = new BGAHeightWrapGridView(context);
+        mPhotoGv = new BGAHeightWrapGridView(context);
         int spacing = context.getResources().getDimensionPixelSize(R.dimen.bga_pp_size_photo_divider);
-        mPicGv.setHorizontalSpacing(spacing);
-        mPicGv.setVerticalSpacing(spacing);
-        mPicGv.setNumColumns(3);
-        mPicAdapter = new PicAdapter(context);
-        mPicAdapter.setOnItemChildClickListener(this);
-        mPicAdapter.setOnItemChildLongClickListener(this);
-        mPicGv.setAdapter(mPicAdapter);
+        mPhotoGv.setHorizontalSpacing(spacing);
+        mPhotoGv.setVerticalSpacing(spacing);
+        mPhotoGv.setNumColumns(3);
+        mPhotoAdapter = new PhotoAdapter(context);
+        mPhotoAdapter.setOnItemChildClickListener(this);
+        mPhotoAdapter.setOnItemChildLongClickListener(this);
+        mPhotoGv.setAdapter(mPhotoAdapter);
 
-        addView(mPicIv);
-        addView(mPicGv);
+        addView(mPhotoIv);
+        addView(mPhotoGv);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
         if (childView.getId() == R.id.iv_item_nine_photo_photo) {
             mCurrentClickItemPosition = position;
             if (mDelegate != null) {
-                mDelegate.onClickNinePhotoItem(this, childView, mCurrentClickItemPosition, mPicAdapter.getItem(mCurrentClickItemPosition), mPicAdapter.getDatas());
+                mDelegate.onClickNinePhotoItem(this, childView, mCurrentClickItemPosition, mPhotoAdapter.getItem(mCurrentClickItemPosition), mPhotoAdapter.getDatas());
             }
         }
     }
@@ -75,7 +75,7 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
         if (childView.getId() == R.id.iv_item_nine_photo_photo) {
             mCurrentClickItemPosition = position;
             if (mDelegate != null) {
-                return mDelegate.onLongClickNinePhotoItem(this, childView, position, mPicAdapter.getItem(position), mPicAdapter.getDatas());
+                return mDelegate.onLongClickNinePhotoItem(this, childView, position, mPhotoAdapter.getItem(position), mPhotoAdapter.getDatas());
             }
         }
         return false;
@@ -85,7 +85,7 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
     public void onClick(View view) {
         mCurrentClickItemPosition = 0;
         if (mDelegate != null) {
-            mDelegate.onClickNinePhotoItem(this, view, mCurrentClickItemPosition, mPicAdapter.getItem(mCurrentClickItemPosition), mPicAdapter.getDatas());
+            mDelegate.onClickNinePhotoItem(this, view, mCurrentClickItemPosition, mPhotoAdapter.getItem(mCurrentClickItemPosition), mPhotoAdapter.getDatas());
         }
     }
 
@@ -93,7 +93,7 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
     public boolean onLongClick(View view) {
         mCurrentClickItemPosition = 0;
         if (mDelegate != null) {
-            return mDelegate.onLongClickNinePhotoItem(this, view, mCurrentClickItemPosition, mPicAdapter.getItem(mCurrentClickItemPosition), mPicAdapter.getDatas());
+            return mDelegate.onLongClickNinePhotoItem(this, view, mCurrentClickItemPosition, mPhotoAdapter.getItem(mCurrentClickItemPosition), mPhotoAdapter.getDatas());
         }
         return false;
     }
@@ -104,36 +104,36 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
             setVisibility(GONE);
         } else if (photos.size() == 1) {
             setVisibility(VISIBLE);
-            mPicGv.setVisibility(GONE);
-            mPicAdapter.setDatas(photos);
-            mPicIv.setVisibility(VISIBLE);
+            mPhotoGv.setVisibility(GONE);
+            mPhotoAdapter.setDatas(photos);
+            mPhotoIv.setVisibility(VISIBLE);
 
-            ViewGroup.LayoutParams layoutParams = mPicIv.getLayoutParams();
+            ViewGroup.LayoutParams layoutParams = mPhotoIv.getLayoutParams();
             layoutParams.width = itemWidth * 2;
             layoutParams.height = itemWidth * 2;
 
-            BGAImage.displayImage(mPicIv, photos.get(0), R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, itemWidth, itemWidth, null);
+            BGAImage.displayImage(mPhotoIv, photos.get(0), R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, itemWidth, itemWidth, null);
         } else {
             setVisibility(VISIBLE);
-            mPicIv.setVisibility(GONE);
-            mPicGv.setVisibility(VISIBLE);
+            mPhotoIv.setVisibility(GONE);
+            mPhotoGv.setVisibility(VISIBLE);
 
-            ViewGroup.LayoutParams layoutParams = mPicGv.getLayoutParams();
+            ViewGroup.LayoutParams layoutParams = mPhotoGv.getLayoutParams();
             if (photos.size() == 2) {
-                mPicGv.setNumColumns(2);
+                mPhotoGv.setNumColumns(2);
                 layoutParams.width = itemWidth * 2;
                 layoutParams.height = itemWidth * 1;
             } else if (photos.size() == 4) {
-                mPicGv.setNumColumns(2);
+                mPhotoGv.setNumColumns(2);
                 layoutParams.width = itemWidth * 2;
                 layoutParams.height = itemWidth * 2;
             } else {
-                mPicGv.setNumColumns(3);
+                mPhotoGv.setNumColumns(3);
                 layoutParams.width = itemWidth * 3;
                 layoutParams.height = itemWidth * 3;
             }
-            mPicGv.setLayoutParams(layoutParams);
-            mPicAdapter.setDatas(photos);
+            mPhotoGv.setLayoutParams(layoutParams);
+            mPhotoAdapter.setDatas(photos);
         }
     }
 
@@ -142,26 +142,26 @@ public class BGANinePhotoLayout extends FrameLayout implements BGAOnItemChildCli
     }
 
     public ArrayList<String> getData() {
-        return (ArrayList<String>) mPicAdapter.getDatas();
+        return (ArrayList<String>) mPhotoAdapter.getDatas();
     }
 
     public int getItemCount() {
-        return mPicAdapter.getCount();
+        return mPhotoAdapter.getCount();
     }
 
     public String getCurrentClickItem() {
-        return mPicAdapter.getItem(mCurrentClickItemPosition);
+        return mPhotoAdapter.getItem(mCurrentClickItemPosition);
     }
 
     public int getCurrentClickItemPosition() {
         return mCurrentClickItemPosition;
     }
 
-    private static class PicAdapter extends BGAAdapterViewAdapter<String> {
+    private static class PhotoAdapter extends BGAAdapterViewAdapter<String> {
         private int mImageWidth;
         private int mImageHeight;
 
-        public PicAdapter(Context context) {
+        public PhotoAdapter(Context context) {
             super(context, R.layout.bga_pp_item_nine_photo);
             mImageWidth = BGAPhotoPickerUtil.getScreenWidth(context) / 6;
             mImageHeight = mImageWidth;
