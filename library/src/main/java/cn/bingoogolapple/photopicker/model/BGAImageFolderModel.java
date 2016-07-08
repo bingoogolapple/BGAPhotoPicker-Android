@@ -39,6 +39,6 @@ public class BGAImageFolderModel {
     }
 
     public int getCount() {
-        return mImages.size();
+        return mTakePhotoEnabled ? mImages.size() - 1 : mImages.size();
     }
 }

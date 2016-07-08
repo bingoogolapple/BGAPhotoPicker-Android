@@ -2,18 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchMatch.Vertical">
 
-    <TextView
-        android:id="@+id/tv_main_single_choice"
-        style="@style/MatchWrapTv"
-        android:text="单选图片" />
+    <LinearLayout
+        style="@style/MatchWrap.Horizontal"
+        android:layout_margin="10dp">
+
+        <CheckBox
+            android:id="@+id/cb_main_single_choice"
+            style="@style/AutoWrap"
+            android:padding="10dp"
+            android:text="单选"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <CheckBox
+            android:id="@+id/cb_main_take_photo"
+            style="@style/AutoWrap"
+            android:padding="10dp"
+            android:text="拍照"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <CheckBox
+            android:id="@+id/cb_main_download"
+            style="@style/AutoWrap"
+            android:padding="10dp"
+            android:text="下载"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_main_multiple_choice"
+        android:id="@+id/tv_main_choice_photo"
         style="@style/MatchWrapTv"
-        android:text="多选图片" />
+        android:text="选择图片" />
 
-    <TextView
-        android:id="@+id/tv_main_photo_preview"
-        style="@style/MatchWrapTv"
-        android:text="图片预览" />
+    <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
+        android:id="@+id/npl_main_content"
+        style="@style/WrapWrap"
+        android:layout_margin="10dp" />
 </LinearLayout>

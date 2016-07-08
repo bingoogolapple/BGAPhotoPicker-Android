@@ -2,9 +2,7 @@ package cn.bingoogolapple.photopicker.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,16 +17,15 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.adapter.BGAPhotoPickerAdapter;
 import cn.bingoogolapple.photopicker.model.BGAImageFolderModel;
 import cn.bingoogolapple.photopicker.pw.BGAPhotoFolderPw;
+import cn.bingoogolapple.photopicker.util.BGAAsyncTask;
 import cn.bingoogolapple.photopicker.util.BGAImageCaptureManager;
+import cn.bingoogolapple.photopicker.util.BGALoadPhotoTask;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 import cn.bingoogolapple.photopicker.util.BGASpaceItemDecoration;
 
@@ -37,7 +34,7 @@ import cn.bingoogolapple.photopicker.util.BGASpaceItemDecoration;
  * 创建时间:16/6/24 下午2:55
  * 描述:图片选择界面
  */
-public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAOnItemChildClickListener {
+public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAOnItemChildClickListener, BGAAsyncTask.Callback<ArrayList<BGAImageFolderModel>> {
     private static final String EXTRA_IMAGE_DIR = "EXTRA_IMAGE_DIR";
     private static final String EXTRA_SELECTED_IMAGES = "EXTRA_SELECTED_IMAGES";
     private static final String EXTRA_MAX_CHOOSE_COUNT = "EXTRA_MAX_CHOOSE_COUNT";
@@ -84,6 +81,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
      * 上一次显示图片目录的时间戳，防止短时间内重复点击图片目录菜单时界面错乱
      */
     private long mLastShowPhotoFolderTime;
+    private BGALoadPhotoTask mLoadPhotoTask;
 
     /**
      * @param context        应用程序上下文
@@ -141,17 +139,24 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, BGASpaceItemDecoration.SPAN_COUNT, LinearLayoutManager.VERTICAL, false);
         mContentRv.setLayoutManager(layoutManager);
-        mContentRv.addItemDecoration(new BGASpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.bga_pp_size_level1) / 4));
+        mContentRv.addItemDecoration(new BGASpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.bga_pp_size_photo_divider)));
 
+
+        ArrayList<String> selectedImages = getIntent().getStringArrayListExtra(EXTRA_SELECTED_IMAGES);
+        if (selectedImages != null && selectedImages.size() > mMaxChooseCount) {
+            String selectedPhoto = selectedImages.get(0);
+            selectedImages.clear();
+            selectedImages.add(selectedPhoto);
+        }
 
         mContentRv.setAdapter(mPicAdapter);
-        mPicAdapter.setSelectedImages(getIntent().getStringArrayListExtra(EXTRA_SELECTED_IMAGES));
+        mPicAdapter.setSelectedImages(selectedImages);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        loadDatas();
+        mLoadPhotoTask = new BGALoadPhotoTask(this, this, mTakePhotoEnabled).perform();
     }
 
     @Override
@@ -168,6 +173,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         mArrowIv.setOnClickListener(this);
         mSubmitTv.setOnClickListener(this);
 
+        mTitleTv.setText(R.string.bga_pp_all_image);
         if (mCurrentImageFolderModel != null) {
             mTitleTv.setText(mCurrentImageFolderModel.name);
         }
@@ -179,7 +185,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
     @Override
     public void onClick(View v) {
-        if ((v.getId() == R.id.tv_photo_picker_title || v.getId() == R.id.iv_photo_picker_arrow) && System.currentTimeMillis() - mLastShowPhotoFolderTime > BGAPhotoFolderPw.ANIM_DURATION) {
+        if ((v.getId() == R.id.tv_photo_picker_title || v.getId() == R.id.iv_photo_picker_arrow) && mImageFolderModels != null && mImageFolderModels.size() > 0 && System.currentTimeMillis() - mLastShowPhotoFolderTime > BGAPhotoFolderPw.ANIM_DURATION) {
             showPhotoFolderPw();
             mLastShowPhotoFolderTime = System.currentTimeMillis();
         } else if (v.getId() == R.id.tv_photo_picker_submit) {
@@ -293,81 +299,6 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         super.onRestoreInstanceState(savedInstanceState);
     }
 
-    private void loadDatas() {
-        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Images.Media.DATA}, null, null, MediaStore.Images.Media.DATE_ADDED + " DESC");
-
-        BGAImageFolderModel allImageFolderModel = new BGAImageFolderModel(mTakePhotoEnabled);
-
-        HashMap<String, BGAImageFolderModel> imageFolderModelMap = new HashMap<>();
-        BGAImageFolderModel otherImageFolderModel = null;
-        if (cursor != null && cursor.getCount() > 0) {
-            boolean firstInto = true;
-            while (cursor.moveToNext()) {
-                String imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-
-                if (!TextUtils.isEmpty(imagePath)) {
-                    if (firstInto) {
-                        allImageFolderModel.name = getString(R.string.bga_pp_all_image);
-                        allImageFolderModel.coverPath = imagePath;
-                        firstInto = false;
-                    }
-                    // 所有图片目录每次都添加
-                    allImageFolderModel.addLastImage(imagePath);
-
-                    String folderPath = null;
-                    // 其他图片目录
-                    File folder = new File(imagePath).getParentFile();
-                    if (folder != null) {
-                        folderPath = folder.getAbsolutePath();
-                    }
-
-                    if (TextUtils.isEmpty(folderPath)) {
-                        int end = imagePath.lastIndexOf(File.separator);
-                        if (end != -1) {
-                            folderPath = imagePath.substring(0, end);
-                        }
-                    }
-
-                    if (!TextUtils.isEmpty(folderPath)) {
-                        if (imageFolderModelMap.containsKey(folderPath)) {
-                            otherImageFolderModel = imageFolderModelMap.get(folderPath);
-                        } else {
-                            String folderName = folderPath.substring(folderPath.lastIndexOf(File.separator) + 1);
-                            if (TextUtils.isEmpty(folderName)) {
-                                folderName = "/";
-                            }
-                            otherImageFolderModel = new BGAImageFolderModel(folderName, imagePath);
-                            imageFolderModelMap.put(folderPath, otherImageFolderModel);
-                        }
-                        otherImageFolderModel.addLastImage(imagePath);
-                    }
-                }
-            }
-            cursor.close();
-        }
-
-        mImageFolderModels = new ArrayList();
-        // 添加所有图片目录
-        mImageFolderModels.add(allImageFolderModel);
-
-        // 添加其他图片目录
-        Iterator<Map.Entry<String, BGAImageFolderModel>> iterator = imageFolderModelMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            mImageFolderModels.add(iterator.next().getValue());
-        }
-
-        reloadPhotos(mPhotoFolderPw == null ? 0 : mPhotoFolderPw.getCurrentPosition());
-    }
-
-    private void reloadPhotos(int position) {
-        mCurrentImageFolderModel = mImageFolderModels.get(position);
-        if (mTitleTv != null) {
-            mTitleTv.setText(mCurrentImageFolderModel.name);
-        }
-
-        mPicAdapter.setImageFolderModel(mCurrentImageFolderModel);
-    }
-
     @Override
     public void onItemChildClick(ViewGroup viewGroup, View view, int position) {
         if (view.getId() == R.id.iv_item_photo_picker_flag) {
@@ -460,5 +391,35 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
             currentPosition--;
         }
         startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mMaxChooseCount, mPicAdapter.getSelectedImages(), (ArrayList<String>) mPicAdapter.getDatas(), currentPosition, false), REQUEST_CODE_PREVIEW);
+    }
+
+    private void reloadPhotos(int position) {
+        mCurrentImageFolderModel = mImageFolderModels.get(position);
+        if (mTitleTv != null) {
+            mTitleTv.setText(mCurrentImageFolderModel.name);
+        }
+
+        mPicAdapter.setImageFolderModel(mCurrentImageFolderModel);
+    }
+
+    @Override
+    public void onPostExecute(ArrayList<BGAImageFolderModel> imageFolderModels) {
+        mLoadPhotoTask = null;
+        mImageFolderModels = imageFolderModels;
+        reloadPhotos(mPhotoFolderPw == null ? 0 : mPhotoFolderPw.getCurrentPosition());
+    }
+
+    @Override
+    public void onTaskCancelled() {
+        mLoadPhotoTask = null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mLoadPhotoTask != null) {
+            mLoadPhotoTask.cancelTask();
+            mLoadPhotoTask = null;
+        }
+        super.onDestroy();
     }
 }
