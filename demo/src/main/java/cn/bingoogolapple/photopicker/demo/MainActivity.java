@@ -49,6 +49,12 @@ public class MainActivity extends BGAPPToolbarActivity implements EasyPermission
             public void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
                 photoPreview();
             }
+
+            @Override
+            public boolean onLongClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+                Toast.makeText(MainActivity.this, "长按了 " + position, Toast.LENGTH_SHORT).show();
+                return true;
+            }
         });
     }
 

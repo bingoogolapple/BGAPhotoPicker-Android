@@ -12,6 +12,7 @@ import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAAdapterViewAdapter;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
+import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildLongClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
@@ -59,6 +60,18 @@ public class BGANinePhotoLayout extends FrameLayout {
                 }
             }
         });
+        mPicAdapter.setOnItemChildLongClickListener(new BGAOnItemChildLongClickListener() {
+            @Override
+            public boolean onItemChildLongClick(ViewGroup parent, View childView, int position) {
+                if (childView.getId() == R.id.iv_item_nine_photo_photo) {
+                    mCurrentClickItemPosition = position;
+                    if (mDelegate != null) {
+                        return mDelegate.onLongClickNinePhotoItem(BGANinePhotoLayout.this, childView, position, mPicAdapter.getItem(position), mPicAdapter.getDatas());
+                    }
+                }
+                return false;
+            }
+        });
         mPicGv.setAdapter(mPicAdapter);
 
         addView(mPicIv);
@@ -84,8 +97,18 @@ public class BGANinePhotoLayout extends FrameLayout {
                 public void onClick(View v) {
                     mCurrentClickItemPosition = 0;
                     if (mDelegate != null) {
-                        mDelegate.onClickNinePhotoItem(BGANinePhotoLayout.this, v, 0, photos.get(0), photos);
+                        mDelegate.onClickNinePhotoItem(BGANinePhotoLayout.this, v, mCurrentClickItemPosition, photos.get(mCurrentClickItemPosition), photos);
                     }
+                }
+            });
+            mPicIv.setOnLongClickListener(new OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mCurrentClickItemPosition = 0;
+                    if (mDelegate != null) {
+                        return mDelegate.onLongClickNinePhotoItem(BGANinePhotoLayout.this, view, mCurrentClickItemPosition, mPicAdapter.getItem(mCurrentClickItemPosition), mPicAdapter.getDatas());
+                    }
+                    return false;
                 }
             });
 
@@ -147,6 +170,7 @@ public class BGANinePhotoLayout extends FrameLayout {
         @Override
         protected void setItemChildListener(BGAViewHolderHelper helper) {
             helper.setItemChildClickListener(R.id.iv_item_nine_photo_photo);
+            helper.setItemChildLongClickListener(R.id.iv_item_nine_photo_photo);
         }
 
         @Override
@@ -157,5 +181,7 @@ public class BGANinePhotoLayout extends FrameLayout {
 
     public interface Delegate {
         void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models);
+
+        boolean onLongClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models);
     }
 }
