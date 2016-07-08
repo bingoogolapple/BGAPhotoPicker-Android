@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:clickable="true"
-        android:padding="@dimen/bga_pp_size_level1"
+        android:padding="@dimen/bga_pp_size_delete_padding"
         android:src="@mipmap/bga_pp_ic_delete"
         android:visibility="gone"
         tools:visibility="visible" />

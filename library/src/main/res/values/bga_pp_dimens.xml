@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="bga_pp_size_photo_divider">2dp</dimen>
+    <dimen name="bga_pp_size_delete_padding">2dp</dimen>
     <dimen name="bga_pp_size_level1">4dp</dimen>
     <dimen name="bga_pp_size_level2">8dp</dimen>
     <dimen name="bga_pp_size_level3">12dp</dimen>

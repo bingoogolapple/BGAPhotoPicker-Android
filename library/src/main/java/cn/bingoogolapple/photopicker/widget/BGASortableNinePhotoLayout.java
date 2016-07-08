@@ -2,6 +2,7 @@ package cn.bingoogolapple.photopicker.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -188,6 +189,8 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         @Override
         public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
             if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+                ViewCompat.setScaleX(viewHolder.itemView, 1.2f);
+                ViewCompat.setScaleY(viewHolder.itemView, 1.2f);
                 ((BGARecyclerViewHolder) viewHolder).getViewHolderHelper().getImageView(R.id.iv_item_nine_photo_photo).setColorFilter(getResources().getColor(R.color.bga_pp_photo_selected_mask));
             }
             super.onSelectedChanged(viewHolder, actionState);
@@ -195,6 +198,8 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
         @Override
         public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            ViewCompat.setScaleX(viewHolder.itemView, 1.0f);
+            ViewCompat.setScaleY(viewHolder.itemView, 1.0f);
             ((BGARecyclerViewHolder) viewHolder).getViewHolderHelper().getImageView(R.id.iv_item_nine_photo_photo).setColorFilter(null);
             super.clearView(recyclerView, viewHolder);
         }
