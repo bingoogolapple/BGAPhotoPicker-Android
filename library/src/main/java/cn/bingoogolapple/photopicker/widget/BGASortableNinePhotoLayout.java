@@ -1,7 +1,9 @@
 package cn.bingoogolapple.photopicker.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,11 +38,22 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     private Delegate mDelegate;
     private GridLayoutManager mGridLayoutManager;
     private int mCurrentClickItemPosition;
-    private boolean mIsShowPlus = true;
+    private boolean mIsPlusSwitchOpened = true;
 
-    public BGASortableNinePhotoLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public BGASortableNinePhotoLayout(Context context) {
+        this(context, null);
+    }
+
+    public BGASortableNinePhotoLayout(Context context, @Nullable AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public BGASortableNinePhotoLayout(Context context, @Nullable AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+
         setOverScrollMode(OVER_SCROLL_NEVER);
+
+        initAttrs(context, attrs);
 
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback());
         mItemTouchHelper.attachToRecyclerView(this);
@@ -53,6 +66,21 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         mPhotoAdapter.setOnItemChildClickListener(this);
         mPhotoAdapter.setOnRVItemClickListener(this);
         setAdapter(mPhotoAdapter);
+    }
+
+    private void initAttrs(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BGASortableNinePhotoLayout);
+        final int N = typedArray.getIndexCount();
+        for (int i = 0; i < N; i++) {
+            initAttr(typedArray.getIndex(i), typedArray);
+        }
+        typedArray.recycle();
+    }
+
+    private void initAttr(int attr, TypedArray typedArray) {
+        if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_isPlusSwitchOpened) {
+            mIsPlusSwitchOpened = typedArray.getBoolean(attr, mIsPlusSwitchOpened);
+        }
     }
 
     public void setData(ArrayList<String> photos) {
@@ -121,6 +149,11 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         }
     }
 
+    public void setIsPlusSwitchOpened(boolean isPlusSwitchOpened) {
+        mIsPlusSwitchOpened = isPlusSwitchOpened;
+        updateHeight();
+    }
+
     public void setDelegate(Delegate delegate) {
         mDelegate = delegate;
     }
@@ -142,7 +175,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
         @Override
         public int getItemCount() {
-            if (mIsShowPlus && super.getItemCount() < MAX_ITEM_COUNT) {
+            if (mIsPlusSwitchOpened && super.getItemCount() < MAX_ITEM_COUNT) {
                 return super.getItemCount() + 1;
             }
 
@@ -159,7 +192,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         }
 
         public boolean isPlusItem(int position) {
-            return mIsShowPlus && super.getItemCount() < MAX_ITEM_COUNT && position == getItemCount() - 1;
+            return mIsPlusSwitchOpened && super.getItemCount() < MAX_ITEM_COUNT && position == getItemCount() - 1;
         }
 
         @Override

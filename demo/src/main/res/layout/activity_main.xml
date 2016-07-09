@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchMatch.Vertical">
 
     <LinearLayout
@@ -31,15 +32,29 @@
             android:textSize="20sp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_main_choice_photo"
-        style="@style/MatchWrapTv"
-        android:text="选择图片" />
+    <LinearLayout
+        style="@style/MatchWrap.Horizontal"
+        android:layout_margin="10dp">
+
+        <CheckBox
+            android:id="@+id/cb_main_plus"
+            style="@style/AutoWrap"
+            android:padding="10dp"
+            android:text="显示加号按钮"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_main_choice_photo"
+            style="@style/AutoWrapTv"
+            android:text="选择图片" />
+    </LinearLayout>
 
     <cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
         android:id="@+id/snpl_main_content"
         style="@style/WrapWrap"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        app:bga_snpl_isPlusSwitchOpened="false" />
 
     <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
         android:id="@+id/npl_main_content"

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import java.io.File;
@@ -31,6 +32,7 @@ public class MainActivity extends BGAPPToolbarActivity implements EasyPermission
     private CheckBox mSingleChoiceCb;
     private CheckBox mTakePhotoCb;
     private CheckBox mDownLoadCb;
+    private CheckBox mPlusCb;
 
     private BGANinePhotoLayout mContentNpl;
     private BGASortableNinePhotoLayout mContentSnpl;
@@ -41,12 +43,23 @@ public class MainActivity extends BGAPPToolbarActivity implements EasyPermission
         mSingleChoiceCb = (CheckBox) findViewById(R.id.cb_main_single_choice);
         mTakePhotoCb = (CheckBox) findViewById(R.id.cb_main_take_photo);
         mDownLoadCb = (CheckBox) findViewById(R.id.cb_main_download);
+        mPlusCb = (CheckBox) findViewById(R.id.cb_main_plus);
         mContentNpl = (BGANinePhotoLayout) findViewById(R.id.npl_main_content);
         mContentSnpl = (BGASortableNinePhotoLayout) findViewById(R.id.snpl_main_content);
     }
 
     @Override
     protected void setListener() {
+        mPlusCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    mContentSnpl.setIsPlusSwitchOpened(true);
+                } else {
+                    mContentSnpl.setIsPlusSwitchOpened(false);
+                }
+            }
+        });
         mContentNpl.setDelegate(new BGANinePhotoLayout.Delegate() {
             @Override
             public void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
