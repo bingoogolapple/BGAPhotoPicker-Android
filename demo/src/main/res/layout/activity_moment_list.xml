@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch.Vertical">
+
+    <TextView
+        android:id="@+id/tv_moment_list_add"
+        style="@style/MatchWrapTv"
+        android:text="添加" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_moment_list_moments"
+        style="@style/MatchMatch" />
+
+</LinearLayout>

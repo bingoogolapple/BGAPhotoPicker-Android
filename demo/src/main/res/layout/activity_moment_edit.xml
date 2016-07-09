@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch.Vertical">
+
+    <LinearLayout
+        style="@style/MatchWrap.Horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <CheckBox
+            android:id="@+id/cb_moment_add_single_choice"
+            style="@style/AutoWrap"
+            android:padding="10dp"
+            android:text="单选"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+        <CheckBox
+            android:id="@+id/cb_moment_add_take_photo"
+            style="@style/AutoWrap"
+            android:padding="10dp"
+            android:text="拍照"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MatchWrap.Horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical">
+
+        <CheckBox
+            android:id="@+id/cb_moment_add_plus"
+            style="@style/WrapWrap"
+            android:checked="true"
+            android:padding="10dp"
+            android:text="显示加号"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_moment_add_choice_photo"
+            style="@style/AutoWrapTv"
+            android:text="选择图片" />
+
+        <TextView
+            android:id="@+id/tv_moment_add_publish"
+            style="@style/AutoWrapTv"
+            android:text="发布" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_moment_add_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="这一刻的想法..."
+        android:lines="4"
+        android:textColor="@android:color/black"
+        android:textColorHint="#ccc" />
+
+    <cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
+        android:id="@+id/snpl_moment_add_photos"
+        style="@style/WrapWrap"
+        android:layout_margin="10dp" />
+</LinearLayout>

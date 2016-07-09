@@ -18,5 +18,7 @@
     <declare-styleable name="BGASortableNinePhotoLayout">
         <!-- 加号按钮开关是否打开，默认值为true -->
         <attr name="bga_snpl_isPlusSwitchOpened" format="boolean" />
+        <!-- 是否可拖拽，默认值为true -->
+        <attr name="bga_snpl_isDragable" format="boolean" />
     </declare-styleable>
 </resources>

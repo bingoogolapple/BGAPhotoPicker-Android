@@ -41,7 +41,6 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         super(context, attrs, defStyleAttr);
         mPhotoIv = new ImageView(context);
         mPhotoIv.setClickable(true);
-        mPhotoIv.setScaleType(ImageView.ScaleType.CENTER_CROP);
         mPhotoIv.setOnClickListener(this);
         mPhotoIv.setOnLongClickListener(this);
 
@@ -55,7 +54,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         mPhotoAdapter = new PhotoAdapter(context);
         mPhotoGv.setAdapter(mPhotoAdapter);
 
-        addView(mPhotoIv);
+        addView(mPhotoIv, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         addView(mPhotoGv);
     }
 
@@ -103,11 +102,10 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
             mPhotoAdapter.setDatas(photos);
             mPhotoIv.setVisibility(VISIBLE);
 
-            ViewGroup.LayoutParams layoutParams = mPhotoIv.getLayoutParams();
-            layoutParams.width = itemWidth * 2;
-            layoutParams.height = itemWidth * 2;
+            mPhotoIv.setMaxWidth(itemWidth * 2);
+            mPhotoIv.setMaxHeight(itemWidth * 2);
 
-            BGAImage.displayImage(mPhotoIv, photos.get(0), R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, itemWidth, itemWidth, null);
+            BGAImage.displayImage(mPhotoIv, photos.get(0), R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, itemWidth * 2, itemWidth * 2, null);
         } else {
             setVisibility(VISIBLE);
             mPhotoIv.setVisibility(GONE);

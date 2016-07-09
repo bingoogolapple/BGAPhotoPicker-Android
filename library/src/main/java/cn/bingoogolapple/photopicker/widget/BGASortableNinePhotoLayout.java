@@ -39,6 +39,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     private GridLayoutManager mGridLayoutManager;
     private int mCurrentClickItemPosition;
     private boolean mIsPlusSwitchOpened = true;
+    private boolean mIsDragable = true;
 
     public BGASortableNinePhotoLayout(Context context) {
         this(context, null);
@@ -80,6 +81,8 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     private void initAttr(int attr, TypedArray typedArray) {
         if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_isPlusSwitchOpened) {
             mIsPlusSwitchOpened = typedArray.getBoolean(attr, mIsPlusSwitchOpened);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_isDragable) {
+            mIsDragable = typedArray.getBoolean(attr, mIsDragable);
         }
     }
 
@@ -211,7 +214,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
         @Override
         public boolean isLongPressDragEnabled() {
-            return mPhotoAdapter.getDatas().size() > 1;
+            return mIsDragable && mPhotoAdapter.getDatas().size() > 1;
         }
 
         @Override
@@ -273,6 +276,5 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         void onClickDeleteNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, List<String> models);
 
         void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, List<String> models);
-
     }
 }
