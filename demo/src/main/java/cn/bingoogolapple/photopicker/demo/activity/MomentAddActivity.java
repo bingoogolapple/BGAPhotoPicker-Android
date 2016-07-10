@@ -1,4 +1,4 @@
-package cn.bingoogolapple.photopicker.demo;
+package cn.bingoogolapple.photopicker.demo.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import java.util.List;
 import cn.bingoogolapple.photopicker.activity.BGAPPToolbarActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity;
+import cn.bingoogolapple.photopicker.demo.R;
+import cn.bingoogolapple.photopicker.demo.model.Moment;
 import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -46,6 +48,11 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
      * 是否显示九图控件的加号按钮「测试接口用的」
      */
     private CheckBox mPlusCb;
+    /**
+     * 是否开启拖拽排序功能「测试接口用的」
+     */
+    private CheckBox mSortableCb;
+
 
     private EditText mContentEt;
     private BGASortableNinePhotoLayout mPhotosSnpl;
@@ -60,6 +67,7 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
         mSingleChoiceCb = getViewById(R.id.cb_moment_add_single_choice);
         mTakePhotoCb = getViewById(R.id.cb_moment_add_take_photo);
         mPlusCb = getViewById(R.id.cb_moment_add_plus);
+        mSortableCb = getViewById(R.id.cb_moment_add_sortable);
 
         mContentEt = getViewById(R.id.et_moment_add_content);
         mPhotosSnpl = getViewById(R.id.snpl_moment_add_photos);
@@ -70,11 +78,13 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
         mPlusCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked) {
-                    mPhotosSnpl.setIsPlusSwitchOpened(true);
-                } else {
-                    mPhotosSnpl.setIsPlusSwitchOpened(false);
-                }
+                mPhotosSnpl.setIsPlusSwitchOpened(checked);
+            }
+        });
+        mSortableCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                mPhotosSnpl.setIsSortable(checked);
             }
         });
 

@@ -37,7 +37,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     private Delegate mDelegate;
     private GridLayoutManager mGridLayoutManager;
     private boolean mIsPlusSwitchOpened = true;
-    private boolean mIsDragable = true;
+    private boolean mIsSortable = true;
 
     public BGASortableNinePhotoLayout(Context context) {
         this(context, null);
@@ -79,11 +79,25 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     private void initAttr(int attr, TypedArray typedArray) {
         if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_isPlusSwitchOpened) {
             mIsPlusSwitchOpened = typedArray.getBoolean(attr, mIsPlusSwitchOpened);
-        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_isDragable) {
-            mIsDragable = typedArray.getBoolean(attr, mIsDragable);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_isSortable) {
+            mIsSortable = typedArray.getBoolean(attr, mIsSortable);
         }
     }
 
+    /**
+     * 设置是否可拖拽排序
+     *
+     * @param isSortable
+     */
+    public void setIsSortable(boolean isSortable) {
+        mIsSortable = isSortable;
+    }
+
+    /**
+     * 设置图片路径数据集合
+     *
+     * @param photos
+     */
     public void setData(ArrayList<String> photos) {
         mPhotoAdapter.setDatas(photos);
         updateHeight();
@@ -108,15 +122,30 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         setLayoutParams(layoutParams);
     }
 
+    /**
+     * 获取图片路劲数据集合
+     *
+     * @return
+     */
     public ArrayList<String> getData() {
         return (ArrayList<String>) mPhotoAdapter.getDatas();
     }
 
+    /**
+     * 删除指定索引位置的图片
+     *
+     * @param position
+     */
     public void removeItem(int position) {
         mPhotoAdapter.removeItem(position);
         updateHeight();
     }
 
+    /**
+     * 获取图片总数
+     *
+     * @return
+     */
     public int getItemCount() {
         return mPhotoAdapter.getDatas().size();
     }
@@ -203,7 +232,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
         @Override
         public boolean isLongPressDragEnabled() {
-            return mIsDragable && mPhotoAdapter.getDatas().size() > 1;
+            return mIsSortable && mPhotoAdapter.getDatas().size() > 1;
         }
 
         @Override
