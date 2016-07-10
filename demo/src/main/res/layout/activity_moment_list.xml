@@ -2,10 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchMatch.Vertical">
 
-    <TextView
-        android:id="@+id/tv_moment_list_add"
-        style="@style/MatchWrapTv"
-        android:text="添加" />
+    <LinearLayout
+        style="@style/MatchWrap.Horizontal"
+        android:gravity="center_vertical">
+
+        <CheckBox
+            android:id="@+id/cb_moment_list_downloadable"
+            style="@style/WrapWrap"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:checked="true"
+            android:text="预览图片时显示保存图片按钮"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_moment_list_add"
+            style="@style/MatchWrapTv"
+            android:text="添加朋友圈" />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_moment_list_moments"

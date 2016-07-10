@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.photopicker.activity.BGAPPToolbarActivity;
@@ -23,9 +24,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * 你自己项目里「可以不继承 BGAPPToolbarActivity」，我在这里继承 BGAPPToolbarActivity 只是为了方便写 Demo
  */
-public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermissions.PermissionCallbacks {
+public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermissions.PermissionCallbacks, BGASortableNinePhotoLayout.Delegate {
     private static final int REQUEST_CODE_PERMISSION_PHOTO_PICKER = 1;
-    private static final int REQUEST_CODE_PERMISSION_PHOTO_PREVIEW = 2;
 
     private static final int REQUEST_CODE_CHOOSE_PHOTO = 1;
     private static final int REQUEST_CODE_PHOTO_PREVIEW = 2;
@@ -34,8 +34,17 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
 
     private static final int MAX_PHOTO_COUNT = 9;
 
+    /**
+     * 是否是单选「测试接口用的」
+     */
     private CheckBox mSingleChoiceCb;
+    /**
+     * 是否具有拍照功能「测试接口用的」
+     */
     private CheckBox mTakePhotoCb;
+    /**
+     * 是否开启拖拽排序功能「测试接口用的」
+     */
     private CheckBox mPlusCb;
 
     private EditText mContentEt;
@@ -47,7 +56,7 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_moment_edit);
+        setContentView(R.layout.activity_moment_add);
         mSingleChoiceCb = getViewById(R.id.cb_moment_add_single_choice);
         mTakePhotoCb = getViewById(R.id.cb_moment_add_take_photo);
         mPlusCb = getViewById(R.id.cb_moment_add_plus);
@@ -69,61 +78,57 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
             }
         });
 
-        mPhotosSnpl.setDelegate(new BGASortableNinePhotoLayout.Delegate() {
-            @Override
-            public void onClickAddNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, List<String> models) {
-                choicePhoto();
-            }
-
-            @Override
-            public void onClickDeleteNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, List<String> models) {
-                mPhotosSnpl.removeItem(position);
-            }
-
-            @Override
-            public void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, List<String> models) {
-                photoPreview();
-            }
-        });
+        // 设置拖拽排序控件的代理
+        mPhotosSnpl.setDelegate(this);
     }
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+        setTitle("发朋友圈");
     }
 
     public void onClick(View v) {
         if (v.getId() == R.id.tv_moment_add_choice_photo) {
-            choicePhoto();
+            choicePhotoWrapper();
         } else if (v.getId() == R.id.tv_moment_add_publish) {
-            if (mPhotosSnpl.getItemCount() > 0) {
-                Intent intent = new Intent();
-                intent.putExtra(EXTRA_MOMENT, new Moment(mContentEt.getText().toString().trim(), mPhotosSnpl.getData()));
-                setResult(RESULT_OK, intent);
-                finish();
+            String content = mContentEt.getText().toString().trim();
+            if (content.length() == 0 && mPhotosSnpl.getItemCount() == 0) {
+                Toast.makeText(this, "必须填写这一刻的想法或选择照片！", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_MOMENT, new Moment(mContentEt.getText().toString().trim(), mPhotosSnpl.getData()));
+            setResult(RESULT_OK, intent);
+            finish();
         }
     }
 
+    @Override
+    public void onClickAddNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, ArrayList<String> models) {
+        choicePhotoWrapper();
+    }
+
+    @Override
+    public void onClickDeleteNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models) {
+        mPhotosSnpl.removeItem(position);
+    }
+
+    @Override
+    public void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models) {
+        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, MAX_PHOTO_COUNT, models, models, position, false), REQUEST_CODE_PHOTO_PREVIEW);
+    }
+
     @AfterPermissionGranted(REQUEST_CODE_PERMISSION_PHOTO_PICKER)
-    private void choicePhoto() {
+    private void choicePhotoWrapper() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            // 拍照后图片的存放目录，替换成你自己的目录。如果不传递该参数的话就没有拍照功能
+            // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
             File takePhotoDir = new File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerTakePhoto");
 
             startActivityForResult(BGAPhotoPickerActivity.newIntent(this, mTakePhotoCb.isChecked() ? takePhotoDir : null, mSingleChoiceCb.isChecked() ? 1 : MAX_PHOTO_COUNT, mPhotosSnpl.getData()), REQUEST_CODE_CHOOSE_PHOTO);
         } else {
             EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_PERMISSION_PHOTO_PICKER, perms);
-        }
-    }
-
-    @AfterPermissionGranted(REQUEST_CODE_PERMISSION_PHOTO_PREVIEW)
-    private void photoPreview() {
-        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if (EasyPermissions.hasPermissions(this, perms)) {
-            startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, MAX_PHOTO_COUNT, mPhotosSnpl.getData(), mPhotosSnpl.getData(), mPhotosSnpl.getCurrentClickItemPosition(), false), REQUEST_CODE_PHOTO_PREVIEW);
-        } else {
-            EasyPermissions.requestPermissions(this, "图片预览需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_PERMISSION_PHOTO_PREVIEW, perms);
         }
     }
 
@@ -141,8 +146,6 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         if (requestCode == REQUEST_CODE_PERMISSION_PHOTO_PICKER) {
             Toast.makeText(this, "您拒绝了「图片选择」所需要的相关权限!", Toast.LENGTH_SHORT).show();
-        } else if (requestCode == REQUEST_CODE_PERMISSION_PHOTO_PREVIEW) {
-            Toast.makeText(this, "您拒绝了「图片预览」所需要的相关权限!", Toast.LENGTH_SHORT).show();
         }
     }
 

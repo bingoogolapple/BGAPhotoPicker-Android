@@ -4,28 +4,26 @@
 
     <LinearLayout
         style="@style/MatchWrap.Horizontal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_margin="10dp">
 
         <CheckBox
             android:id="@+id/cb_moment_add_single_choice"
             style="@style/AutoWrap"
-            android:padding="10dp"
-            android:text="单选"
+            android:text="是否是单选"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
 
         <CheckBox
             android:id="@+id/cb_moment_add_take_photo"
             style="@style/AutoWrap"
-            android:padding="10dp"
-            android:text="拍照"
+            android:text="是否开启拍照功能"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
         style="@style/MatchWrap.Horizontal"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center_vertical">
@@ -34,8 +32,7 @@
             android:id="@+id/cb_moment_add_plus"
             style="@style/WrapWrap"
             android:checked="true"
-            android:padding="10dp"
-            android:text="显示加号"
+            android:text="显示九图控件的加号按钮"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
 
@@ -55,10 +52,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:background="@android:color/transparent"
+        android:gravity="start"
         android:hint="这一刻的想法..."
         android:lines="4"
-        android:textColor="@android:color/black"
-        android:textColorHint="#ccc" />
+        android:textColor="#474747"
+        android:textColorHint="#C6C6C6" />
 
     <cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
         android:id="@+id/snpl_moment_add_photos"

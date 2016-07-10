@@ -7,8 +7,8 @@
 
     <cn.bingoogolapple.photopicker.widget.BGAImageView
         android:id="@+id/v_item_moment_avatar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginRight="8dp"
         android:src="@mipmap/avatar"
         app:bga_iv_isCircle="true" />
@@ -17,8 +17,10 @@
         android:id="@+id/tv_item_moment_username"
         style="@style/MatchWrap"
         android:layout_toRightOf="@id/v_item_moment_avatar"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="bingoogolapple"
-        android:textColor="#222288"
+        android:textColor="#707EA3"
         android:textSize="14sp" />
 
     <TextView
@@ -27,6 +29,9 @@
         android:layout_below="@id/tv_item_moment_username"
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/v_item_moment_avatar"
+        android:ellipsize="end"
+        android:maxLines="4"
+        android:textColor="#474747"
         android:textSize="14sp"
         tools:text="我是测试内容" />
 

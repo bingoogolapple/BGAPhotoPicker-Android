@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
@@ -37,7 +36,6 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     private ItemTouchHelper mItemTouchHelper;
     private Delegate mDelegate;
     private GridLayoutManager mGridLayoutManager;
-    private int mCurrentClickItemPosition;
     private boolean mIsPlusSwitchOpened = true;
     private boolean mIsDragable = true;
 
@@ -123,18 +121,10 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         return mPhotoAdapter.getDatas().size();
     }
 
-    public String getCurrentClickItem() {
-        return mPhotoAdapter.getItem(mCurrentClickItemPosition);
-    }
-
-    public int getCurrentClickItemPosition() {
-        return mCurrentClickItemPosition;
-    }
-
     @Override
     public void onItemChildClick(ViewGroup parent, View childView, int position) {
         if (mDelegate != null) {
-            mDelegate.onClickDeleteNinePhotoItem(this, childView, position, mPhotoAdapter.getItem(position), mPhotoAdapter.getDatas());
+            mDelegate.onClickDeleteNinePhotoItem(this, childView, position, mPhotoAdapter.getItem(position), (ArrayList<String>) mPhotoAdapter.getDatas());
         }
     }
 
@@ -142,12 +132,11 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     public void onRVItemClick(ViewGroup parent, View itemView, int position) {
         if (mPhotoAdapter.isPlusItem(position)) {
             if (mDelegate != null) {
-                mDelegate.onClickAddNinePhotoItem(this, itemView, position, mPhotoAdapter.getDatas());
+                mDelegate.onClickAddNinePhotoItem(this, itemView, position, (ArrayList<String>) mPhotoAdapter.getDatas());
             }
         } else {
-            mCurrentClickItemPosition = position;
             if (mDelegate != null && ViewCompat.getScaleX(itemView) <= 1.0f) {
-                mDelegate.onClickNinePhotoItem(this, itemView, mCurrentClickItemPosition, mPhotoAdapter.getItem(mCurrentClickItemPosition), mPhotoAdapter.getDatas());
+                mDelegate.onClickNinePhotoItem(this, itemView, position, mPhotoAdapter.getItem(position), (ArrayList<String>) mPhotoAdapter.getDatas());
             }
         }
     }
@@ -271,10 +260,10 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     public interface Delegate {
-        void onClickAddNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, List<String> models);
+        void onClickAddNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, ArrayList<String> models);
 
-        void onClickDeleteNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, List<String> models);
+        void onClickDeleteNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models);
 
-        void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, List<String> models);
+        void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models);
     }
 }
