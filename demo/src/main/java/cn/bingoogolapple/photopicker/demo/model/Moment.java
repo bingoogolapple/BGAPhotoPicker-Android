@@ -1,4 +1,4 @@
-package cn.bingoogolapple.photopicker.demo;
+package cn.bingoogolapple.photopicker.demo.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

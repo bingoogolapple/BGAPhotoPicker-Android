@@ -1,4 +1,4 @@
-package cn.bingoogolapple.photopicker.demo;
+package cn.bingoogolapple.photopicker.demo.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -21,6 +21,8 @@ import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.activity.BGAPPToolbarActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
+import cn.bingoogolapple.photopicker.demo.model.Moment;
+import cn.bingoogolapple.photopicker.demo.R;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
