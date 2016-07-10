@@ -26,7 +26,7 @@ public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
 
     public BGAPhotoPickerAdapter(RecyclerView recyclerView) {
         super(recyclerView, R.layout.bga_pp_item_photo_picker);
-        mImageWidth = BGAPhotoPickerUtil.getScreenWidth(recyclerView.getContext()) / 9;
+        mImageWidth = BGAPhotoPickerUtil.getScreenWidth(recyclerView.getContext()) / 6;
         mImageHeight = mImageWidth;
     }
 

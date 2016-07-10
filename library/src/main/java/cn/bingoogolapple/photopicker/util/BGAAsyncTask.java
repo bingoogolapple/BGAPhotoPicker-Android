@@ -32,23 +32,23 @@ public abstract class BGAAsyncTask<Params, Result> extends AsyncTask<Params, Voi
     protected void onCancelled() {
         super.onCancelled();
         if (mCallback != null) {
-            mCallback.onCancled();
+            mCallback.onTaskCancelled();
         }
         //无法放到 cancelTask()中，因为此方法会在cancelTask()后执行，所以如果放到cancelTask()中，则此字段永远是空，也就不会调用 onCancel()方法了
         mCallback = null;
     }
 
-    public interface Callback<T> {
+    public interface Callback<Result> {
         /**
          * 当结果返回的时候执行
          *
-         * @param t 返回的结果
+         * @param result 返回的结果
          */
-        void onPostExecute(T t);
+        void onPostExecute(Result result);
 
         /**
          * 当请求被取消的时候执行
          */
-        void onCancled();
+        void onTaskCancelled();
     }
 }

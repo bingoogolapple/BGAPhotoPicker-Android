@@ -148,7 +148,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         mDownloadIv.setOnClickListener(this);
 
         if (mSaveImgDir == null) {
-            mDownloadIv.setVisibility(View.GONE);
+            mDownloadIv.setVisibility(View.INVISIBLE);
         }
 
         renderTitleTv();
@@ -229,7 +229,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
             return;
         }
 
-        mSavePhotoTask = new BGASavePhotoTask(this, this.getApplication(), file);
+        mSavePhotoTask = new BGASavePhotoTask(this, this, file);
         BGAImage.downloadImage(this, url, new BGAImageLoader.DownloadDelegate() {
             @Override
             public void onSuccess(String url, Bitmap bitmap) {
@@ -250,7 +250,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
     }
 
     @Override
-    public void onCancled() {
+    public void onTaskCancelled() {
         mSavePhotoTask = null;
     }
 

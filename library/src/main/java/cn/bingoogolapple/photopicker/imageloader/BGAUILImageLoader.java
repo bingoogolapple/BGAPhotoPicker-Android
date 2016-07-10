@@ -14,8 +14,6 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import cn.bingoogolapple.photopicker.imageloader.BGAImageLoader;
-
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/6/25 下午5:39
@@ -62,6 +60,10 @@ public class BGAUILImageLoader implements BGAImageLoader {
 
     @Override
     public void downloadImage(Context context, String path, final DownloadDelegate delegate) {
+        if (path == null) {
+            path = "";
+        }
+
         if (!path.startsWith("http") && !path.startsWith("file")) {
             path = "file://" + path;
         }

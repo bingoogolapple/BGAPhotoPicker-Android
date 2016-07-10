@@ -1,6 +1,6 @@
 package cn.bingoogolapple.photopicker.util;
 
-import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -20,13 +20,13 @@ import cn.bingoogolapple.photopicker.R;
  * 描述:
  */
 public class BGASavePhotoTask extends BGAAsyncTask<Void, Void> {
-    private Application mApplication;
+    private Context mContext;
     private SoftReference<Bitmap> mBitmap;
     private File mNewFile;
 
-    public BGASavePhotoTask(Callback<Void> callback, Application application, File newFile) {
+    public BGASavePhotoTask(Callback<Void> callback, Context context, File newFile) {
         super(callback);
-        mApplication = application;
+        mContext = context.getApplicationContext();
         mNewFile = newFile;
     }
 
@@ -49,17 +49,17 @@ public class BGASavePhotoTask extends BGAAsyncTask<Void, Void> {
             fos.flush();
 
             // 通知图库更新
-            mApplication.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mNewFile)));
+            mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mNewFile)));
 
-            BGAPhotoPickerUtil.showSafe(mApplication, mApplication.getString(R.string.bga_pp_save_img_success_folder, mNewFile.getParentFile().getAbsolutePath()));
+            BGAPhotoPickerUtil.showSafe(mContext, mContext.getString(R.string.bga_pp_save_img_success_folder, mNewFile.getParentFile().getAbsolutePath()));
         } catch (Exception e) {
-            BGAPhotoPickerUtil.showSafe(mApplication, R.string.bga_pp_save_img_failure);
+            BGAPhotoPickerUtil.showSafe(mContext, R.string.bga_pp_save_img_failure);
         } finally {
             if (fos != null) {
                 try {
                     fos.close();
                 } catch (IOException e) {
-                    BGAPhotoPickerUtil.showSafe(mApplication, R.string.bga_pp_save_img_failure);
+                    BGAPhotoPickerUtil.showSafe(mContext, R.string.bga_pp_save_img_failure);
                 }
             }
             recycleBitmap();

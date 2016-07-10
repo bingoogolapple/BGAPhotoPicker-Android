@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -61,6 +62,10 @@ public class BGAPhotoPickerUtil {
         DisplayMetrics dm = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(dm);
         return dm.heightPixels;
+    }
+
+    public static int dp2px(Context context, float dpValue) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
     }
 
     public static String md5(String... strs) {

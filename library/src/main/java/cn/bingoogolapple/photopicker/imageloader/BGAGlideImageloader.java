@@ -21,6 +21,10 @@ public class BGAGlideImageloader implements BGAImageLoader {
 
     @Override
     public void displayImage(final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
+        if (path == null) {
+            path = "";
+        }
+
         if (!path.startsWith("http") && !path.startsWith("file")) {
             path = "file://" + path;
         }
