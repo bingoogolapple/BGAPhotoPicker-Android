@@ -1,20 +1,25 @@
 :running:BGAPhotoPicker-Android:running:
 ============
 
-将 [MeiqiaSDK-Android](https://github.com/Meiqia/MeiqiaSDK-Android) 里的图库单独抽出来开源，将其中的 GridView、ListView和RelativeLayout 换成 RecyclerView 和 Toolbar，方便在以后的项目中直接依赖使用。如有需要集成「在线客服功能」的猿友，欢迎使用 [美洽](http://meiqia.com)
+将 [MeiqiaSDK-Android](https://github.com/Meiqia/MeiqiaSDK-Android) 里的图库单独抽出来开源，将其中的 GridView、ListView和RelativeLayout 换成 RecyclerView 和 Toolbar，方便在以后的项目中直接依赖使用。Demo 中模仿了微信朋友圈的部分功能，详细用法请查看 Demo。
 
-主要功能如下：
+## 如有需要集成「在线客服功能」的猿友，欢迎使用 [美洽](http://meiqia.com)
+
+## 主要功能
 - [x] 单图选择
 - [x] 多图选择
 - [x] 拍照选择
 - [x] 图片选择预览、缩放查看
 - [x] 图片预览、缩放查看
 - [x] 支持 glide、picasso、universal-image-loader、xutils 图片加载库
+- [x] 朋友圈列表界面的九宫格图片控件
+- [x] 发布朋友圈界面的可拖拽排序的九宫格图片控件
 - [x] 覆盖相应的资源文件来定制界面
 
 ## 效果图与示例 apk
 
-![PhotoPicker-Demo](http://7xk9dj.com1.z0.glb.clouddn.com//photopicker/bga-photopicker.gif)
+![PhotoPicker-Demo](http://7xk9dj.com1.z0.glb.clouddn.com/%40%2Fphotopicker%2Fbga-photopicker.gif?imageView2/2/w/250)
+![PhotoPicker-Demo](http://7xk9dj.com1.z0.glb.clouddn.com/%40%2Fphotopickerbga-photopicker2.gif?imageView2/2/w/250)
 
 [点击下载 BGAPhotoPickerDemo.apk](http://fir.im/PhotoPickerDemo) 或扫描下面的二维码安装
 

@@ -25,16 +25,23 @@
         style="@style/MatchWrap.Horizontal"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:gravity="center_vertical">
+        android:layout_marginRight="10dp">
 
         <CheckBox
             android:id="@+id/cb_moment_add_plus"
             style="@style/WrapWrap"
             android:checked="true"
-            android:text="显示九图控件的加号按钮"
+            android:text="是否显示九图控件的加号按钮"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MatchWrap.Horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/tv_moment_add_choice_photo"

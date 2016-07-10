@@ -43,7 +43,7 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
      */
     private CheckBox mTakePhotoCb;
     /**
-     * 是否开启拖拽排序功能「测试接口用的」
+     * 是否显示九图控件的加号按钮「测试接口用的」
      */
     private CheckBox mPlusCb;
 
@@ -84,7 +84,7 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        setTitle("发朋友圈");
+        setTitle("添加朋友圈");
     }
 
     public void onClick(View v) {
