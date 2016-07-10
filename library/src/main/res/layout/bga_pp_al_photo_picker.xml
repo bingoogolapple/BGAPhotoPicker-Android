@@ -28,7 +28,7 @@
         android:layout_height="match_parent"
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:maxEms="8"
+        android:maxEms="7"
         android:paddingRight="@dimen/bga_pp_size_level1"
         android:singleLine="true"
         tools:background="#71CE7E"
