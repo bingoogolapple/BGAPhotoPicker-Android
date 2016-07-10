@@ -18,8 +18,8 @@
 
 ## 效果图与示例 apk
 
-![PhotoPicker-Demo](http://7xk9dj.com1.z0.glb.clouddn.com/%40%2Fphotopicker%2Fbga-photopicker.gif?imageView2/2/w/250)
-![PhotoPicker-Demo](http://7xk9dj.com1.z0.glb.clouddn.com/%40%2Fphotopickerbga-photopicker2.gif?imageView2/2/w/250)
+![PhotoPicker-Demo](http://7xk9dj.com1.z0.glb.clouddn.com/%40%2Fphotopicker%2Fbga-photopicker.gif?imageView2/2/w/300)
+![PhotoPicker-Demo](http://7xk9dj.com1.z0.glb.clouddn.com/%40%2Fphotopickerbga-photopicker2.gif?imageView2/2/w/300)
 
 [点击下载 BGAPhotoPickerDemo.apk](http://fir.im/PhotoPickerDemo) 或扫描下面的二维码安装
 
