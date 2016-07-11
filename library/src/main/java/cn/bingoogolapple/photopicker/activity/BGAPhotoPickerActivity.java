@@ -116,7 +116,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
     @Override
     protected void setListener() {
-        mPicAdapter = new BGAPhotoPickerAdapter(mContentRv);
+        mPicAdapter = new BGAPhotoPickerAdapter(this, mContentRv);
         mPicAdapter.setOnItemChildClickListener(this);
     }
 

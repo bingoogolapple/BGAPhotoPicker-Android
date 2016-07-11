@@ -1,6 +1,6 @@
 package cn.bingoogolapple.photopicker.imageloader;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
@@ -18,7 +18,7 @@ import com.squareup.picasso.Target;
 public class BGAPicassoImageLoader implements BGAImageLoader {
 
     @Override
-    public void displayImage(final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
+    public void displayImage(Activity activity, final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
         if (path == null) {
             path = "";
         }
@@ -28,7 +28,7 @@ public class BGAPicassoImageLoader implements BGAImageLoader {
         }
 
         final String finalPath = path;
-        Picasso.with(imageView.getContext()).load(finalPath).placeholder(loadingResId).error(failResId).resize(width, height).centerInside().into(imageView, new Callback.EmptyCallback() {
+        Picasso.with(activity).load(finalPath).placeholder(loadingResId).error(failResId).resize(width, height).centerInside().into(imageView, new Callback.EmptyCallback() {
             @Override
             public void onSuccess() {
                 if (delegate != null) {
@@ -39,13 +39,13 @@ public class BGAPicassoImageLoader implements BGAImageLoader {
     }
 
     @Override
-    public void downloadImage(Context context, String path, final DownloadDelegate delegate) {
+    public void downloadImage(Activity activity, String path, final DownloadDelegate delegate) {
         if (!path.startsWith("http") && !path.startsWith("file")) {
             path = "file://" + path;
         }
 
         final String finalPath = path;
-        Picasso.with(context).load(finalPath).into(new Target() {
+        Picasso.with(activity).load(finalPath).into(new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 if (delegate != null) {

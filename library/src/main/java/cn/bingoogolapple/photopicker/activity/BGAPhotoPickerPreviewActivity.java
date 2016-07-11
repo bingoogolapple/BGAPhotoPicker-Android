@@ -144,7 +144,7 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         mTopRightBtnText = getString(R.string.bga_pp_confirm);
 
 
-        mPhotoPageAdapter = new BGAPhotoPageAdapter(this, previewImages);
+        mPhotoPageAdapter = new BGAPhotoPageAdapter(this, this, previewImages);
         mContentHvp.setAdapter(mPhotoPageAdapter);
         mContentHvp.setCurrentItem(currentPosition);
 

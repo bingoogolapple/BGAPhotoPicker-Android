@@ -124,7 +124,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
 
         int currentPosition = getIntent().getIntExtra(EXTRA_CURRENT_POSITION, 0);
 
-        mPhotoPageAdapter = new BGAPhotoPageAdapter(this, previewImages);
+        mPhotoPageAdapter = new BGAPhotoPageAdapter(this, this, previewImages);
         mContentHvp.setAdapter(mPhotoPageAdapter);
         mContentHvp.setCurrentItem(currentPosition);
 

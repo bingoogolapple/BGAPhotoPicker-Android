@@ -1,6 +1,6 @@
 package cn.bingoogolapple.photopicker.imageloader;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
@@ -20,7 +20,7 @@ public class BGAImage {
             synchronized (BGAImage.class) {
                 if (sImageLoader == null) {
                     if (isClassExists("com.bumptech.glide.Glide")) {
-                        sImageLoader = new BGAGlideImageloader();
+                        sImageLoader = new BGAGlideImageLoader();
                     } else if (isClassExists("com.squareup.picasso.Picasso")) {
                         sImageLoader = new BGAPicassoImageLoader();
                     } else if (isClassExists("com.nostra13.universalimageloader.core.ImageLoader")) {
@@ -45,11 +45,11 @@ public class BGAImage {
         }
     }
 
-    public static void displayImage(final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final BGAImageLoader.DisplayDelegate delegate) {
-        getImageLoader().displayImage(imageView, path, loadingResId, failResId, width, height, delegate);
+    public static void displayImage(Activity activity, ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final BGAImageLoader.DisplayDelegate delegate) {
+        getImageLoader().displayImage(activity, imageView, path, loadingResId, failResId, width, height, delegate);
     }
 
-    public static void downloadImage(Context context, String path, final BGAImageLoader.DownloadDelegate delegate) {
-        getImageLoader().downloadImage(context, path, delegate);
+    public static void downloadImage(Activity activity, String path, final BGAImageLoader.DownloadDelegate delegate) {
+        getImageLoader().downloadImage(activity, path, delegate);
     }
 }
