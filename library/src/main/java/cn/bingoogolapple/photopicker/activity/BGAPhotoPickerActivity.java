@@ -420,6 +420,18 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
             mLoadPhotoTask.cancelTask();
             mLoadPhotoTask = null;
         }
+
+        mTitleTv = null;
+        mArrowIv = null;
+        mSubmitTv = null;
+        mContentRv = null;
+        mCurrentImageFolderModel = null;
+        mTopRightBtnText = null;
+        mImageFolderModels = null;
+        mPicAdapter = null;
+        mImageCaptureManager = null;
+        mPhotoFolderPw = null;
+
         super.onDestroy();
     }
 }

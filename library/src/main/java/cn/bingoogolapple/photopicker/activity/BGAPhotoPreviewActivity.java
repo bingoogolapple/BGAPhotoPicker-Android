@@ -181,21 +181,25 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
     }
 
     private void showTitlebar() {
-        ViewCompat.animate(mToolbar).translationY(0).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(View view) {
-                mIsHidden = false;
-            }
-        }).start();
+        if (mToolbar != null) {
+            ViewCompat.animate(mToolbar).translationY(0).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(View view) {
+                    mIsHidden = false;
+                }
+            }).start();
+        }
     }
 
     private void hiddenTitlebar() {
-        ViewCompat.animate(mToolbar).translationY(-mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(View view) {
-                mIsHidden = true;
-            }
-        }).start();
+        if (mToolbar != null) {
+            ViewCompat.animate(mToolbar).translationY(-mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(View view) {
+                    mIsHidden = true;
+                }
+            }).start();
+        }
     }
 
     @Override
@@ -260,6 +264,13 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
             mSavePhotoTask.cancelTask();
             mSavePhotoTask = null;
         }
+
+        mTitleTv = null;
+        mDownloadIv = null;
+        mContentHvp = null;
+        mPhotoPageAdapter = null;
+        mSaveImgDir = null;
+
         super.onDestroy();
     }
 }
