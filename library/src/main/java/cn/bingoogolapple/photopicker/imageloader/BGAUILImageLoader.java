@@ -20,7 +20,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
  * 创建时间:16/6/25 下午5:39
  * 描述:
  */
-public class BGAUILImageLoader implements BGAImageLoader {
+public class BGAUILImageLoader extends BGAImageLoader {
 
     private void initImageLoader(Context context) {
         if (!ImageLoader.getInstance().isInited()) {
@@ -34,14 +34,6 @@ public class BGAUILImageLoader implements BGAImageLoader {
     public void displayImage(Activity activity, ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
         initImageLoader(activity);
 
-        if (path == null) {
-            path = "";
-        }
-
-        if (!path.startsWith("http") && !path.startsWith("file")) {
-            path = "file://" + path;
-        }
-
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(loadingResId)
                 .showImageOnFail(failResId)
@@ -49,7 +41,7 @@ public class BGAUILImageLoader implements BGAImageLoader {
                 .build();
         ImageSize imageSize = new ImageSize(width, height);
 
-        ImageLoader.getInstance().displayImage(path, new ImageViewAware(imageView), options, imageSize, new SimpleImageLoadingListener() {
+        ImageLoader.getInstance().displayImage(getPath(path), new ImageViewAware(imageView), options, imageSize, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 if (delegate != null) {
@@ -63,15 +55,7 @@ public class BGAUILImageLoader implements BGAImageLoader {
     public void downloadImage(Activity activity, String path, final DownloadDelegate delegate) {
         initImageLoader(activity);
 
-        if (path == null) {
-            path = "";
-        }
-
-        if (!path.startsWith("http") && !path.startsWith("file")) {
-            path = "file://" + path;
-        }
-
-        ImageLoader.getInstance().loadImage(path, new SimpleImageLoadingListener() {
+        ImageLoader.getInstance().loadImage(getPath(path), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, final Bitmap loadedImage) {
                 if (delegate != null) {

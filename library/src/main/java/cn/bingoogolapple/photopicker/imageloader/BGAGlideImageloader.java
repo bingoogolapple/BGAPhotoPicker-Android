@@ -17,19 +17,11 @@ import com.bumptech.glide.request.target.Target;
  * 创建时间:16/6/25 下午4:40
  * 描述:
  */
-public class BGAGlideImageLoader implements BGAImageLoader {
+public class BGAGlideImageLoader extends BGAImageLoader {
 
     @Override
     public void displayImage(Activity activity, final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
-        if (path == null) {
-            path = "";
-        }
-
-        if (!path.startsWith("http") && !path.startsWith("file")) {
-            path = "file://" + path;
-        }
-
-        final String finalPath = path;
+        final String finalPath = getPath(path);
         Glide.with(activity).load(finalPath).asBitmap().placeholder(loadingResId).error(failResId).override(width, height).listener(new RequestListener<String, Bitmap>() {
             @Override
             public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
@@ -48,15 +40,7 @@ public class BGAGlideImageLoader implements BGAImageLoader {
 
     @Override
     public void downloadImage(Activity activity, String path, final DownloadDelegate delegate) {
-        if (path == null) {
-            path = "";
-        }
-
-        if (!path.startsWith("http") && !path.startsWith("file")) {
-            path = "file://" + path;
-        }
-
-        final String finalPath = path;
+        final String finalPath = getPath(path);
         Glide.with(activity).load(finalPath).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {

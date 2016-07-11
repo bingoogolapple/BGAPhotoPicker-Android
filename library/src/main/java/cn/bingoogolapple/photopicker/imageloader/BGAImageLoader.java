@@ -11,17 +11,28 @@ import android.widget.ImageView;
  * 创建时间:16/6/25 下午4:30
  * 描述:
  */
-public interface BGAImageLoader {
+public abstract class BGAImageLoader {
 
-    void displayImage(Activity activity, ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, DisplayDelegate delegate);
+    protected String getPath(String path) {
+        if (path == null) {
+            path = "";
+        }
 
-    void downloadImage(Activity activity, String path, DownloadDelegate delegate);
+        if (!path.startsWith("http") && !path.startsWith("file")) {
+            path = "file://" + path;
+        }
+        return path;
+    }
 
-    interface DisplayDelegate {
+    public abstract void displayImage(Activity activity, ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, DisplayDelegate delegate);
+
+    public abstract void downloadImage(Activity activity, String path, DownloadDelegate delegate);
+
+    public interface DisplayDelegate {
         void onSuccess(View view, String path);
     }
 
-    interface DownloadDelegate {
+    public interface DownloadDelegate {
         void onSuccess(String path, Bitmap bitmap);
 
         void onFailed(String path);
