@@ -1,6 +1,7 @@
 package cn.bingoogolapple.photopicker.imageloader;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
@@ -31,9 +32,9 @@ public class BGAPicassoImageLoader extends BGAImageLoader {
     }
 
     @Override
-    public void downloadImage(Activity activity, String path, final DownloadDelegate delegate) {
+    public void downloadImage(Context context, String path, final DownloadDelegate delegate) {
         final String finalPath = getPath(path);
-        Picasso.with(activity).load(finalPath).into(new Target() {
+        Picasso.with(context.getApplicationContext()).load(finalPath).into(new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 if (delegate != null) {

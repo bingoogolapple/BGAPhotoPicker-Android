@@ -52,8 +52,8 @@ public class BGAUILImageLoader extends BGAImageLoader {
     }
 
     @Override
-    public void downloadImage(Activity activity, String path, final DownloadDelegate delegate) {
-        initImageLoader(activity);
+    public void downloadImage(Context context, String path, final DownloadDelegate delegate) {
+        initImageLoader(context);
 
         ImageLoader.getInstance().loadImage(getPath(path), new SimpleImageLoadingListener() {
             @Override

@@ -1,6 +1,7 @@
 package cn.bingoogolapple.photopicker.imageloader;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
@@ -39,9 +40,9 @@ public class BGAGlideImageLoader extends BGAImageLoader {
     }
 
     @Override
-    public void downloadImage(Activity activity, String path, final DownloadDelegate delegate) {
+    public void downloadImage(Context context, String path, final DownloadDelegate delegate) {
         final String finalPath = getPath(path);
-        Glide.with(activity).load(finalPath).asBitmap().into(new SimpleTarget<Bitmap>() {
+        Glide.with(context.getApplicationContext()).load(finalPath).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 if (delegate != null) {
