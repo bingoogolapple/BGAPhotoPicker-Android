@@ -20,11 +20,14 @@ android {
 }
 
 dependencies {
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+
     compile 'pub.devrel:easypermissions:0.1.7'
 //    compile project(':library')
 
     // -------------------- 以下5个库是必须依赖的 ----------------------------
-    compile 'cn.bingoogolapple:bga-photopicker:1.0.4@aar'
+    compile 'cn.bingoogolapple:bga-photopicker:1.0.5@aar'
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
     compile 'cn.bingoogolapple:bga-adapter:1.0.9@aar'

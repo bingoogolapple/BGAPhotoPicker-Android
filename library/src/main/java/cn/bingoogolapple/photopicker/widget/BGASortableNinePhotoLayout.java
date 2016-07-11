@@ -1,5 +1,6 @@
 package cn.bingoogolapple.photopicker.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -38,6 +39,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     private GridLayoutManager mGridLayoutManager;
     private boolean mIsPlusSwitchOpened = true;
     private boolean mIsSortable = true;
+    private Activity mActivity;
 
     public BGASortableNinePhotoLayout(Context context) {
         this(context, null);
@@ -84,6 +86,10 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         }
     }
 
+    public void init(Activity activity) {
+        mActivity = activity;
+    }
+
     /**
      * 设置是否可拖拽排序
      *
@@ -99,6 +105,10 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
      * @param photos
      */
     public void setData(ArrayList<String> photos) {
+        if (mActivity == null) {
+            throw new RuntimeException("请先调用init方法进行初始化");
+        }
+
         mPhotoAdapter.setDatas(photos);
         updateHeight();
     }
@@ -223,7 +233,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
                 helper.setImageResource(R.id.iv_item_nine_photo_photo, R.mipmap.bga_pp_ic_plus);
             } else {
                 helper.setVisibility(R.id.iv_item_nine_photo_flag, View.VISIBLE);
-                BGAImage.displayImage(helper.getImageView(R.id.iv_item_nine_photo_photo), model, R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, mImageWidth, mImageHeight, null);
+                BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, mImageWidth, mImageHeight, null);
             }
         }
     }

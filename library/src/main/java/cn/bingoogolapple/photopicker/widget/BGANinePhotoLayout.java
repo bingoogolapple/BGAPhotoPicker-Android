@@ -1,5 +1,6 @@
 package cn.bingoogolapple.photopicker.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -28,6 +29,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
     private BGAHeightWrapGridView mPhotoGv;
     private Delegate mDelegate;
     private int mCurrentClickItemPosition;
+    private Activity mActivity;
 
     public BGANinePhotoLayout(Context context) {
         this(context, null);
@@ -92,7 +94,15 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         return false;
     }
 
+    public void init(Activity activity) {
+        mActivity = activity;
+    }
+
     public void setData(ArrayList<String> photos) {
+        if (mActivity == null) {
+            throw new RuntimeException("请先调用init方法进行初始化");
+        }
+
         int itemWidth = BGAPhotoPickerUtil.getScreenWidth(getContext()) / 4;
         if (photos.size() == 0) {
             setVisibility(GONE);
@@ -105,7 +115,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
             mPhotoIv.setMaxWidth(itemWidth * 2);
             mPhotoIv.setMaxHeight(itemWidth * 2);
 
-            BGAImage.displayImage(mPhotoIv, photos.get(0), R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, itemWidth * 2, itemWidth * 2, null);
+            BGAImage.displayImage(mActivity, mPhotoIv, photos.get(0), R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, itemWidth * 2, itemWidth * 2, null);
         } else {
             setVisibility(VISIBLE);
             mPhotoIv.setVisibility(GONE);
@@ -150,7 +160,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         return mCurrentClickItemPosition;
     }
 
-    private static class PhotoAdapter extends BGAAdapterViewAdapter<String> {
+    private class PhotoAdapter extends BGAAdapterViewAdapter<String> {
         private int mImageWidth;
         private int mImageHeight;
 
@@ -162,7 +172,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
 
         @Override
         protected void fillData(BGAViewHolderHelper helper, int position, String model) {
-            BGAImage.displayImage(helper.getImageView(R.id.iv_item_nine_photo_photo), model, R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, mImageWidth, mImageHeight, null);
+            BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, mImageWidth, mImageHeight, null);
         }
     }
 

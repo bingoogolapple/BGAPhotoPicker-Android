@@ -1,5 +1,6 @@
 package cn.bingoogolapple.photopicker.adapter;
 
+import android.app.Activity;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,12 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class BGAPhotoPageAdapter extends PagerAdapter {
     private ArrayList<String> mPreviewImages;
     private PhotoViewAttacher.OnViewTapListener mOnViewTapListener;
+    private Activity mActivity;
 
-    public BGAPhotoPageAdapter(PhotoViewAttacher.OnViewTapListener onViewTapListener, ArrayList<String> previewImages) {
+    public BGAPhotoPageAdapter(Activity activity, PhotoViewAttacher.OnViewTapListener onViewTapListener, ArrayList<String> previewImages) {
         mOnViewTapListener = onViewTapListener;
         mPreviewImages = previewImages;
+        mActivity = activity;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class BGAPhotoPageAdapter extends PagerAdapter {
             }
         });
 
-        BGAImage.displayImage(imageView, mPreviewImages.get(position), R.mipmap.bga_pp_ic_holder_dark, R.mipmap.bga_pp_ic_holder_dark, BGAPhotoPickerUtil.getScreenWidth(imageView.getContext()), BGAPhotoPickerUtil.getScreenHeight(imageView.getContext()), null);
+        BGAImage.displayImage(mActivity, imageView, mPreviewImages.get(position), R.mipmap.bga_pp_ic_holder_dark, R.mipmap.bga_pp_ic_holder_dark, BGAPhotoPickerUtil.getScreenWidth(imageView.getContext()), BGAPhotoPickerUtil.getScreenHeight(imageView.getContext()), null);
 
         return imageView;
     }

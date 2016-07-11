@@ -1,6 +1,6 @@
 package cn.bingoogolapple.photopicker.imageloader;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
@@ -17,10 +17,10 @@ import com.bumptech.glide.request.target.Target;
  * 创建时间:16/6/25 下午4:40
  * 描述:
  */
-public class BGAGlideImageloader implements BGAImageLoader {
+public class BGAGlideImageLoader implements BGAImageLoader {
 
     @Override
-    public void displayImage(final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
+    public void displayImage(Activity activity, final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
         if (path == null) {
             path = "";
         }
@@ -30,7 +30,7 @@ public class BGAGlideImageloader implements BGAImageLoader {
         }
 
         final String finalPath = path;
-        Glide.with(imageView.getContext()).load(finalPath).asBitmap().placeholder(loadingResId).error(failResId).override(width, height).listener(new RequestListener<String, Bitmap>() {
+        Glide.with(activity).load(finalPath).asBitmap().placeholder(loadingResId).error(failResId).override(width, height).listener(new RequestListener<String, Bitmap>() {
             @Override
             public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
                 return false;
@@ -47,7 +47,7 @@ public class BGAGlideImageloader implements BGAImageLoader {
     }
 
     @Override
-    public void downloadImage(Context context, String path, final DownloadDelegate delegate) {
+    public void downloadImage(Activity activity, String path, final DownloadDelegate delegate) {
         if (path == null) {
             path = "";
         }
@@ -57,7 +57,7 @@ public class BGAGlideImageloader implements BGAImageLoader {
         }
 
         final String finalPath = path;
-        Glide.with(context).load(finalPath).asBitmap().into(new SimpleTarget<Bitmap>() {
+        Glide.with(activity).load(finalPath).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 if (delegate != null) {

@@ -144,7 +144,7 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         mTopRightBtnText = getString(R.string.bga_pp_confirm);
 
 
-        mPhotoPageAdapter = new BGAPhotoPageAdapter(this, previewImages);
+        mPhotoPageAdapter = new BGAPhotoPageAdapter(this, this, previewImages);
         mContentHvp.setAdapter(mPhotoPageAdapter);
         mContentHvp.setCurrentItem(currentPosition);
 
@@ -261,15 +261,31 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         }
     }
 
-    private void showTitlebarAndChoosebar() {
-        ViewCompat.animate(mToolbar).translationY(0).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(View view) {
-                mIsHidden = false;
-            }
-        }).start();
+    @Override
+    protected void onDestroy() {
+        mTitleTv = null;
+        mSubmitTv = null;
+        mContentHvp = null;
+        mChooseRl = null;
+        mChooseTv = null;
 
-        if (!mIsFromTakePhoto) {
+        mSelectedImages = null;
+        mPhotoPageAdapter = null;
+
+        super.onDestroy();
+    }
+
+    private void showTitlebarAndChoosebar() {
+        if (mToolbar != null) {
+            ViewCompat.animate(mToolbar).translationY(0).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(View view) {
+                    mIsHidden = false;
+                }
+            }).start();
+        }
+
+        if (!mIsFromTakePhoto && mChooseRl != null) {
             mChooseRl.setVisibility(View.VISIBLE);
             ViewCompat.setAlpha(mChooseRl, 0);
             ViewCompat.animate(mChooseRl).alpha(1).setInterpolator(new DecelerateInterpolator(2)).start();
@@ -277,16 +293,22 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
     }
 
     private void hiddenToolbarAndChoosebar() {
-        ViewCompat.animate(mToolbar).translationY(-mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(View view) {
-                mIsHidden = true;
-                mChooseRl.setVisibility(View.INVISIBLE);
-            }
-        }).start();
+        if (mToolbar != null) {
+            ViewCompat.animate(mToolbar).translationY(-mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(View view) {
+                    mIsHidden = true;
+                    if (mChooseRl != null) {
+                        mChooseRl.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }).start();
+        }
 
         if (!mIsFromTakePhoto) {
-            ViewCompat.animate(mChooseRl).alpha(0).setInterpolator(new DecelerateInterpolator(2)).start();
+            if (mChooseRl != null) {
+                ViewCompat.animate(mChooseRl).alpha(0).setInterpolator(new DecelerateInterpolator(2)).start();
+            }
         }
     }
 

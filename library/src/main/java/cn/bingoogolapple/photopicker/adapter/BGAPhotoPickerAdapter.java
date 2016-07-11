@@ -1,5 +1,6 @@
 package cn.bingoogolapple.photopicker.adapter;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,11 +24,13 @@ public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
     private int mImageWidth;
     private int mImageHeight;
     private boolean mTakePhotoEnabled;
+    private Activity mActivity;
 
-    public BGAPhotoPickerAdapter(RecyclerView recyclerView) {
+    public BGAPhotoPickerAdapter(Activity activity, RecyclerView recyclerView) {
         super(recyclerView, R.layout.bga_pp_item_photo_picker);
         mImageWidth = BGAPhotoPickerUtil.getScreenWidth(recyclerView.getContext()) / 6;
         mImageHeight = mImageWidth;
+        mActivity = activity;
     }
 
     @Override
@@ -48,7 +51,7 @@ public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
         } else {
             helper.setVisibility(R.id.tv_item_photo_picker_tip, View.INVISIBLE);
             helper.getImageView(R.id.iv_item_photo_picker_photo).setScaleType(ImageView.ScaleType.CENTER_CROP);
-            BGAImage.displayImage(helper.getImageView(R.id.iv_item_photo_picker_photo), model, R.mipmap.bga_pp_ic_holder_dark, R.mipmap.bga_pp_ic_holder_dark, mImageWidth, mImageHeight, null);
+            BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_photo_picker_photo), model, R.mipmap.bga_pp_ic_holder_dark, R.mipmap.bga_pp_ic_holder_dark, mImageWidth, mImageHeight, null);
 
             helper.setVisibility(R.id.iv_item_photo_picker_flag, View.VISIBLE);
 
