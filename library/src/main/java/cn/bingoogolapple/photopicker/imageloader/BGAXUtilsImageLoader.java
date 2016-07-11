@@ -2,6 +2,7 @@ package cn.bingoogolapple.photopicker.imageloader;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
@@ -16,19 +17,11 @@ import org.xutils.x;
  * 创建时间:16/6/25 下午6:03
  * 描述:
  */
-public class BGAXUtilsImageLoader implements BGAImageLoader {
+public class BGAXUtilsImageLoader extends BGAImageLoader {
 
     @Override
     public void displayImage(Activity activity, final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
-        x.Ext.init((Application) activity.getApplicationContext());
-
-        if (path == null) {
-            path = "";
-        }
-
-        if (!path.startsWith("http") && !path.startsWith("file")) {
-            path = "file://" + path;
-        }
+        x.Ext.init(activity.getApplication());
 
         ImageOptions options = new ImageOptions.Builder()
                 .setLoadingDrawableId(loadingResId)
@@ -36,7 +29,7 @@ public class BGAXUtilsImageLoader implements BGAImageLoader {
                 .setSize(width, height)
                 .build();
 
-        final String finalPath = path;
+        final String finalPath = getPath(path);
         x.image().bind(imageView, finalPath, options, new Callback.CommonCallback<Drawable>() {
             @Override
             public void onSuccess(Drawable result) {
@@ -60,18 +53,10 @@ public class BGAXUtilsImageLoader implements BGAImageLoader {
     }
 
     @Override
-    public void downloadImage(Activity activity, String path, final DownloadDelegate delegate) {
-        x.Ext.init((Application) activity.getApplicationContext());
+    public void downloadImage(Context context, String path, final DownloadDelegate delegate) {
+        x.Ext.init((Application) context.getApplicationContext());
 
-        if (path == null) {
-            path = "";
-        }
-
-        if (!path.startsWith("http") && !path.startsWith("file")) {
-            path = "file://" + path;
-        }
-
-        final String finalPath = path;
+        final String finalPath = getPath(path);
         x.image().loadDrawable(finalPath, new ImageOptions.Builder().build(), new Callback.CommonCallback<Drawable>() {
             @Override
             public void onSuccess(Drawable result) {
