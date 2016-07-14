@@ -2,6 +2,7 @@ package cn.bingoogolapple.photopicker.util;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -32,6 +33,14 @@ public class BGALoadPhotoTask extends BGAAsyncTask<Void, ArrayList<BGAImageFolde
         mTakePhotoEnabled = takePhotoEnabled;
     }
 
+    private static boolean isImageFile(String path) {
+        // 获取图片的宽和高，但不把图片加载到内存中
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        return options.outMimeType != null;
+    }
+
     @Override
     protected ArrayList<BGAImageFolderModel> doInBackground(Void... voids) {
         ArrayList<BGAImageFolderModel> imageFolderModels = new ArrayList();
@@ -47,7 +56,7 @@ public class BGALoadPhotoTask extends BGAAsyncTask<Void, ArrayList<BGAImageFolde
                 while (cursor.moveToNext()) {
                     String imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
 
-                    if (!TextUtils.isEmpty(imagePath)) {
+                    if (!TextUtils.isEmpty(imagePath) && isImageFile(imagePath)) {
                         if (firstInto) {
                             allImageFolderModel.name = mContext.getString(R.string.bga_pp_all_image);
                             allImageFolderModel.coverPath = imagePath;
