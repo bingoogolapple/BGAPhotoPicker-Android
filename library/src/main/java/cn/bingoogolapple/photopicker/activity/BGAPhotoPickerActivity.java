@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -82,6 +83,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
      */
     private long mLastShowPhotoFolderTime;
     private BGALoadPhotoTask mLoadPhotoTask;
+    private AppCompatDialog mLoadingDialog;
 
     /**
      * @param context        应用程序上下文
@@ -156,7 +158,23 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
     @Override
     protected void onStart() {
         super.onStart();
+        showLoadingDialog();
         mLoadPhotoTask = new BGALoadPhotoTask(this, this, mTakePhotoEnabled).perform();
+    }
+
+    private void showLoadingDialog() {
+        if (mLoadingDialog == null) {
+            mLoadingDialog = new AppCompatDialog(this);
+            mLoadingDialog.setContentView(R.layout.bga_pp_dialog_loading);
+            mLoadingDialog.setCancelable(false);
+        }
+        mLoadingDialog.show();
+    }
+
+    private void dismissLoadingDialog() {
+        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
+            mLoadingDialog.dismiss();
+        }
     }
 
     @Override
@@ -404,6 +422,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
     @Override
     public void onPostExecute(ArrayList<BGAImageFolderModel> imageFolderModels) {
+        dismissLoadingDialog();
         mLoadPhotoTask = null;
         mImageFolderModels = imageFolderModels;
         reloadPhotos(mPhotoFolderPw == null ? 0 : mPhotoFolderPw.getCurrentPosition());
@@ -411,15 +430,21 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
     @Override
     public void onTaskCancelled() {
+        dismissLoadingDialog();
         mLoadPhotoTask = null;
     }
 
-    @Override
-    protected void onDestroy() {
+    private void cancelLoadPhotoTask() {
         if (mLoadPhotoTask != null) {
             mLoadPhotoTask.cancelTask();
             mLoadPhotoTask = null;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        dismissLoadingDialog();
+        cancelLoadPhotoTask();
 
         mTitleTv = null;
         mArrowIv = null;

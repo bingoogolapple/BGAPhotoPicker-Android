@@ -8,4 +8,15 @@
         <!-- 底部导航栏的颜色 -->
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/bga_pp_navigationBarColor</item>
     </style>
+
+    <style name="BGADialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 </resources>

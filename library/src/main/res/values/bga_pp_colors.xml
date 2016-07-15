@@ -19,4 +19,8 @@
     <color name="bga_pp_btn_confirm_enabled">#17C7D1</color>
     <!-- 右上角确认按钮按下时的颜色 -->
     <color name="bga_pp_btn_confirm_pressed">#CC17C7D1</color>
+
+    <color name="bga_pp_loading_progress_startColor">@android:color/white</color>
+    <color name="bga_pp_loading_progress_centerColor">#17C7D1</color>
+    <color name="bga_pp_loading_progress_endColor">#CC17C7D1</color>
 </resources>

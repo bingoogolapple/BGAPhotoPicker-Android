@@ -14,7 +14,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     provided 'com.android.support:recyclerview-v7:24.0.0'
     provided 'cn.bingoogolapple:bga-adapter:1.0.9@aar'
-    provided 'com.github.chrisbanes:PhotoView:1.2.6'
     provided 'com.github.bumptech.glide:glide:3.7.0'
     provided 'com.squareup.picasso:picasso:2.5.2'
     provided 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
