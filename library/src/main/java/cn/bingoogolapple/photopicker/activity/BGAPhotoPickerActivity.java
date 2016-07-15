@@ -412,12 +412,14 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
     }
 
     private void reloadPhotos(int position) {
-        mCurrentImageFolderModel = mImageFolderModels.get(position);
-        if (mTitleTv != null) {
-            mTitleTv.setText(mCurrentImageFolderModel.name);
-        }
+        if (position < mImageFolderModels.size()) {
+            mCurrentImageFolderModel = mImageFolderModels.get(position);
+            if (mTitleTv != null) {
+                mTitleTv.setText(mCurrentImageFolderModel.name);
+            }
 
-        mPicAdapter.setImageFolderModel(mCurrentImageFolderModel);
+            mPicAdapter.setImageFolderModel(mCurrentImageFolderModel);
+        }
     }
 
     @Override
