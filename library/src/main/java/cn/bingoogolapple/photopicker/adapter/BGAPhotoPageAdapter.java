@@ -1,6 +1,7 @@
 package cn.bingoogolapple.photopicker.adapter;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
+import cn.bingoogolapple.photopicker.util.BGABrowserPhotoViewAttacher;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 import cn.bingoogolapple.photopicker.widget.BGAImageView;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -36,14 +38,19 @@ public class BGAPhotoPageAdapter extends PagerAdapter {
 
     @Override
     public View instantiateItem(ViewGroup container, int position) {
-        BGAImageView imageView = new BGAImageView(container.getContext());
+        final BGAImageView imageView = new BGAImageView(container.getContext());
         container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        final PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(imageView);
+        final BGABrowserPhotoViewAttacher photoViewAttacher = new BGABrowserPhotoViewAttacher(imageView);
         photoViewAttacher.setOnViewTapListener(mOnViewTapListener);
         imageView.setDelegate(new BGAImageView.Delegate() {
             @Override
-            public void onDrawableChanged() {
-                photoViewAttacher.update();
+            public void onDrawableChanged(Drawable drawable) {
+                if (drawable != null && drawable.getIntrinsicHeight() > drawable.getIntrinsicWidth() && drawable.getIntrinsicHeight() > BGAPhotoPickerUtil.getScreenHeight(imageView.getContext())) {
+                    photoViewAttacher.setIsSetTopCrop(true);
+                    photoViewAttacher.setUpdateBaseMatrix();
+                } else {
+                    photoViewAttacher.update();
+                }
             }
         });
 

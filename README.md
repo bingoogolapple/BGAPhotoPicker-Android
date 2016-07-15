@@ -10,8 +10,8 @@
 - [x] 单图选择
 - [x] 多图选择
 - [x] 拍照选择
-- [x] 图片选择预览、缩放查看
-- [x] 图片预览、缩放查看
+- [x] 图片选择预览（支持微博长图）、缩放查看
+- [x] 图片预览（支持微博长图）、缩放查看
 - [x] 支持 glide、picasso、universal-image-loader、xutils 图片加载库
 - [x] 朋友圈列表界面的九宫格图片控件
 - [x] 发布朋友圈界面的可拖拽排序的九宫格图片控件
@@ -27,25 +27,15 @@
 
 ## Gradle 依赖
 
-由于该库依赖的最新版的 PhotoView 是传到 jitpack 的，所以需要在项目根 build.gradle 文件中加入下面的配置。如果你使用的是小于1.2.6的版本，则不需要添加改配置
-
-```groovy
-allprojects {
-    repositories {
-        ...
-        maven { url "https://jitpack.io" }
-    }
-}
-```
-
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker) 「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。请不要再来问我「latestVersion」是什么了
+
+由于需要支持微博长图预览，该库中已经引入了 [PhotoView](https://github.com/chrisbanes/PhotoView) 的源码并进行了修改，所以你的项目中就不要再重复引入 [PhotoView](https://github.com/chrisbanes/PhotoView) 了
 
 ```groovy
 dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
     compile 'cn.bingoogolapple:bga-adapter:1.0.9@aar'
-    compile 'com.github.chrisbanes:PhotoView:1.2.6'
 
     compile 'cn.bingoogolapple:bga-photopicker:latestVersion@aar'
 

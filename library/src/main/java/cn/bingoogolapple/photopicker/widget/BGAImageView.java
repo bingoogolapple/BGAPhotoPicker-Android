@@ -116,7 +116,7 @@ public class BGAImageView extends AppCompatImageView {
         } else {
             super.setImageDrawable(drawable);
         }
-        notifyDrawableChanged();
+        notifyDrawableChanged(drawable);
     }
 
     @Override
@@ -138,9 +138,9 @@ public class BGAImageView extends AppCompatImageView {
         }
     }
 
-    private void notifyDrawableChanged() {
+    private void notifyDrawableChanged(Drawable drawable) {
         if (mDelegate != null) {
-            mDelegate.onDrawableChanged();
+            mDelegate.onDrawableChanged(drawable);
         }
     }
 
@@ -149,7 +149,7 @@ public class BGAImageView extends AppCompatImageView {
     }
 
     public interface Delegate {
-        void onDrawableChanged();
+        void onDrawableChanged(Drawable drawable);
     }
 
     public static RoundedBitmapDrawable getCircleDrawable(Context context, Bitmap bitmap) {
