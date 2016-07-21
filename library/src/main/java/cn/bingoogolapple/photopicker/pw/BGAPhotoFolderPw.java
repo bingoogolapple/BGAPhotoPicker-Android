@@ -66,8 +66,8 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnRVItemC
      *
      * @param datas
      */
-    public void setDatas(ArrayList<BGAImageFolderModel> datas) {
-        mFolderAdapter.setDatas(datas);
+    public void setData(ArrayList<BGAImageFolderModel> datas) {
+        mFolderAdapter.setData(datas);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnRVItemC
         public FolderAdapter(RecyclerView recyclerView) {
             super(recyclerView, R.layout.bga_pp_item_photo_folder);
 
-            mDatas = new ArrayList<>();
+            mData = new ArrayList<>();
             mImageWidth = BGAPhotoPickerUtil.getScreenWidth(mActivity) / 10;
             mImageHeight = mImageWidth;
         }

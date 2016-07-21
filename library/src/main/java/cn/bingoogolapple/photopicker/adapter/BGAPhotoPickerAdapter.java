@@ -82,6 +82,6 @@ public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
 
     public void setImageFolderModel(BGAImageFolderModel imageFolderModel) {
         mTakePhotoEnabled = imageFolderModel.isTakePhotoEnabled();
-        setDatas(imageFolderModel.getImages());
+        setData(imageFolderModel.getImages());
     }
 }
