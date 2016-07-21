@@ -237,7 +237,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
                 }
             });
         }
-        mPhotoFolderPw.setDatas(mImageFolderModels);
+        mPhotoFolderPw.setData(mImageFolderModels);
         mPhotoFolderPw.show();
 
         ViewCompat.animate(mArrowIv).setDuration(BGAPhotoFolderPw.ANIM_DURATION).rotation(-180).start();
@@ -341,7 +341,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
                 if (TextUtils.equals(selectedImage, currentImage)) {
                     mPicAdapter.notifyItemChanged(position);
                 } else {
-                    int preSelectedImagePosition = mPicAdapter.getDatas().indexOf(selectedImage);
+                    int preSelectedImagePosition = mPicAdapter.getData().indexOf(selectedImage);
                     mPicAdapter.notifyItemChanged(preSelectedImagePosition);
                     mPicAdapter.getSelectedImages().add(currentImage);
                     mPicAdapter.notifyItemChanged(position);
@@ -408,7 +408,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         if (mCurrentImageFolderModel.isTakePhotoEnabled()) {
             currentPosition--;
         }
-        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mMaxChooseCount, mPicAdapter.getSelectedImages(), (ArrayList<String>) mPicAdapter.getDatas(), currentPosition, false), REQUEST_CODE_PREVIEW);
+        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mMaxChooseCount, mPicAdapter.getSelectedImages(), (ArrayList<String>) mPicAdapter.getData(), currentPosition, false), REQUEST_CODE_PREVIEW);
     }
 
     private void reloadPhotos(int position) {

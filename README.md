@@ -36,7 +36,7 @@
 dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile 'cn.bingoogolapple:bga-adapter:1.0.9@aar'
+    compile 'cn.bingoogolapple:bga-adapter:1.1.0@aar'
 
     compile 'cn.bingoogolapple:bga-photopicker:latestVersion@aar'
 

@@ -20,18 +20,21 @@ android {
 }
 
 dependencies {
+    // 以下几个库是演示案例所使用到的
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 
     compile 'pub.devrel:easypermissions:0.1.7'
+    // 以上几个库是演示案例所使用到的
+
 //    compile project(':library')
 
-    // -------------------- 以下5个库是必须依赖的 ----------------------------
-    compile 'cn.bingoogolapple:bga-photopicker:1.0.9@aar'
+    // -------------------- 以下4个库是必须依赖的 ----------------------------
+    compile 'cn.bingoogolapple:bga-photopicker:1.1.0@aar'
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile 'cn.bingoogolapple:bga-adapter:1.0.9@aar'
-    // -------------------- 以上5个库是必须依赖的 ----------------------------
+    compile 'cn.bingoogolapple:bga-adapter:1.1.0@aar'
+    // -------------------- 以上4个库是必须依赖的 ----------------------------
 
     // 目前支持常见的 4 种图片加载库，必须在下面四个图片加载库中选择一个添加依赖
     compile 'com.github.bumptech.glide:glide:3.7.0'
