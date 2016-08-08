@@ -24,7 +24,7 @@
 
 [点击下载 BGAPhotoPickerDemo.apk](http://fir.im/PhotoPickerDemo) 或扫描下面的二维码安装
 
-![BGAPhotoPickerDemo apk文件二维](http://7xk9dj.com1.z0.glb.clouddn.com//photopicker/BGAPhotoPickerDemo.png)
+![bga_photopicker_qrcode1](https://cloud.githubusercontent.com/assets/8949716/17477053/71e2be30-5d95-11e6-88ae-96f2b8a8a741.png)
 
 ## Gradle 依赖
 
