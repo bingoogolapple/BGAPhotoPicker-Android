@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import cn.bingoogolapple.photopicker.R;
-import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -100,7 +99,6 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity implements 
     protected void onDestroy() {
         setContentView(new View(this));
         super.onDestroy();
-        BGAPhotoPickerUtil.gc();
     }
 
     /**
