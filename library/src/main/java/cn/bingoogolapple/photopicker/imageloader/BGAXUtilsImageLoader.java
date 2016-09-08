@@ -82,4 +82,12 @@ public class BGAXUtilsImageLoader extends BGAImageLoader {
         });
     }
 
+    @Override
+    public void pause(Activity activity) {
+    }
+
+    @Override
+    public void resume(Activity activity) {
+
+    }
 }

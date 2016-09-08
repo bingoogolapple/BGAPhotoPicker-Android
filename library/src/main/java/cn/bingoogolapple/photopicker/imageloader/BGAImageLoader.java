@@ -29,6 +29,10 @@ public abstract class BGAImageLoader {
 
     public abstract void downloadImage(Context context, String path, DownloadDelegate delegate);
 
+    public abstract void pause(Activity activity);
+
+    public abstract void resume(Activity activity);
+
     public interface DisplayDelegate {
         void onSuccess(View view, String path);
     }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.adapter.BGAPhotoPickerAdapter;
+import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
 import cn.bingoogolapple.photopicker.model.BGAImageFolderModel;
 import cn.bingoogolapple.photopicker.pw.BGAPhotoFolderPw;
 import cn.bingoogolapple.photopicker.util.BGAAsyncTask;
@@ -39,6 +40,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
     private static final String EXTRA_IMAGE_DIR = "EXTRA_IMAGE_DIR";
     private static final String EXTRA_SELECTED_IMAGES = "EXTRA_SELECTED_IMAGES";
     private static final String EXTRA_MAX_CHOOSE_COUNT = "EXTRA_MAX_CHOOSE_COUNT";
+    private static final String EXTRA_PAUSE_ON_SCROLL = "EXTRA_PAUSE_ON_SCROLL";
 
     /**
      * 拍照的请求码
@@ -90,13 +92,15 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
      * @param imageDir       拍照后图片保存的目录。如果传null表示没有拍照功能，如果不为null则具有拍照功能，
      * @param maxChooseCount 图片选择张数的最大值
      * @param selectedImages 当前已选中的图片路径集合，可以传null
+     * @param pauseOnScroll  滚动列表时是否暂停加载图片
      * @return
      */
-    public static Intent newIntent(Context context, File imageDir, int maxChooseCount, ArrayList<String> selectedImages) {
+    public static Intent newIntent(Context context, File imageDir, int maxChooseCount, ArrayList<String> selectedImages, boolean pauseOnScroll) {
         Intent intent = new Intent(context, BGAPhotoPickerActivity.class);
         intent.putExtra(EXTRA_IMAGE_DIR, imageDir);
         intent.putExtra(EXTRA_MAX_CHOOSE_COUNT, maxChooseCount);
         intent.putStringArrayListExtra(EXTRA_SELECTED_IMAGES, selectedImages);
+        intent.putExtra(EXTRA_PAUSE_ON_SCROLL, pauseOnScroll);
         return intent;
     }
 
@@ -120,6 +124,10 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
     protected void setListener() {
         mPicAdapter = new BGAPhotoPickerAdapter(this, mContentRv);
         mPicAdapter.setOnItemChildClickListener(this);
+
+        if (getIntent().getBooleanExtra(EXTRA_PAUSE_ON_SCROLL, false)) {
+            mContentRv.addOnScrollListener(new BGARVOnScrollListener(this));
+        }
     }
 
     @Override
@@ -142,7 +150,6 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         GridLayoutManager layoutManager = new GridLayoutManager(this, BGASpaceItemDecoration.SPAN_COUNT, LinearLayoutManager.VERTICAL, false);
         mContentRv.setLayoutManager(layoutManager);
         mContentRv.addItemDecoration(new BGASpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.bga_pp_size_photo_divider)));
-
 
         ArrayList<String> selectedImages = getIntent().getStringArrayListExtra(EXTRA_SELECTED_IMAGES);
         if (selectedImages != null && selectedImages.size() > mMaxChooseCount) {

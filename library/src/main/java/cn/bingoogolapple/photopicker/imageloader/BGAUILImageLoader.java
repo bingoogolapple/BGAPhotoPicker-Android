@@ -72,4 +72,15 @@ public class BGAUILImageLoader extends BGAImageLoader {
         });
     }
 
+    @Override
+    public void pause(Activity activity) {
+        initImageLoader(activity);
+        ImageLoader.getInstance().pause();
+    }
+
+    @Override
+    public void resume(Activity activity) {
+        initImageLoader(activity);
+        ImageLoader.getInstance().resume();
+    }
 }

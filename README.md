@@ -13,6 +13,7 @@
 - [x] 图片选择预览（支持微博长图）、缩放查看
 - [x] 图片预览（支持微博长图）、缩放查看
 - [x] 支持 glide、picasso、universal-image-loader、xutils 图片加载库
+- [x] 支持配置列表滚动时是否暂停加载图片，列表停止滚动时恢复加载图片(用 xutils 作为图片加载库时该配置无效)
 - [x] 正方形、圆形头像、带边框的圆形头像控件
 - [x] 朋友圈列表界面的九宫格图片控件
 - [x] 发布朋友圈界面的可拖拽排序的九宫格图片控件
@@ -58,9 +59,10 @@ dependencies {
  * @param imageDir       拍照后图片保存的目录。如果传null表示没有拍照功能，如果不为null则具有拍照功能，
  * @param maxChooseCount 图片选择张数的最大值
  * @param selectedImages 当前已选中的图片路径集合，可以传null
+ * @param pauseOnScroll  滚动列表时是否暂停加载图片
  * @return
  */
-public static Intent newIntent(Context context, File imageDir, int maxChooseCount, ArrayList<String> selectedImages)
+public static Intent newIntent(Context context, File imageDir, int maxChooseCount, ArrayList<String> selectedImages, boolean pauseOnScroll)
 
 /**
  * 获取已选择的图片集合

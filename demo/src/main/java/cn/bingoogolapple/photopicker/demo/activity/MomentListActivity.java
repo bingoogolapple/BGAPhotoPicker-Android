@@ -22,8 +22,9 @@ import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewHolder;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.activity.BGAPPToolbarActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
-import cn.bingoogolapple.photopicker.demo.model.Moment;
 import cn.bingoogolapple.photopicker.demo.R;
+import cn.bingoogolapple.photopicker.demo.model.Moment;
+import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -59,6 +60,8 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
         mMomentAdapter = new MomentAdapter(mMomentRv);
         mMomentAdapter.setOnRVItemClickListener(this);
         mMomentAdapter.setOnRVItemLongClickListener(this);
+
+        mMomentRv.addOnScrollListener(new BGARVOnScrollListener(this));
     }
 
     @Override
