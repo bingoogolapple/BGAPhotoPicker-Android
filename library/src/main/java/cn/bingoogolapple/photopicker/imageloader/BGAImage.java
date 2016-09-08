@@ -53,4 +53,12 @@ public class BGAImage {
     public static void downloadImage(Context context, String path, final BGAImageLoader.DownloadDelegate delegate) {
         getImageLoader().downloadImage(context, path, delegate);
     }
+
+    public static void pause(Activity activity) {
+        getImageLoader().pause(activity);
+    }
+
+    public static void resume(Activity activity) {
+        getImageLoader().resume(activity);
+    }
 }

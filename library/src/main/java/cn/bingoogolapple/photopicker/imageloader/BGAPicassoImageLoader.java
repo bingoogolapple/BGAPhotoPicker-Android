@@ -21,7 +21,7 @@ public class BGAPicassoImageLoader extends BGAImageLoader {
     @Override
     public void displayImage(Activity activity, final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
         final String finalPath = getPath(path);
-        Picasso.with(activity).load(finalPath).placeholder(loadingResId).error(failResId).resize(width, height).centerInside().into(imageView, new Callback.EmptyCallback() {
+        Picasso.with(activity).load(finalPath).tag(activity).placeholder(loadingResId).error(failResId).resize(width, height).centerInside().into(imageView, new Callback.EmptyCallback() {
             @Override
             public void onSuccess() {
                 if (delegate != null) {
@@ -55,4 +55,13 @@ public class BGAPicassoImageLoader extends BGAImageLoader {
         });
     }
 
+    @Override
+    public void pause(Activity activity) {
+        Picasso.with(activity).pauseTag(activity);
+    }
+
+    @Override
+    public void resume(Activity activity) {
+        Picasso.with(activity).resumeTag(activity);
+    }
 }

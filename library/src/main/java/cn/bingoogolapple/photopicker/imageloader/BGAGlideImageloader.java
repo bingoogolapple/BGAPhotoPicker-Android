@@ -59,4 +59,13 @@ public class BGAGlideImageLoader extends BGAImageLoader {
         });
     }
 
+    @Override
+    public void pause(Activity activity) {
+        Glide.with(activity).pauseRequests();
+    }
+
+    @Override
+    public void resume(Activity activity) {
+        Glide.with(activity).resumeRequestsRecursive();
+    }
 }
