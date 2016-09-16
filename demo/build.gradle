@@ -21,8 +21,8 @@ android {
 
 dependencies {
     // 以下几个库是演示案例所使用到的
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
 
     compile 'pub.devrel:easypermissions:0.2.0'
     // 以上几个库是演示案例所使用到的
