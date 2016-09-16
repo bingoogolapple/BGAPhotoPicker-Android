@@ -21,7 +21,7 @@
 
 ## 效果图与示例 apk
 
-![bga-photopicker3](https://cloud.githubusercontent.com/assets/8949716/17476407/7d54831e-5d92-11e6-83d0-4049039e0899.gif)
+![bga-photopicker3](https://cloud.githubusercontent.com/assets/8949716/17476407/7d54831e-5d92-11e6-83d0-4049039e0899.gif)![photopickercustom](https://cloud.githubusercontent.com/assets/8949716/18590019/cde4acdc-7c5f-11e6-8877-b702aba7ae0c.png)
 
 [点击下载 BGAPhotoPickerDemo.apk](http://fir.im/PhotoPickerDemo) 或扫描下面的二维码安装
 
@@ -96,6 +96,42 @@ public static Intent newIntent(Context context, File saveImgDir, ArrayList<Strin
  * @return
  */
 public static Intent newIntent(Context context, File saveImgDir, String photoPath)
+```
+## 自定义属性
+
+```xml
+<!-- BGASortableNinePhotoLayout 的每一个自定义属性都有对应的 set 方法 -->
+<declare-styleable name="BGASortableNinePhotoLayout">
+    <!-- 加号按钮开关是否打开，默认值为true -->
+    <attr name="bga_snpl_isPlusSwitchOpened" format="boolean"/>
+    <!-- 是否可拖拽排序，默认值为true -->
+    <attr name="bga_snpl_isSortable" format="boolean"/>
+    <!-- 删除按钮图片 -->
+    <attr name="bga_snpl_deleteDrawable" format="reference"/>
+    <!-- 可选择图片的总张数,默认值为9 -->
+    <attr name="bga_snpl_maxItemCount" format="integer"/>
+    <!-- 列数,默认值为3 -->
+    <attr name="bga_snpl_itemSpanCount" format="integer"/>
+    <!-- 删除按钮是否重叠四分之一，默认值为false -->
+    <attr name="bga_snpl_isDeleteDrawableOverlapQuarter" format="boolean"/>
+    <!-- 添加按钮图片 -->
+    <attr name="bga_snpl_plusDrawable" format="reference"/>
+</declare-styleable>
+
+<declare-styleable name="BGAImageView">
+    <!-- 默认图片资源，默认为null -->
+    <attr name="android:src"/>
+    <!-- 是否是圆形，默认值为false -->
+    <attr name="bga_iv_isCircle" format="boolean"/>
+    <!-- 圆角矩形的半径，默认值为0dp -->
+    <attr name="bga_iv_cornerRadius" format="reference|dimension"/>
+    <!-- 是否是矩形，默认值为false -->
+    <attr name="bga_iv_isSquare" format="boolean"/>
+    <!-- 描边的宽度，默认值为0dp -->
+    <attr name="bga_iv_borderWidth" format="reference|dimension"/>
+    <!-- 描边的颜色，默认值为Color.WHITE -->
+    <attr name="bga_iv_borderColor" format="reference|color"/>
+</declare-styleable>
 ```
 
 ## 详细用法请查看 [Demo](https://github.com/bingoogolapple/BGAPhotoPicker-Android/tree/master/demo):feet:

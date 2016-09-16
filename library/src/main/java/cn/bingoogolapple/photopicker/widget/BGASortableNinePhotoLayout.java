@@ -44,6 +44,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     private int mPhotoTopRightMargin;
     private int mMaxItemCount = 9;
     private int mItemSpanCount = 3;
+    private int mPlusDrawableResId = R.mipmap.bga_pp_ic_plus;
     private Activity mActivity;
 
     public BGASortableNinePhotoLayout(Context context) {
@@ -98,11 +99,14 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
             mMaxItemCount = typedArray.getInteger(attr, mMaxItemCount);
         } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_itemSpanCount) {
             mItemSpanCount = typedArray.getInteger(attr, mItemSpanCount);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_plusDrawable) {
+            mPlusDrawableResId = typedArray.getResourceId(attr, mPlusDrawableResId);
         }
     }
 
     public void init(Activity activity) {
         mActivity = activity;
+        updateHeight();
     }
 
     /**
@@ -115,7 +119,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     /**
-     * 删除按钮图片资源id
+     * 设置删除按钮图片资源id
      *
      * @param deleteDrawableResId
      */
@@ -135,7 +139,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     /**
-     * 计算图片
+     * 计算图片右上角margin
      */
     private void calculatePhotoTopRightMargin() {
         if (mIsDeleteDrawableOverlapQuarter) {
@@ -176,6 +180,15 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     /**
+     * 设置添加按钮图片
+     *
+     * @param plusDrawableResId
+     */
+    public void setPlusDrawableResId(@DrawableRes int plusDrawableResId) {
+        mPlusDrawableResId = plusDrawableResId;
+    }
+
+    /**
      * 设置图片路径数据集合
      *
      * @param photos
@@ -186,6 +199,22 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         }
 
         mPhotoAdapter.setData(photos);
+        updateHeight();
+    }
+
+    /**
+     * 在集合尾部添加更多数据集合
+     *
+     * @param photos
+     */
+    public void addMoreData(ArrayList<String> photos) {
+        if (mActivity == null) {
+            throw new RuntimeException("请先调用init方法进行初始化");
+        }
+        if (photos != null) {
+            mPhotoAdapter.getData().addAll(photos);
+            mPhotoAdapter.notifyDataSetChanged();
+        }
         updateHeight();
     }
 
@@ -309,7 +338,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
             if (isPlusItem(position)) {
                 helper.setVisibility(R.id.iv_item_nine_photo_flag, View.GONE);
-                helper.setImageResource(R.id.iv_item_nine_photo_photo, R.mipmap.bga_pp_ic_plus);
+                helper.setImageResource(R.id.iv_item_nine_photo_photo, mPlusDrawableResId);
             } else {
                 helper.setVisibility(R.id.iv_item_nine_photo_flag, View.VISIBLE);
                 helper.setImageResource(R.id.iv_item_nine_photo_flag, mDeleteDrawableResId);
