@@ -2,23 +2,31 @@
 <resources>
     <declare-styleable name="BGAImageView">
         <!-- 默认图片资源，默认为null -->
-        <attr name="android:src" />
+        <attr name="android:src"/>
         <!-- 是否是圆形，默认值为false -->
-        <attr name="bga_iv_isCircle" format="boolean" />
+        <attr name="bga_iv_isCircle" format="boolean"/>
         <!-- 圆角矩形的半径，默认值为0dp -->
-        <attr name="bga_iv_cornerRadius" format="reference|dimension" />
+        <attr name="bga_iv_cornerRadius" format="reference|dimension"/>
         <!-- 是否是矩形，默认值为false -->
-        <attr name="bga_iv_isSquare" format="boolean" />
+        <attr name="bga_iv_isSquare" format="boolean"/>
         <!-- 描边的宽度，默认值为0dp -->
-        <attr name="bga_iv_borderWidth" format="reference|dimension" />
+        <attr name="bga_iv_borderWidth" format="reference|dimension"/>
         <!-- 描边的颜色，默认值为Color.WHITE -->
-        <attr name="bga_iv_borderColor" format="reference|color" />
+        <attr name="bga_iv_borderColor" format="reference|color"/>
     </declare-styleable>
 
     <declare-styleable name="BGASortableNinePhotoLayout">
         <!-- 加号按钮开关是否打开，默认值为true -->
-        <attr name="bga_snpl_isPlusSwitchOpened" format="boolean" />
+        <attr name="bga_snpl_isPlusSwitchOpened" format="boolean"/>
         <!-- 是否可拖拽排序，默认值为true -->
-        <attr name="bga_snpl_isSortable" format="boolean" />
+        <attr name="bga_snpl_isSortable" format="boolean"/>
+        <!-- 删除按钮图片 -->
+        <attr name="bga_snpl_deleteDrawable" format="reference"/>
+        <!-- 可选择图片的总张数,默认值为9 -->
+        <attr name="bga_snpl_maxItemCount" format="integer"/>
+        <!-- 列数,默认值为3 -->
+        <attr name="bga_snpl_itemSpanCount" format="integer"/>
+        <!-- 删除按钮是否重叠四分之一，默认值为false -->
+        <attr name="bga_snpl_isDeleteDrawableOverlapQuarter" format="boolean"/>
     </declare-styleable>
 </resources>

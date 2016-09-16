@@ -34,8 +34,6 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
 
     private static final String EXTRA_MOMENT = "EXTRA_MOMENT";
 
-    private static final int MAX_PHOTO_COUNT = 9;
-
     /**
      * 是否是单选「测试接口用的」
      */
@@ -127,7 +125,7 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
 
     @Override
     public void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models) {
-        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, MAX_PHOTO_COUNT, models, models, position, false), REQUEST_CODE_PHOTO_PREVIEW);
+        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mPhotosSnpl.getMaxItemCount(), models, models, position, false), REQUEST_CODE_PHOTO_PREVIEW);
     }
 
     @AfterPermissionGranted(REQUEST_CODE_PERMISSION_PHOTO_PICKER)
@@ -137,7 +135,7 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
             // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
             File takePhotoDir = new File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerTakePhoto");
 
-            startActivityForResult(BGAPhotoPickerActivity.newIntent(this, mTakePhotoCb.isChecked() ? takePhotoDir : null, mSingleChoiceCb.isChecked() ? 1 : MAX_PHOTO_COUNT, mPhotosSnpl.getData(), true), REQUEST_CODE_CHOOSE_PHOTO);
+            startActivityForResult(BGAPhotoPickerActivity.newIntent(this, mTakePhotoCb.isChecked() ? takePhotoDir : null, mSingleChoiceCb.isChecked() ? 1 : mPhotosSnpl.getMaxItemCount(), mPhotosSnpl.getData(), true), REQUEST_CODE_CHOOSE_PHOTO);
         } else {
             EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_PERMISSION_PHOTO_PICKER, perms);
         }
