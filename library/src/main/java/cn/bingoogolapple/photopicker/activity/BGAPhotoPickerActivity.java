@@ -274,6 +274,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
                 ArrayList<String> photos = new ArrayList<>();
+                photos.addAll(getSelectedImages(getIntent()));
                 photos.add(mImageCaptureManager.getCurrentPhotoPath());
                 startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, 1, photos, photos, 0, true), REQUEST_CODE_PREVIEW);
             } else if (requestCode == REQUEST_CODE_PREVIEW) {
