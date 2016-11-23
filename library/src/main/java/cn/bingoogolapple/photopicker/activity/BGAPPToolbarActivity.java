@@ -17,7 +17,7 @@ import cn.bingoogolapple.photopicker.R;
  * 创建时间:16/6/24 下午2:32
  * 描述:
  */
-public abstract class BGAPPToolbarActivity extends AppCompatActivity implements View.OnClickListener {
+public abstract class BGAPPToolbarActivity extends AppCompatActivity {
     protected String TAG;
     protected Toolbar mToolbar;
 
@@ -87,27 +87,10 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity implements 
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * 需要处理点击事件时，重写该方法
-     *
-     * @param v
-     */
-    public void onClick(View v) {
-    }
-
     @Override
     protected void onDestroy() {
         setContentView(new View(this));
         super.onDestroy();
-    }
-
-    /**
-     * 设置点击事件
-     *
-     * @param id 控件的id
-     */
-    protected void setOnClickListener(@IdRes int id) {
-        getViewById(id).setOnClickListener(this);
     }
 
     /**
