@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
+import cn.bingoogolapple.androidcommon.adapter.BGAOnNoDoubleClickListener;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.adapter.BGAPhotoPageAdapter;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
@@ -132,7 +133,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         mToolbar.postDelayed(new Runnable() {
             @Override
             public void run() {
-                hiddenTitlebar();
+                hiddenTitleBar();
             }
         }, 2000);
     }
@@ -145,7 +146,14 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
 
         mTitleTv = (TextView) actionView.findViewById(R.id.tv_photo_preview_title);
         mDownloadIv = (ImageView) actionView.findViewById(R.id.iv_photo_preview_download);
-        mDownloadIv.setOnClickListener(this);
+        mDownloadIv.setOnClickListener(new BGAOnNoDoubleClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                if (mSavePhotoTask == null) {
+                    savePic();
+                }
+            }
+        });
 
         if (mSaveImgDir == null) {
             mDownloadIv.setVisibility(View.INVISIBLE);
@@ -173,14 +181,14 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         if (System.currentTimeMillis() - mLastShowHiddenTime > 500) {
             mLastShowHiddenTime = System.currentTimeMillis();
             if (mIsHidden) {
-                showTitlebar();
+                showTitleBar();
             } else {
-                hiddenTitlebar();
+                hiddenTitleBar();
             }
         }
     }
 
-    private void showTitlebar() {
+    private void showTitleBar() {
         if (mToolbar != null) {
             ViewCompat.animate(mToolbar).translationY(0).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
                 @Override
@@ -191,7 +199,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         }
     }
 
-    private void hiddenTitlebar() {
+    private void hiddenTitleBar() {
         if (mToolbar != null) {
             ViewCompat.animate(mToolbar).translationY(-mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
                 @Override
@@ -199,15 +207,6 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
                     mIsHidden = true;
                 }
             }).start();
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.iv_photo_preview_download) {
-            if (mSavePhotoTask == null) {
-                savePic();
-            }
         }
     }
 

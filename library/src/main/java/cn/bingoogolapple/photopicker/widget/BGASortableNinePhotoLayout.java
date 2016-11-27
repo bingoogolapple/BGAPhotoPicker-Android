@@ -27,6 +27,8 @@ import cn.bingoogolapple.photopicker.imageloader.BGAImage;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 import cn.bingoogolapple.photopicker.util.BGASpaceItemDecoration;
 
+import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_IDLE;
+
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/7/8 下午4:51
@@ -305,7 +307,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         }
 
         @Override
-        protected void setItemChildListener(BGAViewHolderHelper helper) {
+        protected void setItemChildListener(BGAViewHolderHelper helper, int viewType) {
             helper.setItemChildClickListener(R.id.iv_item_nine_photo_flag);
         }
 
@@ -361,12 +363,11 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
         @Override
         public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            if (mPhotoAdapter.isPlusItem(viewHolder.getAdapterPosition())) {
-                return ItemTouchHelper.ACTION_STATE_IDLE;
-            }
-
             int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END;
-            int swipeFlags = dragFlags;
+            if (mPhotoAdapter.isPlusItem(viewHolder.getAdapterPosition())) {
+                dragFlags = ItemTouchHelper.ACTION_STATE_IDLE;
+            }
+            int swipeFlags = ACTION_STATE_IDLE;
             return makeMovementFlags(dragFlags, swipeFlags);
         }
 
@@ -390,7 +391,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
         @Override
         public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-            if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+            if (actionState != ACTION_STATE_IDLE) {
                 ViewCompat.setScaleX(viewHolder.itemView, 1.2f);
                 ViewCompat.setScaleY(viewHolder.itemView, 1.2f);
                 ((BGARecyclerViewHolder) viewHolder).getViewHolderHelper().getImageView(R.id.iv_item_nine_photo_photo).setColorFilter(getResources().getColor(R.color.bga_pp_photo_selected_mask));

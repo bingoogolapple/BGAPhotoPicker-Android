@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
+import cn.bingoogolapple.androidcommon.adapter.BGAOnNoDoubleClickListener;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.adapter.BGAPhotoPickerAdapter;
 import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
@@ -80,12 +81,18 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
     private BGAImageCaptureManager mImageCaptureManager;
 
     private BGAPhotoFolderPw mPhotoFolderPw;
-    /**
-     * 上一次显示图片目录的时间戳，防止短时间内重复点击图片目录菜单时界面错乱
-     */
-    private long mLastShowPhotoFolderTime;
+
     private BGALoadPhotoTask mLoadPhotoTask;
     private AppCompatDialog mLoadingDialog;
+
+    private BGAOnNoDoubleClickListener mOnClickShowPhotoFolderListener = new BGAOnNoDoubleClickListener() {
+        @Override
+        public void onNoDoubleClick(View v) {
+            if (mImageFolderModels != null && mImageFolderModels.size() > 0) {
+                showPhotoFolderPw();
+            }
+        }
+    };
 
     /**
      * @param context        应用程序上下文
@@ -194,9 +201,14 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         mArrowIv = (ImageView) actionView.findViewById(R.id.iv_photo_picker_arrow);
         mSubmitTv = (TextView) actionView.findViewById(R.id.tv_photo_picker_submit);
 
-        mTitleTv.setOnClickListener(this);
-        mArrowIv.setOnClickListener(this);
-        mSubmitTv.setOnClickListener(this);
+        mTitleTv.setOnClickListener(mOnClickShowPhotoFolderListener);
+        mArrowIv.setOnClickListener(mOnClickShowPhotoFolderListener);
+        mSubmitTv.setOnClickListener(new BGAOnNoDoubleClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                returnSelectedImages(mPicAdapter.getSelectedImages());
+            }
+        });
 
         mTitleTv.setText(R.string.bga_pp_all_image);
         if (mCurrentImageFolderModel != null) {
@@ -206,16 +218,6 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         renderTopRightBtn();
 
         return true;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if ((v.getId() == R.id.tv_photo_picker_title || v.getId() == R.id.iv_photo_picker_arrow) && mImageFolderModels != null && mImageFolderModels.size() > 0 && System.currentTimeMillis() - mLastShowPhotoFolderTime > BGAPhotoFolderPw.ANIM_DURATION) {
-            showPhotoFolderPw();
-            mLastShowPhotoFolderTime = System.currentTimeMillis();
-        } else if (v.getId() == R.id.tv_photo_picker_submit) {
-            returnSelectedImages(mPicAdapter.getSelectedImages());
-        }
     }
 
     /**
@@ -255,17 +257,6 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
      */
     private void toastMaxCountTip() {
         BGAPhotoPickerUtil.show(this, getString(R.string.bga_pp_toast_photo_picker_max, mMaxChooseCount));
-    }
-
-    /**
-     * 拍照
-     */
-    private void takePhoto() {
-        try {
-            startActivityForResult(mImageCaptureManager.getTakePictureIntent(), REQUEST_CODE_TAKE_PHOTO);
-        } catch (Exception e) {
-            BGAPhotoPickerUtil.show(this, R.string.bga_pp_photo_not_support);
-        }
     }
 
     @Override
@@ -326,11 +317,51 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
     @Override
     public void onItemChildClick(ViewGroup viewGroup, View view, int position) {
-        if (view.getId() == R.id.iv_item_photo_picker_flag) {
-            handleClickSelectFlagIv(position);
+        if (view.getId() == R.id.iv_item_photo_camera_camera) {
+            handleTakePhoto();
         } else if (view.getId() == R.id.iv_item_photo_picker_photo) {
-            handleClickPreviewIv(position);
+            changeToPreview(position);
+        } else if (view.getId() == R.id.iv_item_photo_picker_flag) {
+            handleClickSelectFlagIv(position);
         }
+    }
+
+    /**
+     * 处理拍照
+     */
+    private void handleTakePhoto() {
+        if (mMaxChooseCount == 1) {
+            // 单选
+            takePhoto();
+        } else if (mPicAdapter.getSelectedCount() == mMaxChooseCount) {
+            toastMaxCountTip();
+        } else {
+            takePhoto();
+        }
+    }
+
+    /**
+     * 拍照
+     */
+    private void takePhoto() {
+        try {
+            startActivityForResult(mImageCaptureManager.getTakePictureIntent(), REQUEST_CODE_TAKE_PHOTO);
+        } catch (Exception e) {
+            BGAPhotoPickerUtil.show(this, R.string.bga_pp_photo_not_support);
+        }
+    }
+
+    /**
+     * 跳转到图片选择预览界面
+     *
+     * @param position 当前点击的item的索引位置
+     */
+    private void changeToPreview(int position) {
+        int currentPosition = position;
+        if (mCurrentImageFolderModel.isTakePhotoEnabled()) {
+            currentPosition--;
+        }
+        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mMaxChooseCount, mPicAdapter.getSelectedImages(), (ArrayList<String>) mPicAdapter.getData(), currentPosition, false), REQUEST_CODE_PREVIEW);
     }
 
     /**
@@ -374,48 +405,6 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
                 renderTopRightBtn();
             }
         }
-    }
-
-    /**
-     * 处理点击预览按钮事件
-     *
-     * @param position 当前点击的item的索引位置
-     */
-    private void handleClickPreviewIv(int position) {
-        if (mMaxChooseCount == 1) {
-            // 单选
-
-            if (mCurrentImageFolderModel.isTakePhotoEnabled() && position == 0) {
-                takePhoto();
-            } else {
-                changeToPreview(position);
-            }
-        } else {
-            // 多选
-
-            if (mCurrentImageFolderModel.isTakePhotoEnabled() && position == 0) {
-                if (mPicAdapter.getSelectedCount() == mMaxChooseCount) {
-                    toastMaxCountTip();
-                } else {
-                    takePhoto();
-                }
-            } else {
-                changeToPreview(position);
-            }
-        }
-    }
-
-    /**
-     * 跳转到图片选择预览界面
-     *
-     * @param position 当前点击的item的索引位置
-     */
-    private void changeToPreview(int position) {
-        int currentPosition = position;
-        if (mCurrentImageFolderModel.isTakePhotoEnabled()) {
-            currentPosition--;
-        }
-        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mMaxChooseCount, mPicAdapter.getSelectedImages(), (ArrayList<String>) mPicAdapter.getData(), currentPosition, false), REQUEST_CODE_PREVIEW);
     }
 
     private void reloadPhotos(int position) {

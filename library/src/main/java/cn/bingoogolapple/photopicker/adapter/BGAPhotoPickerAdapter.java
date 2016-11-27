@@ -2,8 +2,6 @@ package cn.bingoogolapple.photopicker.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -34,28 +32,28 @@ public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
     }
 
     @Override
-    public void setItemChildListener(BGAViewHolderHelper helper) {
-        helper.setItemChildClickListener(R.id.iv_item_photo_picker_flag);
-        helper.setItemChildClickListener(R.id.iv_item_photo_picker_photo);
+    public int getItemViewType(int position) {
+        if (mTakePhotoEnabled && position == 0) {
+            return R.layout.bga_pp_item_photo_camera;
+        } else {
+            return R.layout.bga_pp_item_photo_picker;
+        }
+    }
+
+    @Override
+    public void setItemChildListener(BGAViewHolderHelper helper, int viewType) {
+        if (viewType == R.layout.bga_pp_item_photo_camera) {
+            helper.setItemChildClickListener(R.id.iv_item_photo_camera_camera);
+        } else {
+            helper.setItemChildClickListener(R.id.iv_item_photo_picker_flag);
+            helper.setItemChildClickListener(R.id.iv_item_photo_picker_photo);
+        }
     }
 
     @Override
     protected void fillData(BGAViewHolderHelper helper, int position, String model) {
-        if (mTakePhotoEnabled && position == 0) {
-            helper.setTag(R.id.iv_item_photo_picker_photo, null);
-
-            helper.setVisibility(R.id.tv_item_photo_picker_tip, View.VISIBLE);
-            helper.getImageView(R.id.iv_item_photo_picker_photo).setScaleType(ImageView.ScaleType.CENTER);
-            helper.setImageResource(R.id.iv_item_photo_picker_photo, R.mipmap.bga_pp_ic_gallery_camera);
-
-            helper.setVisibility(R.id.iv_item_photo_picker_flag, View.INVISIBLE);
-            helper.getImageView(R.id.iv_item_photo_picker_photo).setColorFilter(null);
-        } else {
-            helper.setVisibility(R.id.tv_item_photo_picker_tip, View.INVISIBLE);
-            helper.getImageView(R.id.iv_item_photo_picker_photo).setScaleType(ImageView.ScaleType.CENTER_CROP);
+        if (getItemViewType(position) == R.layout.bga_pp_item_photo_picker) {
             BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_photo_picker_photo), model, R.mipmap.bga_pp_ic_holder_dark, R.mipmap.bga_pp_ic_holder_dark, mImageWidth, mImageHeight, null);
-
-            helper.setVisibility(R.id.iv_item_photo_picker_flag, View.VISIBLE);
 
             if (mSelectedImages.contains(model)) {
                 helper.setImageResource(R.id.iv_item_photo_picker_flag, R.mipmap.bga_pp_ic_cb_checked);

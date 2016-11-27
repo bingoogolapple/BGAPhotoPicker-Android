@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/MatchWrap"
-    android:padding="8dp">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                style="@style/MatchWrap"
+                android:padding="8dp">
 
     <cn.bingoogolapple.photopicker.widget.BGAImageView
-        android:id="@+id/v_item_moment_avatar"
+        android:id="@+id/iv_item_moment_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginRight="8dp"
         android:src="@mipmap/avatar"
-        app:bga_iv_isCircle="true" />
+        app:bga_iv_isCircle="true"/>
 
     <TextView
         android:id="@+id/tv_item_moment_username"
         style="@style/MatchWrap"
-        android:layout_toRightOf="@id/v_item_moment_avatar"
+        android:layout_toRightOf="@id/iv_item_moment_avatar"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="bingoogolapple"
         android:textColor="#707EA3"
-        android:textSize="14sp" />
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/tv_item_moment_content"
         style="@style/MatchWrap"
         android:layout_below="@id/tv_item_moment_username"
         android:layout_marginTop="4dp"
-        android:layout_toRightOf="@id/v_item_moment_avatar"
+        android:layout_toRightOf="@id/iv_item_moment_avatar"
         android:ellipsize="end"
         android:maxLines="4"
         android:textColor="#474747"
         android:textSize="14sp"
-        tools:text="我是测试内容" />
+        tools:text="我是测试内容"/>
 
     <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
         android:id="@+id/npl_item_moment_photos"
         style="@style/WrapWrap"
         android:layout_below="@id/tv_item_moment_content"
         android:layout_marginTop="8dp"
-        android:layout_toRightOf="@id/v_item_moment_avatar" />
+        android:layout_toRightOf="@id/iv_item_moment_avatar"/>
 </RelativeLayout>

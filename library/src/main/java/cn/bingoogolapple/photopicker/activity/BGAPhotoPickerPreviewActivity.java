@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import cn.bingoogolapple.androidcommon.adapter.BGAOnNoDoubleClickListener;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.adapter.BGAPhotoPageAdapter;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
@@ -107,7 +108,36 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
 
     @Override
     protected void setListener() {
-        mChooseTv.setOnClickListener(this);
+        mChooseTv.setOnClickListener(new BGAOnNoDoubleClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                String currentImage = mPhotoPageAdapter.getItem(mContentHvp.getCurrentItem());
+                if (mSelectedImages.contains(currentImage)) {
+                    mSelectedImages.remove(currentImage);
+                    mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_normal, 0, 0, 0);
+                    renderTopRightBtn();
+                } else {
+                    if (mMaxChooseCount == 1) {
+                        // 单选
+
+                        mSelectedImages.clear();
+                        mSelectedImages.add(currentImage);
+                        mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_checked, 0, 0, 0);
+                        renderTopRightBtn();
+                    } else {
+                        // 多选
+
+                        if (mMaxChooseCount == mSelectedImages.size()) {
+                            BGAPhotoPickerUtil.show(BGAPhotoPickerPreviewActivity.this, getString(R.string.bga_pp_toast_photo_picker_max, mMaxChooseCount));
+                        } else {
+                            mSelectedImages.add(currentImage);
+                            mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_checked, 0, 0, 0);
+                            renderTopRightBtn();
+                        }
+                    }
+                }
+            }
+        });
 
         mContentHvp.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -153,7 +183,7 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         mToolbar.postDelayed(new Runnable() {
             @Override
             public void run() {
-                hiddenToolbarAndChoosebar();
+                hiddenToolBarAndChooseBar();
             }
         }, 2000);
     }
@@ -166,51 +196,23 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
 
         mTitleTv = (TextView) actionView.findViewById(R.id.tv_photo_picker_preview_title);
         mSubmitTv = (TextView) actionView.findViewById(R.id.tv_photo_picker_preview_submit);
-        mSubmitTv.setOnClickListener(this);
+        mSubmitTv.setOnClickListener(new BGAOnNoDoubleClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                Intent intent = new Intent();
+                intent.putStringArrayListExtra(EXTRA_SELECTED_IMAGES, mSelectedImages);
+                intent.putExtra(EXTRA_IS_FROM_TAKE_PHOTO, mIsFromTakePhoto);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
 
         renderTopRightBtn();
         handlePageSelectedStatus();
 
         return true;
     }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.tv_photo_picker_preview_submit) {
-            Intent intent = new Intent();
-            intent.putStringArrayListExtra(EXTRA_SELECTED_IMAGES, mSelectedImages);
-            intent.putExtra(EXTRA_IS_FROM_TAKE_PHOTO, mIsFromTakePhoto);
-            setResult(RESULT_OK, intent);
-            finish();
-        } else if (v.getId() == R.id.tv_photo_picker_preview_choose) {
-            String currentImage = mPhotoPageAdapter.getItem(mContentHvp.getCurrentItem());
-            if (mSelectedImages.contains(currentImage)) {
-                mSelectedImages.remove(currentImage);
-                mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_normal, 0, 0, 0);
-                renderTopRightBtn();
-            } else {
-                if (mMaxChooseCount == 1) {
-                    // 单选
-
-                    mSelectedImages.clear();
-                    mSelectedImages.add(currentImage);
-                    mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_checked, 0, 0, 0);
-                    renderTopRightBtn();
-                } else {
-                    // 多选
-
-                    if (mMaxChooseCount == mSelectedImages.size()) {
-                        BGAPhotoPickerUtil.show(this, getString(R.string.bga_pp_toast_photo_picker_max, mMaxChooseCount));
-                    } else {
-                        mSelectedImages.add(currentImage);
-                        mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_checked, 0, 0, 0);
-                        renderTopRightBtn();
-                    }
-                }
-            }
-        }
-    }
-
+    
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
@@ -254,9 +256,9 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         if (System.currentTimeMillis() - mLastShowHiddenTime > 500) {
             mLastShowHiddenTime = System.currentTimeMillis();
             if (mIsHidden) {
-                showTitlebarAndChoosebar();
+                showTitleBarAndChooseBar();
             } else {
-                hiddenToolbarAndChoosebar();
+                hiddenToolBarAndChooseBar();
             }
         }
     }
@@ -275,7 +277,7 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         super.onDestroy();
     }
 
-    private void showTitlebarAndChoosebar() {
+    private void showTitleBarAndChooseBar() {
         if (mToolbar != null) {
             ViewCompat.animate(mToolbar).translationY(0).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
                 @Override
@@ -292,7 +294,7 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         }
     }
 
-    private void hiddenToolbarAndChoosebar() {
+    private void hiddenToolBarAndChooseBar() {
         if (mToolbar != null) {
             ViewCompat.animate(mToolbar).translationY(-mToolbar.getHeight()).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {
                 @Override
