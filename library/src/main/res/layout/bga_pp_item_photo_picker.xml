@@ -10,20 +10,9 @@
         android:id="@+id/iv_item_photo_picker_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="center"
+        android:scaleType="centerCrop"
         app:bga_iv_isSquare="true"
-        tools:src="@mipmap/bga_pp_ic_gallery_camera" />
-
-    <TextView
-        android:id="@+id/tv_item_photo_picker_tip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/iv_item_photo_picker_photo"
-        android:layout_marginBottom="@dimen/bga_pp_size_level3"
-        android:gravity="center"
-        android:text="@string/bga_pp_take_picture"
-        android:textColor="#adb2bb"
-        android:textSize="@dimen/bga_pp_textSize_level1" />
+        tools:src="@mipmap/bga_pp_ic_holder_dark" />
 
     <ImageView
         android:id="@+id/iv_item_photo_picker_flag"
