@@ -93,7 +93,7 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         setTitle("添加朋友圈");
-        mPhotosSnpl.init(this);
+//        mPhotosSnpl.init(this);
     }
 
     public void onClick(View v) {

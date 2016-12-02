@@ -1,3 +1,18 @@
+/**
+ * Copyright 2016 bingoogolapple
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package cn.bingoogolapple.photopicker.widget;
 
 import android.app.Activity;
@@ -47,6 +62,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     private int mMaxItemCount = 9;
     private int mItemSpanCount = 3;
     private int mPlusDrawableResId = R.mipmap.bga_pp_ic_plus;
+    private int mItemCornerRadius;
     private Activity mActivity;
 
     public BGASortableNinePhotoLayout(Context context) {
@@ -103,6 +119,8 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
             mItemSpanCount = typedArray.getInteger(attr, mItemSpanCount);
         } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_plusDrawable) {
             mPlusDrawableResId = typedArray.getResourceId(attr, mPlusDrawableResId);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_itemCornerRadius) {
+            mItemCornerRadius = typedArray.getDimensionPixelSize(attr, 0);
         }
     }
 
@@ -131,7 +149,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     /**
-     * 设置删除按钮是否重叠四分之一，默认值为false
+     * 设置删除按钮是否重叠四分之一，默认值为 false
      *
      * @param isDeleteDrawableOverlapQuarter
      */
@@ -141,7 +159,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     /**
-     * 计算图片右上角margin
+     * 计算图片右上角 margin
      */
     private void calculatePhotoTopRightMargin() {
         if (mIsDeleteDrawableOverlapQuarter) {
@@ -191,13 +209,26 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     /**
+     * 设置 Item 条目圆角尺寸，默认为 0dp
+     *
+     * @param itemCornerRadius
+     */
+    public void setItemCornerRadius(int itemCornerRadius) {
+        mItemCornerRadius = itemCornerRadius;
+    }
+
+    /**
      * 设置图片路径数据集合
      *
      * @param photos
      */
     public void setData(ArrayList<String> photos) {
         if (mActivity == null) {
-            throw new RuntimeException("请先调用init方法进行初始化");
+            if (getContext() instanceof Activity) {
+                mActivity = (Activity) getContext();
+            } else {
+                throw new RuntimeException("请先调用 " + BGASortableNinePhotoLayout.class.getSimpleName() + " 的 init 方法进行初始化");
+            }
         }
 
         mPhotoAdapter.setData(photos);
@@ -211,7 +242,11 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
      */
     public void addMoreData(ArrayList<String> photos) {
         if (mActivity == null) {
-            throw new RuntimeException("请先调用init方法进行初始化");
+            if (getContext() instanceof Activity) {
+                mActivity = (Activity) getContext();
+            } else {
+                throw new RuntimeException("请先调用 " + BGASortableNinePhotoLayout.class.getSimpleName() + " 的 init 方法进行初始化");
+            }
         }
         if (photos != null) {
             mPhotoAdapter.getData().addAll(photos);
@@ -337,6 +372,11 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         protected void fillData(BGAViewHolderHelper helper, int position, String model) {
             MarginLayoutParams params = (MarginLayoutParams) helper.getView(R.id.iv_item_nine_photo_photo).getLayoutParams();
             params.setMargins(0, mPhotoTopRightMargin, mPhotoTopRightMargin, 0);
+
+            if (mItemCornerRadius > 0) {
+                BGAImageView imageView = helper.getView(R.id.iv_item_nine_photo_photo);
+                imageView.setCornerRadius(mItemCornerRadius);
+            }
 
             if (isPlusItem(position)) {
                 helper.setVisibility(R.id.iv_item_nine_photo_flag, View.GONE);
