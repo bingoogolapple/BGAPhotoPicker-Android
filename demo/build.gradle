@@ -28,10 +28,10 @@ dependencies {
     compile 'pub.devrel:easypermissions:0.2.1'
     // 以上几个库是演示案例所使用到的
 
-//    compile project(':library')
+    compile project(':library')
 
     // -------------------- 以下4个库是必须依赖的 ----------------------------
-    compile 'cn.bingoogolapple:bga-photopicker:1.1.7@aar'
+//    compile 'cn.bingoogolapple:bga-photopicker:1.1.8@aar'
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support:recyclerview-v7:25.0.1'
     compile 'cn.bingoogolapple:bga-adapter:1.1.5@aar'

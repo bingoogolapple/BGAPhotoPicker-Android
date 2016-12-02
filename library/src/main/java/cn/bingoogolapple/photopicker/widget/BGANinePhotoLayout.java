@@ -36,17 +36,24 @@ import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/7/8 下午2:41
- * 描述:
+ * 描述:九宫格图片控件
  */
 public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, View.OnClickListener, View.OnLongClickListener {
+    private static final int ITEM_NUM_COLUMNS = 3;
     private PhotoAdapter mPhotoAdapter;
     private BGAImageView mPhotoIv;
     private BGAHeightWrapGridView mPhotoGv;
     private Delegate mDelegate;
     private int mCurrentClickItemPosition;
     private Activity mActivity;
+
     private int mItemCornerRadius;
     private boolean mIsShowAsLargeWhenOnlyOne;
+    private int mItemSpacing;
+    private int mOtherWhiteSpacing;
+    private int mPlaceholderResId;
+
+    private int mItemWidth;
 
     public BGANinePhotoLayout(Context context) {
         this(context, null);
@@ -58,31 +65,20 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
 
     public BGANinePhotoLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
-        mIsShowAsLargeWhenOnlyOne = true;
-
-        initAttrs(context, attrs);
-
-        mPhotoIv = new BGAImageView(context);
-        mPhotoIv.setClickable(true);
-        mPhotoIv.setOnClickListener(this);
-        mPhotoIv.setOnLongClickListener(this);
-
-        mPhotoGv = new BGAHeightWrapGridView(context);
-        int spacing = context.getResources().getDimensionPixelSize(R.dimen.bga_pp_size_photo_divider);
-        mPhotoGv.setHorizontalSpacing(spacing);
-        mPhotoGv.setVerticalSpacing(spacing);
-        mPhotoGv.setNumColumns(3);
-        mPhotoGv.setOnItemClickListener(this);
-        mPhotoGv.setOnItemLongClickListener(this);
-        mPhotoAdapter = new PhotoAdapter(context);
-        mPhotoGv.setAdapter(mPhotoAdapter);
-
-        addView(mPhotoIv, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        addView(mPhotoGv);
+        initDefaultAttrs();
+        initCustomAttrs(context, attrs);
+        afterInitDefaultAndCustomAttrs();
     }
 
-    private void initAttrs(Context context, AttributeSet attrs) {
+    private void initDefaultAttrs() {
+        mIsShowAsLargeWhenOnlyOne = true;
+        mItemCornerRadius = 0;
+        mItemSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 4);
+        mPlaceholderResId = R.mipmap.bga_pp_ic_holder_light;
+        mOtherWhiteSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 100);
+    }
+
+    private void initCustomAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BGANinePhotoLayout);
         final int N = typedArray.getIndexCount();
         for (int i = 0; i < N; i++) {
@@ -95,8 +91,35 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         if (attr == R.styleable.BGANinePhotoLayout_bga_npl_isShowAsLargeWhenOnlyOne) {
             mIsShowAsLargeWhenOnlyOne = typedArray.getBoolean(attr, mIsShowAsLargeWhenOnlyOne);
         } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_itemCornerRadius) {
-            mItemCornerRadius = typedArray.getDimensionPixelSize(attr, 0);
+            mItemCornerRadius = typedArray.getDimensionPixelSize(attr, mItemCornerRadius);
+        } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_itemWhiteSpacing) {
+            mItemSpacing = typedArray.getDimensionPixelSize(attr, mItemSpacing);
+        } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_otherWhiteSpacing) {
+            mOtherWhiteSpacing = typedArray.getDimensionPixelOffset(attr, mOtherWhiteSpacing);
+        } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_placeholderResId) {
+            mPlaceholderResId = typedArray.getResourceId(attr, mPlaceholderResId);
         }
+    }
+
+    private void afterInitDefaultAndCustomAttrs() {
+        mItemWidth = (BGAPhotoPickerUtil.getScreenWidth(getContext()) - mOtherWhiteSpacing - 2 * mItemSpacing) / 3;
+
+        mPhotoIv = new BGAImageView(getContext());
+        mPhotoIv.setClickable(true);
+        mPhotoIv.setOnClickListener(this);
+        mPhotoIv.setOnLongClickListener(this);
+
+        mPhotoGv = new BGAHeightWrapGridView(getContext());
+        mPhotoGv.setHorizontalSpacing(mItemSpacing);
+        mPhotoGv.setVerticalSpacing(mItemSpacing);
+        mPhotoGv.setNumColumns(ITEM_NUM_COLUMNS);
+        mPhotoGv.setOnItemClickListener(this);
+        mPhotoGv.setOnItemLongClickListener(this);
+        mPhotoAdapter = new PhotoAdapter(getContext());
+        mPhotoGv.setAdapter(mPhotoAdapter);
+
+        addView(mPhotoIv, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        addView(mPhotoGv);
     }
 
     @Override
@@ -137,24 +160,6 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         mActivity = activity;
     }
 
-    /**
-     * 设置当只有一张图片时，是否显示成大图
-     *
-     * @param showAsLargeWhenOnlyOne
-     */
-    public void setShowAsLargeWhenOnlyOne(boolean showAsLargeWhenOnlyOne) {
-        mIsShowAsLargeWhenOnlyOne = showAsLargeWhenOnlyOne;
-    }
-
-    /**
-     * 设置 Item 条目圆角尺寸，默认为 0dp
-     *
-     * @param itemCornerRadius
-     */
-    public void setItemCornerRadius(int itemCornerRadius) {
-        mItemCornerRadius = itemCornerRadius;
-    }
-
     public void setData(ArrayList<String> photos) {
         if (mActivity == null) {
             if (getContext() instanceof Activity) {
@@ -164,7 +169,6 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
             }
         }
 
-        int itemWidth = BGAPhotoPickerUtil.getScreenWidth(getContext()) / 4;
         if (photos.size() == 0) {
             setVisibility(GONE);
         } else if (photos.size() == 1 && mIsShowAsLargeWhenOnlyOne) {
@@ -173,14 +177,15 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
             mPhotoAdapter.setData(photos);
             mPhotoIv.setVisibility(VISIBLE);
 
-            mPhotoIv.setMaxWidth(itemWidth * 2);
-            mPhotoIv.setMaxHeight(itemWidth * 2);
+            int size = mItemWidth * 2 + mItemSpacing + mItemWidth / 4;
+            mPhotoIv.setMaxWidth(size);
+            mPhotoIv.setMaxHeight(size);
 
             if (mItemCornerRadius > 0) {
                 mPhotoIv.setCornerRadius(mItemCornerRadius);
             }
 
-            BGAImage.displayImage(mActivity, mPhotoIv, photos.get(0), R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, itemWidth * 2, itemWidth * 2, null);
+            BGAImage.displayImage(mActivity, mPhotoIv, photos.get(0), mPlaceholderResId, mPlaceholderResId, size, size, null);
         } else {
             setVisibility(VISIBLE);
             mPhotoIv.setVisibility(GONE);
@@ -190,16 +195,16 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
 
             if (photos.size() == 1) {
                 mPhotoGv.setNumColumns(1);
-                layoutParams.width = itemWidth * 1;
+                layoutParams.width = mItemWidth * 1;
             } else if (photos.size() == 2) {
                 mPhotoGv.setNumColumns(2);
-                layoutParams.width = itemWidth * 2;
+                layoutParams.width = mItemWidth * 2 + mItemSpacing;
             } else if (photos.size() == 4) {
                 mPhotoGv.setNumColumns(2);
-                layoutParams.width = itemWidth * 2;
+                layoutParams.width = mItemWidth * 2 + mItemSpacing;
             } else {
                 mPhotoGv.setNumColumns(3);
-                layoutParams.width = itemWidth * 3;
+                layoutParams.width = mItemWidth * 3 + 2 * mItemSpacing;
             }
 
             mPhotoGv.setLayoutParams(layoutParams);
@@ -244,7 +249,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
                 imageView.setCornerRadius(mItemCornerRadius);
             }
 
-            BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, mImageWidth, mImageHeight, null);
+            BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, mPlaceholderResId, mPlaceholderResId, mImageWidth, mImageHeight, null);
         }
     }
 
