@@ -40,5 +40,7 @@
         style="@style/WrapWrap"
         android:layout_below="@id/tv_item_moment_content"
         android:layout_marginTop="8dp"
-        android:layout_toRightOf="@id/iv_item_moment_avatar"/>
+        android:layout_toRightOf="@id/iv_item_moment_avatar"
+        app:bga_npl_isShowAsLargeWhenOnlyOne="true"
+        app:bga_npl_itemCornerRadius="4dp"/>
 </RelativeLayout>

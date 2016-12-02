@@ -80,6 +80,7 @@
         <cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
             android:id="@+id/snpl_moment_add_photos"
             style="@style/WrapWrap"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            app:bga_snpl_itemCornerRadius="4dp"/>
     </LinearLayout>
 </ScrollView>

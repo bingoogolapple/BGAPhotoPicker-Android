@@ -18,7 +18,6 @@ import java.util.List;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemLongClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
-import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewHolder;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.activity.BGAPPToolbarActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
@@ -173,17 +172,8 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
             }
 
             BGANinePhotoLayout ninePhotoLayout = helper.getView(R.id.npl_item_moment_photos);
-            ninePhotoLayout.init(MomentListActivity.this);
             ninePhotoLayout.setDelegate(MomentListActivity.this);
             ninePhotoLayout.setData(moment.photos);
-        }
-
-        @Override
-        public void onViewRecycled(BGARecyclerViewHolder holder) {
-            super.onViewRecycled(holder);
-            BGANinePhotoLayout ninePhotoLayout = holder.getViewHolderHelper().getView(R.id.npl_item_moment_photos);
-            ninePhotoLayout.init(null);
-            ninePhotoLayout.setDelegate(null);
         }
     }
 }

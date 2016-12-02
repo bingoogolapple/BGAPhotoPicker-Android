@@ -12,10 +12,20 @@
         <attr name="bga_snpl_maxItemCount" format="integer"/>
         <!-- 列数,默认值为3 -->
         <attr name="bga_snpl_itemSpanCount" format="integer"/>
-        <!-- 删除按钮是否重叠四分之一，默认值为false -->
+        <!-- 删除按钮是否重叠四分之一，默认值为 false -->
         <attr name="bga_snpl_isDeleteDrawableOverlapQuarter" format="boolean"/>
         <!-- 添加按钮图片 -->
         <attr name="bga_snpl_plusDrawable" format="reference"/>
+        <!-- Item 条目圆角尺寸，默认为 0dp -->
+        <attr name="bga_snpl_itemCornerRadius" format="dimension|reference"/>
+    </declare-styleable>
+
+    <!-- BGANinePhotoLayout 的每一个自定义属性都有对应的 set 方法 -->
+    <declare-styleable name="BGANinePhotoLayout">
+        <!-- Item 条目圆角尺寸，默认为 0dp -->
+        <attr name="bga_npl_itemCornerRadius" format="dimension|reference"/>
+        <!-- 当只有一张图片时，是否显示成大图 -->
+        <attr name="bga_npl_isShowAsLargeWhenOnlyOne" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="BGAImageView">
