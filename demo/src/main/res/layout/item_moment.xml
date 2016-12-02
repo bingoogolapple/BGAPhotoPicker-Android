@@ -45,5 +45,5 @@
         app:bga_npl_itemCornerRadius="4dp"
         app:bga_npl_itemWhiteSpacing="8dp"
         app:bga_npl_otherWhiteSpacing="100dp"
-        app:bga_npl_placeholderResId="@mipmap/bga_pp_ic_holder_light"/>
+        app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"/>
 </RelativeLayout>

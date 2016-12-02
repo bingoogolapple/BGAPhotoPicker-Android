@@ -51,7 +51,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
     private boolean mIsShowAsLargeWhenOnlyOne;
     private int mItemSpacing;
     private int mOtherWhiteSpacing;
-    private int mPlaceholderResId;
+    private int mPlaceholderDrawableResId;
 
     private int mItemWidth;
 
@@ -74,7 +74,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         mIsShowAsLargeWhenOnlyOne = true;
         mItemCornerRadius = 0;
         mItemSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 4);
-        mPlaceholderResId = R.mipmap.bga_pp_ic_holder_light;
+        mPlaceholderDrawableResId = R.mipmap.bga_pp_ic_holder_light;
         mOtherWhiteSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 100);
     }
 
@@ -82,12 +82,12 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BGANinePhotoLayout);
         final int N = typedArray.getIndexCount();
         for (int i = 0; i < N; i++) {
-            initAttr(typedArray.getIndex(i), typedArray);
+            initCustomAttr(typedArray.getIndex(i), typedArray);
         }
         typedArray.recycle();
     }
 
-    private void initAttr(int attr, TypedArray typedArray) {
+    private void initCustomAttr(int attr, TypedArray typedArray) {
         if (attr == R.styleable.BGANinePhotoLayout_bga_npl_isShowAsLargeWhenOnlyOne) {
             mIsShowAsLargeWhenOnlyOne = typedArray.getBoolean(attr, mIsShowAsLargeWhenOnlyOne);
         } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_itemCornerRadius) {
@@ -96,8 +96,8 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
             mItemSpacing = typedArray.getDimensionPixelSize(attr, mItemSpacing);
         } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_otherWhiteSpacing) {
             mOtherWhiteSpacing = typedArray.getDimensionPixelOffset(attr, mOtherWhiteSpacing);
-        } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_placeholderResId) {
-            mPlaceholderResId = typedArray.getResourceId(attr, mPlaceholderResId);
+        } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_placeholderDrawable) {
+            mPlaceholderDrawableResId = typedArray.getResourceId(attr, mPlaceholderDrawableResId);
         }
     }
 
@@ -160,7 +160,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         mActivity = activity;
     }
 
-    public void setData(ArrayList<String> photos) {
+    private void initActivity() {
         if (mActivity == null) {
             if (getContext() instanceof Activity) {
                 mActivity = (Activity) getContext();
@@ -168,6 +168,15 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
                 throw new RuntimeException("请先调用 " + BGANinePhotoLayout.class.getSimpleName() + " 的 init 方法进行初始化");
             }
         }
+    }
+
+    /**
+     * 设置图片路径数据集合
+     *
+     * @param photos
+     */
+    public void setData(ArrayList<String> photos) {
+        initActivity();
 
         if (photos.size() == 0) {
             setVisibility(GONE);
@@ -185,7 +194,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
                 mPhotoIv.setCornerRadius(mItemCornerRadius);
             }
 
-            BGAImage.displayImage(mActivity, mPhotoIv, photos.get(0), mPlaceholderResId, mPlaceholderResId, size, size, null);
+            BGAImage.displayImage(mActivity, mPhotoIv, photos.get(0), mPlaceholderDrawableResId, mPlaceholderDrawableResId, size, size, null);
         } else {
             setVisibility(VISIBLE);
             mPhotoIv.setVisibility(GONE);
@@ -249,7 +258,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
                 imageView.setCornerRadius(mItemCornerRadius);
             }
 
-            BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, mPlaceholderResId, mPlaceholderResId, mImageWidth, mImageHeight, null);
+            BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, mPlaceholderDrawableResId, mPlaceholderDrawableResId, mImageWidth, mImageHeight, null);
         }
     }
 

@@ -30,7 +30,7 @@
         <!-- 出去九宫格部分的空白区域的尺寸，默认为 100dp -->
         <attr name="bga_npl_otherWhiteSpacing" format="dimension|reference"/>
         <!-- 占位图资源，默认为 bga_pp_ic_holder_light -->
-        <attr name="bga_npl_placeholderResId" format="reference"/>
+        <attr name="bga_npl_placeholderDrawable" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="BGAImageView">

@@ -171,8 +171,15 @@ public class BGAImageView extends AppCompatImageView {
         void onDrawableChanged(Drawable drawable);
     }
 
-    public static RoundedBitmapDrawable getCircleDrawable(Context context, Bitmap bitmap) {
-        RoundedBitmapDrawable circleDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), bitmap);
+    public static RoundedBitmapDrawable getCircleDrawable(Context context, Bitmap src) {
+        Bitmap dst;
+        if (src.getWidth() >= src.getHeight()) {
+            dst = Bitmap.createBitmap(src, src.getWidth() / 2 - src.getHeight() / 2, 0, src.getHeight(), src.getHeight());
+        } else {
+            dst = Bitmap.createBitmap(src, 0, src.getHeight() / 2 - src.getWidth() / 2, src.getWidth(), src.getWidth());
+        }
+
+        RoundedBitmapDrawable circleDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), dst);
         circleDrawable.setAntiAlias(true);
         circleDrawable.setCircular(true);
         return circleDrawable;
