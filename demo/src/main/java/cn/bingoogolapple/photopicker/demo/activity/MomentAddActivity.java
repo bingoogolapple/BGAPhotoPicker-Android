@@ -76,7 +76,7 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
         mPlusCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                mPhotosSnpl.setIsPlusSwitchOpened(checked);
+                mPhotosSnpl.setIsShowPlus(checked);
             }
         });
         mSortableCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -94,6 +94,9 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
     protected void processLogic(Bundle savedInstanceState) {
         setTitle("添加朋友圈");
 //        mPhotosSnpl.init(this);
+
+        mPlusCb.setChecked(mPhotosSnpl.isShowPlus());
+        mSortableCb.setChecked(mPhotosSnpl.isSortable());
     }
 
     public void onClick(View v) {

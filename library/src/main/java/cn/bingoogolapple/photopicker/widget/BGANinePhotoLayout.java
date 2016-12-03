@@ -49,7 +49,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
 
     private int mItemCornerRadius;
     private boolean mIsShowAsLargeWhenOnlyOne;
-    private int mItemSpacing;
+    private int mItemWhiteSpacing;
     private int mOtherWhiteSpacing;
     private int mPlaceholderDrawableResId;
 
@@ -73,7 +73,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
     private void initDefaultAttrs() {
         mIsShowAsLargeWhenOnlyOne = true;
         mItemCornerRadius = 0;
-        mItemSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 4);
+        mItemWhiteSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 4);
         mPlaceholderDrawableResId = R.mipmap.bga_pp_ic_holder_light;
         mOtherWhiteSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 100);
     }
@@ -93,7 +93,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_itemCornerRadius) {
             mItemCornerRadius = typedArray.getDimensionPixelSize(attr, mItemCornerRadius);
         } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_itemWhiteSpacing) {
-            mItemSpacing = typedArray.getDimensionPixelSize(attr, mItemSpacing);
+            mItemWhiteSpacing = typedArray.getDimensionPixelSize(attr, mItemWhiteSpacing);
         } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_otherWhiteSpacing) {
             mOtherWhiteSpacing = typedArray.getDimensionPixelOffset(attr, mOtherWhiteSpacing);
         } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_placeholderDrawable) {
@@ -102,7 +102,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
     }
 
     private void afterInitDefaultAndCustomAttrs() {
-        mItemWidth = (BGAPhotoPickerUtil.getScreenWidth(getContext()) - mOtherWhiteSpacing - 2 * mItemSpacing) / 3;
+        mItemWidth = (BGAPhotoPickerUtil.getScreenWidth(getContext()) - mOtherWhiteSpacing - 2 * mItemWhiteSpacing) / 3;
 
         mPhotoIv = new BGAImageView(getContext());
         mPhotoIv.setClickable(true);
@@ -110,8 +110,8 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         mPhotoIv.setOnLongClickListener(this);
 
         mPhotoGv = new BGAHeightWrapGridView(getContext());
-        mPhotoGv.setHorizontalSpacing(mItemSpacing);
-        mPhotoGv.setVerticalSpacing(mItemSpacing);
+        mPhotoGv.setHorizontalSpacing(mItemWhiteSpacing);
+        mPhotoGv.setVerticalSpacing(mItemWhiteSpacing);
         mPhotoGv.setNumColumns(ITEM_NUM_COLUMNS);
         mPhotoGv.setOnItemClickListener(this);
         mPhotoGv.setOnItemLongClickListener(this);
@@ -186,7 +186,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
             mPhotoAdapter.setData(photos);
             mPhotoIv.setVisibility(VISIBLE);
 
-            int size = mItemWidth * 2 + mItemSpacing + mItemWidth / 4;
+            int size = mItemWidth * 2 + mItemWhiteSpacing + mItemWidth / 4;
             mPhotoIv.setMaxWidth(size);
             mPhotoIv.setMaxHeight(size);
 
@@ -207,13 +207,13 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
                 layoutParams.width = mItemWidth * 1;
             } else if (photos.size() == 2) {
                 mPhotoGv.setNumColumns(2);
-                layoutParams.width = mItemWidth * 2 + mItemSpacing;
+                layoutParams.width = mItemWidth * 2 + mItemWhiteSpacing;
             } else if (photos.size() == 4) {
                 mPhotoGv.setNumColumns(2);
-                layoutParams.width = mItemWidth * 2 + mItemSpacing;
+                layoutParams.width = mItemWidth * 2 + mItemWhiteSpacing;
             } else {
                 mPhotoGv.setNumColumns(3);
-                layoutParams.width = mItemWidth * 3 + 2 * mItemSpacing;
+                layoutParams.width = mItemWidth * 3 + 2 * mItemWhiteSpacing;
             }
 
             mPhotoGv.setLayoutParams(layoutParams);
