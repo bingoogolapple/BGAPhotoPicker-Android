@@ -125,7 +125,7 @@ public static Intent newIntent(Context context, File saveImgDir, String photoPat
     <attr name="bga_snpl_placeholderDrawable" format="reference"/>
     <!-- 是否可编辑，默认值为 true -->
     <attr name="bga_snpl_editable" format="boolean"/>
-    <!-- item 的尺寸，优先级高于 bga_snpl_otherWhiteSpacing，默认值为 0dp -->
+    <!-- item 的尺寸，大于 0dp 时优先级高于 bga_snpl_otherWhiteSpacing，默认值为 0dp -->
     <attr name="bga_snpl_itemWidth" format="dimension|reference"/>
 </declare-styleable>
 
@@ -142,6 +142,8 @@ public static Intent newIntent(Context context, File saveImgDir, String photoPat
     <attr name="bga_npl_placeholderDrawable" format="reference"/>
     <!-- item 的尺寸，优先级高于 bga_npl_otherWhiteSpacing，默认值为 0dp -->
     <attr name="bga_npl_itemWidth" format="dimension|reference"/>
+    <!-- 列数,默认值为 3，当该值大于 3 并且数据源里只有四张图片时不会显示成 2 列 -->
+    <attr name="bga_npl_itemSpanCount" format="integer"/>
 </declare-styleable>
 
 <declare-styleable name="BGAImageView">
