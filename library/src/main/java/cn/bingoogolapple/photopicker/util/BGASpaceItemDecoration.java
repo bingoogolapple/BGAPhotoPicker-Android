@@ -25,7 +25,6 @@ import android.view.View;
  * 描述:
  */
 public class BGASpaceItemDecoration extends RecyclerView.ItemDecoration {
-    public static final int SPAN_COUNT = 3;
     private int mSpace;
 
     public BGASpaceItemDecoration(int space) {

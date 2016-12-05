@@ -67,6 +67,8 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
      */
     private static final int REQUEST_CODE_PREVIEW = 2;
 
+    private static final int SPAN_COUNT = 3;
+
     private TextView mTitleTv;
     private ImageView mArrowIv;
     private TextView mSubmitTv;
@@ -169,7 +171,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         // 获取右上角按钮文本
         mTopRightBtnText = getString(R.string.bga_pp_confirm);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, BGASpaceItemDecoration.SPAN_COUNT, LinearLayoutManager.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, SPAN_COUNT, LinearLayoutManager.VERTICAL, false);
         mContentRv.setLayoutManager(layoutManager);
         mContentRv.addItemDecoration(new BGASpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.bga_pp_size_photo_divider)));
 

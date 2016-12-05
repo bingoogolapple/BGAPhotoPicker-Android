@@ -26,6 +26,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,23 +48,30 @@ import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_IDLE
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/7/8 下午4:51
- * 描述:
+ * 描述:拖拽排序九宫格图片控件
  */
 public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnItemChildClickListener, BGAOnRVItemClickListener {
     private PhotoAdapter mPhotoAdapter;
     private ItemTouchHelper mItemTouchHelper;
     private Delegate mDelegate;
     private GridLayoutManager mGridLayoutManager;
-    private boolean mIsPlusSwitchOpened = true;
-    private boolean mIsSortable = true;
-    private int mDeleteDrawableResId = R.mipmap.bga_pp_ic_delete;
-    private boolean mIsDeleteDrawableOverlapQuarter = false;
+
+    private boolean mPlusEnable;
+    private boolean mSortable;
+    private int mDeleteDrawableResId;
+    private boolean mDeleteDrawableOverlapQuarter;
     private int mPhotoTopRightMargin;
-    private int mMaxItemCount = 9;
-    private int mItemSpanCount = 3;
-    private int mPlusDrawableResId = R.mipmap.bga_pp_ic_plus;
+    private int mMaxItemCount;
+    private int mItemSpanCount;
+    private int mPlusDrawableResId;
     private int mItemCornerRadius;
+    private int mItemWhiteSpacing;
+    private int mOtherWhiteSpacing;
+    private int mPlaceholderDrawableResId;
+    private boolean mEditable;
     private Activity mActivity;
+
+    private int mItemWidth;
 
     public BGASortableNinePhotoLayout(Context context) {
         this(context, null);
@@ -75,17 +83,80 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
     public BGASortableNinePhotoLayout(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        initDefaultAttrs();
+        initCustomAttrs(context, attrs);
+        afterInitDefaultAndCustomAttrs();
+    }
+
+    private void initDefaultAttrs() {
+        mPlusEnable = true;
+        mSortable = true;
+        mEditable = true;
+        mDeleteDrawableResId = R.mipmap.bga_pp_ic_delete;
+        mDeleteDrawableOverlapQuarter = false;
+        mMaxItemCount = 9;
+        mItemSpanCount = 3;
+        mItemWidth = 0;
+        mItemCornerRadius = 0;
+        mPlusDrawableResId = R.mipmap.bga_pp_ic_plus;
+        mItemWhiteSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 4);
+        mPlaceholderDrawableResId = R.mipmap.bga_pp_ic_holder_light;
+        mOtherWhiteSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 100);
+    }
+
+    private void initCustomAttrs(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BGASortableNinePhotoLayout);
+        final int N = typedArray.getIndexCount();
+        for (int i = 0; i < N; i++) {
+            initCustomAttr(typedArray.getIndex(i), typedArray);
+        }
+        typedArray.recycle();
+    }
+
+    private void initCustomAttr(int attr, TypedArray typedArray) {
+        if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_plusEnable) {
+            mPlusEnable = typedArray.getBoolean(attr, mPlusEnable);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_sortable) {
+            mSortable = typedArray.getBoolean(attr, mSortable);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_deleteDrawable) {
+            mDeleteDrawableResId = typedArray.getResourceId(attr, mDeleteDrawableResId);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_deleteDrawableOverlapQuarter) {
+            mDeleteDrawableOverlapQuarter = typedArray.getBoolean(attr, mDeleteDrawableOverlapQuarter);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_maxItemCount) {
+            mMaxItemCount = typedArray.getInteger(attr, mMaxItemCount);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_itemSpanCount) {
+            mItemSpanCount = typedArray.getInteger(attr, mItemSpanCount);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_plusDrawable) {
+            mPlusDrawableResId = typedArray.getResourceId(attr, mPlusDrawableResId);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_itemCornerRadius) {
+            mItemCornerRadius = typedArray.getDimensionPixelSize(attr, 0);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_itemWhiteSpacing) {
+            mItemWhiteSpacing = typedArray.getDimensionPixelSize(attr, mItemWhiteSpacing);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_otherWhiteSpacing) {
+            mOtherWhiteSpacing = typedArray.getDimensionPixelOffset(attr, mOtherWhiteSpacing);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_placeholderDrawable) {
+            mPlaceholderDrawableResId = typedArray.getResourceId(attr, mPlaceholderDrawableResId);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_editable) {
+            mEditable = typedArray.getBoolean(attr, mEditable);
+        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_itemWidth) {
+            mItemWidth = typedArray.getDimensionPixelSize(attr, mItemWidth);
+        }
+    }
+
+    private void afterInitDefaultAndCustomAttrs() {
+        if (mItemWidth == 0) {
+            mItemWidth = (BGAPhotoPickerUtil.getScreenWidth(getContext()) - mOtherWhiteSpacing) / mItemSpanCount;
+        } else {
+            mItemWidth += mItemWhiteSpacing;
+        }
 
         setOverScrollMode(OVER_SCROLL_NEVER);
-
-        initAttrs(context, attrs);
-
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback());
         mItemTouchHelper.attachToRecyclerView(this);
 
-        mGridLayoutManager = new GridLayoutManager(context, mItemSpanCount);
+        mGridLayoutManager = new GridLayoutManager(getContext(), mItemSpanCount);
         setLayoutManager(mGridLayoutManager);
-        addItemDecoration(new BGASpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.bga_pp_size_photo_divider)));
+        addItemDecoration(new BGASpaceItemDecoration(mItemWhiteSpacing / 2));
 
         calculatePhotoTopRightMargin();
 
@@ -95,51 +166,49 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         setAdapter(mPhotoAdapter);
     }
 
-    private void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BGASortableNinePhotoLayout);
-        final int N = typedArray.getIndexCount();
-        for (int i = 0; i < N; i++) {
-            initAttr(typedArray.getIndex(i), typedArray);
-        }
-        typedArray.recycle();
-    }
-
-    private void initAttr(int attr, TypedArray typedArray) {
-        if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_isPlusSwitchOpened) {
-            mIsPlusSwitchOpened = typedArray.getBoolean(attr, mIsPlusSwitchOpened);
-        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_isSortable) {
-            mIsSortable = typedArray.getBoolean(attr, mIsSortable);
-        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_deleteDrawable) {
-            mDeleteDrawableResId = typedArray.getResourceId(attr, mDeleteDrawableResId);
-        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_isDeleteDrawableOverlapQuarter) {
-            mIsDeleteDrawableOverlapQuarter = typedArray.getBoolean(attr, mIsDeleteDrawableOverlapQuarter);
-        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_maxItemCount) {
-            mMaxItemCount = typedArray.getInteger(attr, mMaxItemCount);
-        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_itemSpanCount) {
-            mItemSpanCount = typedArray.getInteger(attr, mItemSpanCount);
-        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_plusDrawable) {
-            mPlusDrawableResId = typedArray.getResourceId(attr, mPlusDrawableResId);
-        } else if (attr == R.styleable.BGASortableNinePhotoLayout_bga_snpl_itemCornerRadius) {
-            mItemCornerRadius = typedArray.getDimensionPixelSize(attr, 0);
-        }
-    }
-
     public void init(Activity activity) {
         mActivity = activity;
-        updateHeight();
     }
 
     /**
-     * 设置是否可拖拽排序
+     * 设置是否可拖拽排序，默认值为 true
      *
-     * @param isSortable
+     * @param sortable
      */
-    public void setIsSortable(boolean isSortable) {
-        mIsSortable = isSortable;
+    public void setSortable(boolean sortable) {
+        mSortable = sortable;
     }
 
     /**
-     * 设置删除按钮图片资源id
+     * 获取是否可拖拽排序
+     *
+     * @return
+     */
+    public boolean isSortable() {
+        return mSortable;
+    }
+
+    /**
+     * 设置是否可编辑，默认值为 true
+     *
+     * @param editable
+     */
+    public void setEditable(boolean editable) {
+        mEditable = editable;
+        mPhotoAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 获取是否可编辑
+     *
+     * @return
+     */
+    public boolean isEditable() {
+        return mEditable;
+    }
+
+    /**
+     * 设置删除按钮图片资源id，默认值为
      *
      * @param deleteDrawableResId
      */
@@ -151,10 +220,10 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     /**
      * 设置删除按钮是否重叠四分之一，默认值为 false
      *
-     * @param isDeleteDrawableOverlapQuarter
+     * @param deleteDrawableOverlapQuarter
      */
-    public void setIsDeleteDrawableOverlapQuarter(boolean isDeleteDrawableOverlapQuarter) {
-        mIsDeleteDrawableOverlapQuarter = isDeleteDrawableOverlapQuarter;
+    public void setDeleteDrawableOverlapQuarter(boolean deleteDrawableOverlapQuarter) {
+        mDeleteDrawableOverlapQuarter = deleteDrawableOverlapQuarter;
         calculatePhotoTopRightMargin();
     }
 
@@ -162,7 +231,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
      * 计算图片右上角 margin
      */
     private void calculatePhotoTopRightMargin() {
-        if (mIsDeleteDrawableOverlapQuarter) {
+        if (mDeleteDrawableOverlapQuarter) {
             int deleteDrawableWidth = BitmapFactory.decodeResource(getResources(), mDeleteDrawableResId).getWidth();
             int deleteDrawablePadding = getResources().getDimensionPixelOffset(R.dimen.bga_pp_size_delete_padding);
             mPhotoTopRightMargin = deleteDrawablePadding + deleteDrawableWidth / 2;
@@ -172,7 +241,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     /**
-     * 设置可选择图片的总张数,默认值为9
+     * 设置可选择图片的总张数,默认值为 9
      *
      * @param maxItemCount
      */
@@ -190,7 +259,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     /**
-     * 设置列数,默认值为3
+     * 设置列数,默认值为 3
      *
      * @param itemSpanCount
      */
@@ -200,7 +269,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     /**
-     * 设置添加按钮图片
+     * 设置添加按钮图片，默认值为 R.mipmap.bga_pp_ic_plus
      *
      * @param plusDrawableResId
      */
@@ -209,12 +278,22 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     /**
-     * 设置 Item 条目圆角尺寸，默认为 0dp
+     * 设置 Item 条目圆角尺寸，默认值为 0dp
      *
      * @param itemCornerRadius
      */
     public void setItemCornerRadius(int itemCornerRadius) {
         mItemCornerRadius = itemCornerRadius;
+    }
+
+    private void initActivity() {
+        if (mActivity == null) {
+            if (getContext() instanceof Activity) {
+                mActivity = (Activity) getContext();
+            } else {
+                throw new RuntimeException("请先调用 " + BGASortableNinePhotoLayout.class.getSimpleName() + " 的 init 方法进行初始化");
+            }
+        }
     }
 
     /**
@@ -223,16 +302,9 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
      * @param photos
      */
     public void setData(ArrayList<String> photos) {
-        if (mActivity == null) {
-            if (getContext() instanceof Activity) {
-                mActivity = (Activity) getContext();
-            } else {
-                throw new RuntimeException("请先调用 " + BGASortableNinePhotoLayout.class.getSimpleName() + " 的 init 方法进行初始化");
-            }
-        }
+        initActivity();
 
         mPhotoAdapter.setData(photos);
-        updateHeight();
     }
 
     /**
@@ -241,41 +313,54 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
      * @param photos
      */
     public void addMoreData(ArrayList<String> photos) {
-        if (mActivity == null) {
-            if (getContext() instanceof Activity) {
-                mActivity = (Activity) getContext();
-            } else {
-                throw new RuntimeException("请先调用 " + BGASortableNinePhotoLayout.class.getSimpleName() + " 的 init 方法进行初始化");
-            }
-        }
+        initActivity();
+
         if (photos != null) {
             mPhotoAdapter.getData().addAll(photos);
             mPhotoAdapter.notifyDataSetChanged();
         }
-        updateHeight();
-    }
-
-    private void updateHeight() {
-        if (mPhotoAdapter.getItemCount() > 0 && mPhotoAdapter.getItemCount() < mItemSpanCount) {
-            mGridLayoutManager.setSpanCount(mPhotoAdapter.getItemCount());
-        } else {
-            mGridLayoutManager.setSpanCount(mItemSpanCount);
-        }
-        int itemWidth = BGAPhotoPickerUtil.getScreenWidth(getContext()) / (mItemSpanCount + 1);
-        int width = itemWidth * mGridLayoutManager.getSpanCount();
-        int height = 0;
-        if (mPhotoAdapter.getItemCount() != 0) {
-            int rowCount = (mPhotoAdapter.getItemCount() - 1) / mGridLayoutManager.getSpanCount() + 1;
-            height = itemWidth * rowCount;
-        }
-        ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        layoutParams.width = width;
-        layoutParams.height = height;
-        setLayoutParams(layoutParams);
     }
 
     /**
-     * 获取图片路劲数据集合
+     * 在集合的尾部添加一条数据
+     *
+     * @param photo
+     */
+    public void addLastItem(String photo) {
+        initActivity();
+
+        if (!TextUtils.isEmpty(photo)) {
+            mPhotoAdapter.getData().add(photo);
+            mPhotoAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int spanCount = mItemSpanCount;
+        int itemCount = mPhotoAdapter.getItemCount();
+        if (itemCount > 0 && itemCount < mItemSpanCount) {
+            spanCount = itemCount;
+        }
+        mGridLayoutManager.setSpanCount(spanCount);
+
+        int expectWidth = mItemWidth * spanCount;
+        int expectHeight = 0;
+        if (itemCount > 0) {
+            int rowCount = (itemCount - 1) / spanCount + 1;
+            expectHeight = mItemWidth * rowCount;
+        }
+
+        int width = resolveSize(expectWidth, widthMeasureSpec);
+        int height = resolveSize(expectHeight, heightMeasureSpec);
+        width = Math.min(width, expectWidth);
+        height = Math.min(height, expectHeight);
+
+        setMeasuredDimension(width, height);
+    }
+
+    /**
+     * 获取图片路径数据集合
      *
      * @return
      */
@@ -290,7 +375,6 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
      */
     public void removeItem(int position) {
         mPhotoAdapter.removeItem(position);
-        updateHeight();
     }
 
     /**
@@ -322,9 +406,23 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         }
     }
 
-    public void setIsPlusSwitchOpened(boolean isPlusSwitchOpened) {
-        mIsPlusSwitchOpened = isPlusSwitchOpened;
-        updateHeight();
+    /**
+     * 设置是否显示加号
+     *
+     * @param plusEnable
+     */
+    public void setPlusEnable(boolean plusEnable) {
+        mPlusEnable = plusEnable;
+        mPhotoAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 是否显示加号按钮
+     *
+     * @return
+     */
+    public boolean isPlusEnable() {
+        return mPlusEnable;
     }
 
     public void setDelegate(Delegate delegate) {
@@ -348,7 +446,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
         @Override
         public int getItemCount() {
-            if (mIsPlusSwitchOpened && super.getItemCount() < mMaxItemCount) {
+            if (mEditable && mPlusEnable && super.getItemCount() < mMaxItemCount) {
                 return super.getItemCount() + 1;
             }
 
@@ -365,7 +463,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         }
 
         public boolean isPlusItem(int position) {
-            return mIsPlusSwitchOpened && super.getItemCount() < mMaxItemCount && position == getItemCount() - 1;
+            return mEditable && mPlusEnable && super.getItemCount() < mMaxItemCount && position == getItemCount() - 1;
         }
 
         @Override
@@ -382,9 +480,13 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
                 helper.setVisibility(R.id.iv_item_nine_photo_flag, View.GONE);
                 helper.setImageResource(R.id.iv_item_nine_photo_photo, mPlusDrawableResId);
             } else {
-                helper.setVisibility(R.id.iv_item_nine_photo_flag, View.VISIBLE);
-                helper.setImageResource(R.id.iv_item_nine_photo_flag, mDeleteDrawableResId);
-                BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, mImageWidth, mImageHeight, null);
+                if (mEditable) {
+                    helper.setVisibility(R.id.iv_item_nine_photo_flag, View.VISIBLE);
+                    helper.setImageResource(R.id.iv_item_nine_photo_flag, mDeleteDrawableResId);
+                } else {
+                    helper.setVisibility(R.id.iv_item_nine_photo_flag, View.GONE);
+                }
+                BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, mPlaceholderDrawableResId, mPlaceholderDrawableResId, mImageWidth, mImageHeight, null);
             }
         }
     }
@@ -393,7 +495,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
         @Override
         public boolean isLongPressDragEnabled() {
-            return mIsSortable && mPhotoAdapter.getData().size() > 1;
+            return mEditable && mSortable && mPhotoAdapter.getData().size() > 1;
         }
 
         @Override

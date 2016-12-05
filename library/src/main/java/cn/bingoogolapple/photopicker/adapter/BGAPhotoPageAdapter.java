@@ -33,7 +33,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/6/27 下午6:35
- * 描述:
+ * 描述:大图预览适配器
  */
 public class BGAPhotoPageAdapter extends PagerAdapter {
     private ArrayList<String> mPreviewImages;
