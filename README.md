@@ -100,36 +100,62 @@ public static Intent newIntent(Context context, File saveImgDir, String photoPat
 ## 自定义属性
 
 ```xml
-<!-- BGASortableNinePhotoLayout 的每一个自定义属性都有对应的 set 方法 -->
 <declare-styleable name="BGASortableNinePhotoLayout">
-    <!-- 加号按钮开关是否打开，默认值为true -->
-    <attr name="bga_snpl_isPlusSwitchOpened" format="boolean"/>
-    <!-- 是否可拖拽排序，默认值为true -->
-    <attr name="bga_snpl_isSortable" format="boolean"/>
-    <!-- 删除按钮图片 -->
+    <!-- 是否显示加号，默认值为 true -->
+    <attr name="bga_snpl_plusEnable" format="boolean"/>
+    <!-- 是否可拖拽排序，默认值为 true -->
+    <attr name="bga_snpl_sortable" format="boolean"/>
+    <!-- 删除按钮图片，默认值为 R.mipmap.bga_pp_ic_delete -->
     <attr name="bga_snpl_deleteDrawable" format="reference"/>
-    <!-- 可选择图片的总张数,默认值为9 -->
+    <!-- 可选择图片的总张数,默认值为 9 -->
     <attr name="bga_snpl_maxItemCount" format="integer"/>
-    <!-- 列数,默认值为3 -->
+    <!-- 列数,默认值为 3 -->
     <attr name="bga_snpl_itemSpanCount" format="integer"/>
-    <!-- 删除按钮是否重叠四分之一，默认值为false -->
-    <attr name="bga_snpl_isDeleteDrawableOverlapQuarter" format="boolean"/>
-    <!-- 添加按钮图片 -->
+    <!-- 删除按钮是否重叠四分之一，默认值为 false -->
+    <attr name="bga_snpl_deleteDrawableOverlapQuarter" format="boolean"/>
+    <!-- 添加按钮图片，默认值为 R.mipmap.bga_pp_ic_plus -->
     <attr name="bga_snpl_plusDrawable" format="reference"/>
+    <!-- Item 条目圆角尺寸，默认值为 0dp -->
+    <attr name="bga_snpl_itemCornerRadius" format="dimension|reference"/>
+    <!-- Item 间的水平和垂直间距，默认值为 4dp -->
+    <attr name="bga_snpl_itemWhiteSpacing" format="dimension|reference"/>
+    <!-- 出去九宫格部分的空白区域的尺寸，默认值为 100dp -->
+    <attr name="bga_snpl_otherWhiteSpacing" format="dimension|reference"/>
+    <!-- 占位图资源，默认值为 R.mipmap.bga_pp_ic_holder_light -->
+    <attr name="bga_snpl_placeholderDrawable" format="reference"/>
+    <!-- 是否可编辑，默认值为 true -->
+    <attr name="bga_snpl_editable" format="boolean"/>
+    <!-- item 的尺寸，优先级高于 bga_snpl_otherWhiteSpacing，默认值为 0dp -->
+    <attr name="bga_snpl_itemWidth" format="dimension|reference"/>
+</declare-styleable>
+
+<declare-styleable name="BGANinePhotoLayout">
+    <!-- Item 条目圆角尺寸，默认值为 0dp -->
+    <attr name="bga_npl_itemCornerRadius" format="dimension|reference"/>
+    <!-- 当只有一张图片时，是否显示成大图，默认值为 true -->
+    <attr name="bga_npl_showAsLargeWhenOnlyOne" format="boolean"/>
+    <!-- Item 间的水平和垂直间距，默认值为 4dp -->
+    <attr name="bga_npl_itemWhiteSpacing" format="dimension|reference"/>
+    <!-- 出去九宫格部分的空白区域的尺寸，默认值为 100dp -->
+    <attr name="bga_npl_otherWhiteSpacing" format="dimension|reference"/>
+    <!-- 占位图资源，默认值为 R.mipmap.bga_pp_ic_holder_light -->
+    <attr name="bga_npl_placeholderDrawable" format="reference"/>
+    <!-- item 的尺寸，优先级高于 bga_npl_otherWhiteSpacing，默认值为 0dp -->
+    <attr name="bga_npl_itemWidth" format="dimension|reference"/>
 </declare-styleable>
 
 <declare-styleable name="BGAImageView">
-    <!-- 默认图片资源，默认为null -->
+    <!-- 默认图片资源，默认值为 null -->
     <attr name="android:src"/>
-    <!-- 是否是圆形，默认值为false -->
-    <attr name="bga_iv_isCircle" format="boolean"/>
-    <!-- 圆角矩形的半径，默认值为0dp -->
+    <!-- 是否是圆形，默认值为 false -->
+    <attr name="bga_iv_circle" format="boolean"/>
+    <!-- 圆角矩形的半径，默认值为 0dp -->
     <attr name="bga_iv_cornerRadius" format="reference|dimension"/>
-    <!-- 是否是矩形，默认值为false -->
-    <attr name="bga_iv_isSquare" format="boolean"/>
-    <!-- 描边的宽度，默认值为0dp -->
+    <!-- 是否是矩形，默认值为 false -->
+    <attr name="bga_iv_square" format="boolean"/>
+    <!-- 描边的宽度，默认值为 0dp -->
     <attr name="bga_iv_borderWidth" format="reference|dimension"/>
-    <!-- 描边的颜色，默认值为Color.WHITE -->
+    <!-- 描边的颜色，默认值为 Color.WHITE -->
     <attr name="bga_iv_borderColor" format="reference|color"/>
 </declare-styleable>
 ```

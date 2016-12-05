@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        app:bga_iv_isSquare="true"
+        app:bga_iv_square="true"
         tools:src="@mipmap/bga_pp_ic_holder_light" />
 
     <ImageView

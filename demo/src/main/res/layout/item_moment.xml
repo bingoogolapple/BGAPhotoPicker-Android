@@ -11,7 +11,7 @@
         android:layout_height="40dp"
         android:layout_marginRight="8dp"
         android:src="@mipmap/avatar"
-        app:bga_iv_isCircle="true"/>
+        app:bga_iv_circle="true"/>
 
     <TextView
         android:id="@+id/tv_item_moment_username"
@@ -41,9 +41,10 @@
         android:layout_below="@id/tv_item_moment_content"
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@id/iv_item_moment_avatar"
-        app:bga_npl_isShowAsLargeWhenOnlyOne="true"
-        app:bga_npl_itemCornerRadius="4dp"
+        app:bga_npl_itemCornerRadius="0dp"
         app:bga_npl_itemWhiteSpacing="4dp"
+        app:bga_npl_itemWidth="0dp"
         app:bga_npl_otherWhiteSpacing="100dp"
-        app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"/>
+        app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
+        app:bga_npl_showAsLargeWhenOnlyOne="true"/>
 </RelativeLayout>

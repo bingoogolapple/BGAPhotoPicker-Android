@@ -140,12 +140,6 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
     }
 
     @Override
-    public boolean onLongClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
-        Toast.makeText(this, "长按了图片 " + position, Toast.LENGTH_SHORT).show();
-        return true;
-    }
-
-    @Override
     public void onRVItemClick(ViewGroup viewGroup, View view, int position) {
         Toast.makeText(this, "点击了item " + position, Toast.LENGTH_SHORT).show();
     }

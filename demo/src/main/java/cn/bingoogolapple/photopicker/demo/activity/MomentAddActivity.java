@@ -34,6 +34,7 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
 
     private static final String EXTRA_MOMENT = "EXTRA_MOMENT";
 
+    // ==================================== 测试图片选择器 START ====================================
     /**
      * 是否是单选「测试接口用的」
      */
@@ -42,6 +43,13 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
      * 是否具有拍照功能「测试接口用的」
      */
     private CheckBox mTakePhotoCb;
+    // ==================================== 测试图片选择器 END ====================================
+
+    // ==================================== 测试拖拽排序九宫格图片控件 START ====================================
+    /**
+     * 是否可编辑
+     */
+    private CheckBox mEditableCb;
     /**
      * 是否显示九图控件的加号按钮「测试接口用的」
      */
@@ -50,10 +58,13 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
      * 是否开启拖拽排序功能「测试接口用的」
      */
     private CheckBox mSortableCb;
-
+    /**
+     * 拖拽排序九宫格控件
+     */
+    private BGASortableNinePhotoLayout mPhotosSnpl;
+    // ==================================== 测试拖拽排序九宫格图片控件 END ====================================
 
     private EditText mContentEt;
-    private BGASortableNinePhotoLayout mPhotosSnpl;
 
     public static Moment getMoment(Intent intent) {
         return intent.getParcelableExtra(EXTRA_MOMENT);
@@ -64,6 +75,8 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
         setContentView(R.layout.activity_moment_add);
         mSingleChoiceCb = getViewById(R.id.cb_moment_add_single_choice);
         mTakePhotoCb = getViewById(R.id.cb_moment_add_take_photo);
+
+        mEditableCb = getViewById(R.id.cb_moment_add_editable);
         mPlusCb = getViewById(R.id.cb_moment_add_plus);
         mSortableCb = getViewById(R.id.cb_moment_add_sortable);
 
@@ -73,16 +86,22 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
 
     @Override
     protected void setListener() {
+        mEditableCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                mPhotosSnpl.setEditable(checked);
+            }
+        });
         mPlusCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                mPhotosSnpl.setIsShowPlus(checked);
+                mPhotosSnpl.setPlusEnable(checked);
             }
         });
         mSortableCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                mPhotosSnpl.setIsSortable(checked);
+                mPhotosSnpl.setSortable(checked);
             }
         });
 
@@ -93,9 +112,9 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         setTitle("添加朋友圈");
-//        mPhotosSnpl.init(this);
 
-        mPlusCb.setChecked(mPhotosSnpl.isShowPlus());
+        mEditableCb.setChecked(mPhotosSnpl.isEditable());
+        mPlusCb.setChecked(mPhotosSnpl.isPlusEnable());
         mSortableCb.setChecked(mPhotosSnpl.isSortable());
     }
 

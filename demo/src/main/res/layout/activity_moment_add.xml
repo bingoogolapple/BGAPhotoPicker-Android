@@ -31,18 +31,26 @@
             android:layout_marginRight="10dp">
 
             <CheckBox
-                android:id="@+id/cb_moment_add_plus"
-                style="@style/WrapWrap"
+                android:id="@+id/cb_moment_add_editable"
+                style="@style/AutoWrap"
                 android:checked="true"
-                android:text="显示九图控件的加号按钮"
+                android:text="是否可编辑"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"/>
+
+            <CheckBox
+                android:id="@+id/cb_moment_add_plus"
+                style="@style/AutoWrap"
+                android:checked="true"
+                android:text="是否显示加号"
                 android:textColor="@color/colorPrimary"
                 android:textSize="12sp"/>
 
             <CheckBox
                 android:id="@+id/cb_moment_add_sortable"
-                style="@style/WrapWrap"
+                style="@style/AutoWrap"
                 android:checked="true"
-                android:text="是否开启拖拽排序"
+                android:text="是否拖拽排序"
                 android:textColor="@color/colorPrimary"
                 android:textSize="12sp"/>
         </LinearLayout>
@@ -82,15 +90,17 @@
             style="@style/WrapWrap"
             android:layout_margin="10dp"
             app:bga_snpl_deleteDrawable="@mipmap/bga_pp_ic_delete"
-            app:bga_snpl_isDeleteDrawableOverlapQuarter="false"
-            app:bga_snpl_isShowPlus="true"
-            app:bga_snpl_isSortable="true"
+            app:bga_snpl_deleteDrawableOverlapQuarter="false"
+            app:bga_snpl_editable="true"
             app:bga_snpl_itemCornerRadius="0dp"
             app:bga_snpl_itemSpanCount="3"
             app:bga_snpl_itemWhiteSpacing="4dp"
+            app:bga_snpl_itemWidth="0dp"
             app:bga_snpl_maxItemCount="9"
             app:bga_snpl_otherWhiteSpacing="100dp"
             app:bga_snpl_placeholderDrawable="@mipmap/bga_pp_ic_holder_dark"
-            app:bga_snpl_plusDrawable="@mipmap/bga_pp_ic_plus"/>
+            app:bga_snpl_plusDrawable="@mipmap/bga_pp_ic_plus"
+            app:bga_snpl_plusEnable="true"
+            app:bga_snpl_sortable="true"/>
     </LinearLayout>
 </ScrollView>

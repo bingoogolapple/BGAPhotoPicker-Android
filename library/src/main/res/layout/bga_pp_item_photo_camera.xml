@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:scaleType="center"
         android:src="@mipmap/bga_pp_ic_gallery_camera"
-        app:bga_iv_isSquare="true"/>
+        app:bga_iv_square="true"/>
 
     <TextView
         android:id="@+id/tv_item_photo_picker_tip"
