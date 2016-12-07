@@ -86,6 +86,17 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
 
     @Override
     protected void setListener() {
+        mSingleChoiceCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    mPhotosSnpl.setData(null);
+                    mPhotosSnpl.setMaxItemCount(1);
+                } else {
+                    mPhotosSnpl.setMaxItemCount(9);
+                }
+            }
+        });
         mEditableCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -157,7 +168,7 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
             // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
             File takePhotoDir = new File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerTakePhoto");
 
-            startActivityForResult(BGAPhotoPickerActivity.newIntent(this, mTakePhotoCb.isChecked() ? takePhotoDir : null, mSingleChoiceCb.isChecked() ? 1 : mPhotosSnpl.getMaxItemCount(), mPhotosSnpl.getData(), false), REQUEST_CODE_CHOOSE_PHOTO);
+            startActivityForResult(BGAPhotoPickerActivity.newIntent(this, mTakePhotoCb.isChecked() ? takePhotoDir : null, mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount(), null, false), REQUEST_CODE_CHOOSE_PHOTO);
         } else {
             EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_PERMISSION_PHOTO_PICKER, perms);
         }
@@ -184,7 +195,11 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_PHOTO) {
-            mPhotosSnpl.setData(BGAPhotoPickerActivity.getSelectedImages(data));
+            if (mSingleChoiceCb.isChecked()) {
+                mPhotosSnpl.setData(BGAPhotoPickerActivity.getSelectedImages(data));
+            } else {
+                mPhotosSnpl.addMoreData(BGAPhotoPickerActivity.getSelectedImages(data));
+            }
         } else if (requestCode == REQUEST_CODE_PHOTO_PREVIEW) {
             mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedImages(data));
         }
