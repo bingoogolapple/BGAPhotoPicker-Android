@@ -378,7 +378,9 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         if (mCurrentImageFolderModel.isTakePhotoEnabled()) {
             currentPosition--;
         }
-        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mMaxChooseCount, mPicAdapter.getSelectedImages(), (ArrayList<String>) mPicAdapter.getData(), currentPosition, false), REQUEST_CODE_PREVIEW);
+        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mMaxChooseCount, mPicAdapter
+                        .getSelectedImages(), (ArrayList<String>) mPicAdapter.getData(), currentPosition, false),
+                REQUEST_CODE_PREVIEW);
     }
 
     /**
