@@ -7,10 +7,10 @@
 * [效果图与示例 apk](#效果图与示例-apk)
 * [使用](#使用)
 * [自定义属性说明](#自定义属性说明)
-* [Proguard](#Proguard)
+* [Proguard](#proguard)
 * [关于我](#关于我)
 * [打赏支持](#打赏支持)
-* [License](#License)
+* [License](#license)
 
 ## 功能介绍
 
