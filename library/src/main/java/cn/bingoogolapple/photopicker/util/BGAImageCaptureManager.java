@@ -53,7 +53,7 @@ public class BGAImageCaptureManager {
         }
     }
 
-    private File createCaptureFile() throws IOException {
+    public File createCaptureFile() throws IOException {
         File captureFile = File.createTempFile("Capture_" + PICTURE_NAME_POSTFIX_SDF.format(new Date()), ".jpg", mImageDir);
         mCurrentPhotoPath = captureFile.getAbsolutePath();
         return captureFile;
