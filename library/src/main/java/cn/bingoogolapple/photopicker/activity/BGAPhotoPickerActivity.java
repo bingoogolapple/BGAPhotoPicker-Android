@@ -15,13 +15,9 @@
  */
 package cn.bingoogolapple.photopicker.activity;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -56,8 +52,7 @@ import cn.bingoogolapple.photopicker.util.BGASpaceItemDecoration;
  * 创建时间:16/6/24 下午2:55
  * 描述:图片选择界面
  */
-public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAOnItemChildClickListener, BGAAsyncTask
-        .Callback<ArrayList<BGAImageFolderModel>> {
+public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAOnItemChildClickListener, BGAAsyncTask.Callback<ArrayList<BGAImageFolderModel>> {
     private static final String EXTRA_IMAGE_DIR = "EXTRA_IMAGE_DIR";
     private static final String EXTRA_SELECTED_IMAGES = "EXTRA_SELECTED_IMAGES";
     private static final String EXTRA_MAX_CHOOSE_COUNT = "EXTRA_MAX_CHOOSE_COUNT";
@@ -124,8 +119,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
      * @param pauseOnScroll  滚动列表时是否暂停加载图片
      * @return
      */
-    public static Intent newIntent(Context context, File imageDir, int maxChooseCount, ArrayList<String>
-            selectedImages, boolean pauseOnScroll) {
+    public static Intent newIntent(Context context, File imageDir, int maxChooseCount, ArrayList<String> selectedImages, boolean pauseOnScroll) {
         Intent intent = new Intent(context, BGAPhotoPickerActivity.class);
         intent.putExtra(EXTRA_IMAGE_DIR, imageDir);
         intent.putExtra(EXTRA_MAX_CHOOSE_COUNT, maxChooseCount);
@@ -179,8 +173,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, SPAN_COUNT, LinearLayoutManager.VERTICAL, false);
         mContentRv.setLayoutManager(layoutManager);
-        mContentRv.addItemDecoration(new BGASpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen
-                .bga_pp_size_photo_divider)));
+        mContentRv.addItemDecoration(new BGASpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.bga_pp_size_photo_divider)));
 
         ArrayList<String> selectedImages = getIntent().getStringArrayListExtra(EXTRA_SELECTED_IMAGES);
         if (selectedImages != null && selectedImages.size() > mMaxChooseCount) {
@@ -290,8 +283,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
             if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
                 ArrayList<String> photos = new ArrayList<>();
                 photos.add(mImageCaptureManager.getCurrentPhotoPath());
-                startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, 1, photos, photos, 0, true),
-                        REQUEST_CODE_PREVIEW);
+                startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, 1, photos, photos, 0, true), REQUEST_CODE_PREVIEW);
             } else if (requestCode == REQUEST_CODE_PREVIEW) {
                 if (BGAPhotoPickerPreviewActivity.getIsFromTakePhoto(data)) {
                     // 从拍照预览界面返回，刷新图库
@@ -370,19 +362,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
      */
     private void takePhoto() {
         try {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mImageCaptureManager.createCaptureFile()));
-                startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
-            } else {
-                ContentValues contentValues = new ContentValues(1);
-                contentValues.put(MediaStore.Images.Media.DATA, mImageCaptureManager.createCaptureFile()
-                        .getAbsolutePath());
-                Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        contentValues);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
-            }
+            startActivityForResult(mImageCaptureManager.getTakePictureIntent(), REQUEST_CODE_TAKE_PHOTO);
         } catch (Exception e) {
             BGAPhotoPickerUtil.show(this, R.string.bga_pp_photo_not_support);
         }
@@ -431,8 +411,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         } else {
             // 多选
 
-            if (!mPicAdapter.getSelectedImages().contains(currentImage) && mPicAdapter.getSelectedCount() ==
-                    mMaxChooseCount) {
+            if (!mPicAdapter.getSelectedImages().contains(currentImage) && mPicAdapter.getSelectedCount() == mMaxChooseCount) {
                 toastMaxCountTip();
             } else {
                 if (mPicAdapter.getSelectedImages().contains(currentImage)) {

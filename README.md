@@ -1,12 +1,21 @@
 :running:BGAPhotoPicker-Android:running:
 ============
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker)
+
+## 目录
+
+* [功能介绍](#功能介绍)
+* [效果图与示例 apk](#效果图与示例-apk)
+* [使用](#使用)
+* [自定义属性说明](#自定义属性说明)
+* [Proguard](#Proguard)
+* [关于我](#关于我)
+* [打赏支持](#打赏支持)
+* [License](#License)
+
+## 功能介绍
 
 将 [MeiqiaSDK-Android](https://github.com/Meiqia/MeiqiaSDK-Android) 里的图库单独抽出来开源，将其中的 GridView、ListView 和 RelativeLayout 换成 RecyclerView 和 Toolbar，方便在以后的项目中直接依赖使用。Demo 中模仿了微信朋友圈的部分功能，详细用法请查看 Demo。希望能该库帮正在做这几个功能的猿友节省开发时间。
 
-## 如有需要集成「在线客服功能」的猿友，欢迎使用 [美洽](http://meiqia.com)
-
-## 主要功能
 - [x] 单图选择
 - [x] 多图选择
 - [x] 拍照选择
@@ -27,7 +36,9 @@
 
 ![bga_photopicker_qrcode1](https://cloud.githubusercontent.com/assets/8949716/17477053/71e2be30-5d95-11e6-88ae-96f2b8a8a741.png)
 
-## Gradle 依赖
+## 使用
+
+### 1.添加 Gradle 依赖
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker) 「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。请不要再来问我「latestVersion」是什么了
 
@@ -49,7 +60,7 @@ dependencies {
 }
 ```
 
-## 接口说明
+### 2.接口说明
 
 > BGAPhotoPickerActivity
 
@@ -97,7 +108,7 @@ public static Intent newIntent(Context context, File saveImgDir, ArrayList<Strin
  */
 public static Intent newIntent(Context context, File saveImgDir, String photoPath)
 ```
-## 自定义属性
+## 自定义属性说明
 
 ```xml
 <declare-styleable name="BGASortableNinePhotoLayout">
@@ -221,8 +232,26 @@ public static Intent newIntent(Context context, File saveImgDir, String photoPat
 
 ## 打赏支持
 
-如果觉得 BGA 系列开源库对您有用，请随意打赏。如果猿友有打算购买 [Lantern](https://github.com/getlantern/forum)，可以使用我的邀请码「YFQ9Q3B」购买，双方都赠送三个月的专业版使用时间。
+如果您觉得 BGA 系列开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:
+
+如果您目前正打算购买通往墙外的梯子，可以使用我的邀请码「YFQ9Q3B」购买 [Lantern](https://github.com/getlantern/forum)，双方都赠送三个月的专业版使用时间:beers:
 
 <p align="center">
   <img src="http://7xk9dj.com1.z0.glb.clouddn.com/bga_pay.png" width="450">
 </p>
+
+## License
+
+    Copyright 2016 bingoogolapple
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.

@@ -26,8 +26,6 @@ import android.text.TextUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.model.BGAImageFolderModel;
@@ -114,10 +112,7 @@ public class BGALoadPhotoTask extends BGAAsyncTask<Void, ArrayList<BGAImageFolde
                 }
 
                 // 添加其他图片目录
-                for (final Map.Entry<String, BGAImageFolderModel> stringBGAImageFolderModelEntry :
-                        imageFolderModelMap.entrySet()) {
-                    imageFolderModels.add(stringBGAImageFolderModelEntry.getValue());
-                }
+                imageFolderModels.addAll(imageFolderModelMap.values());
             }
         } catch (Exception e) {
             e.printStackTrace();
