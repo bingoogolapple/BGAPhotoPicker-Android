@@ -35,7 +35,7 @@ import org.xutils.x;
 public class BGAXUtilsImageLoader extends BGAImageLoader {
 
     @Override
-    public void displayImage(Activity activity, final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
+    public void display(Activity activity, final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
         x.Ext.init(activity.getApplication());
 
         ImageOptions options = new ImageOptions.Builder()
@@ -68,7 +68,7 @@ public class BGAXUtilsImageLoader extends BGAImageLoader {
     }
 
     @Override
-    public void downloadImage(Context context, String path, final DownloadDelegate delegate) {
+    public void download(Context context, String path, final DownloadDelegate delegate) {
         x.Ext.init((Application) context.getApplicationContext());
 
         final String finalPath = getPath(path);

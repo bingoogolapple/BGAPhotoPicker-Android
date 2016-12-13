@@ -34,7 +34,7 @@ import com.squareup.picasso.Target;
 public class BGAPicassoImageLoader extends BGAImageLoader {
 
     @Override
-    public void displayImage(Activity activity, final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
+    public void display(Activity activity, final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
         final String finalPath = getPath(path);
         Picasso.with(activity).load(finalPath).tag(activity).placeholder(loadingResId).error(failResId).resize(width, height).centerInside().into(imageView, new Callback.EmptyCallback() {
             @Override
@@ -47,7 +47,7 @@ public class BGAPicassoImageLoader extends BGAImageLoader {
     }
 
     @Override
-    public void downloadImage(Context context, String path, final DownloadDelegate delegate) {
+    public void download(Context context, String path, final DownloadDelegate delegate) {
         final String finalPath = getPath(path);
         Picasso.with(context.getApplicationContext()).load(finalPath).into(new Target() {
             @Override

@@ -61,18 +61,39 @@ public class BGAImage {
         }
     }
 
-    public static void displayImage(Activity activity, ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final BGAImageLoader.DisplayDelegate delegate) {
-        getImageLoader().displayImage(activity, imageView, path, loadingResId, failResId, width, height, delegate);
+    public static void display(Activity activity, ImageView imageView, @DrawableRes int loadingResId, @DrawableRes int failResId, String path, int width, int height, final BGAImageLoader.DisplayDelegate delegate) {
+        getImageLoader().display(activity, imageView, path, loadingResId, failResId, width, height, delegate);
     }
 
-    public static void downloadImage(Context context, String path, final BGAImageLoader.DownloadDelegate delegate) {
-        getImageLoader().downloadImage(context, path, delegate);
+    public static void display(Activity activity, ImageView imageView, @DrawableRes int placeholderResId, String path, int width, int height, final BGAImageLoader.DisplayDelegate delegate) {
+        display(activity, imageView, placeholderResId, placeholderResId, path, width, height, delegate);
     }
 
+    public static void display(Activity activity, ImageView imageView, @DrawableRes int placeholderResId, String path, int width, int height) {
+        display(activity, imageView, placeholderResId, path, width, height, null);
+    }
+
+    public static void display(Activity activity, ImageView imageView, @DrawableRes int placeholderResId, String path, int size) {
+        display(activity, imageView, placeholderResId, path, size, size);
+    }
+
+    public static void download(Context context, String path, final BGAImageLoader.DownloadDelegate delegate) {
+        getImageLoader().download(context, path, delegate);
+    }
+
+    /**
+     * 暂停加载
+     *
+     * @param activity
+     */
     public static void pause(Activity activity) {
         getImageLoader().pause(activity);
     }
 
+    /**
+     *
+     * @param activity
+     */
     public static void resume(Activity activity) {
         getImageLoader().resume(activity);
     }

@@ -133,22 +133,20 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnRVItemC
     }
 
     private class FolderAdapter extends BGARecyclerViewAdapter<BGAImageFolderModel> {
-        private int mImageWidth;
-        private int mImageHeight;
+        private int mImageSize;
 
         public FolderAdapter(RecyclerView recyclerView) {
             super(recyclerView, R.layout.bga_pp_item_photo_folder);
 
             mData = new ArrayList<>();
-            mImageWidth = BGAPhotoPickerUtil.getScreenWidth(mActivity) / 10;
-            mImageHeight = mImageWidth;
+            mImageSize = BGAPhotoPickerUtil.getScreenWidth(mActivity) / 10;
         }
 
         @Override
         protected void fillData(BGAViewHolderHelper helper, int position, BGAImageFolderModel model) {
             helper.setText(R.id.tv_item_photo_folder_name, model.name);
             helper.setText(R.id.tv_item_photo_folder_count, String.valueOf(model.getCount()));
-            BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_photo_folder_photo), model.coverPath, R.mipmap.bga_pp_ic_holder_light, R.mipmap.bga_pp_ic_holder_light, mImageWidth, mImageHeight, null);
+            BGAImage.display(mActivity, helper.getImageView(R.id.iv_item_photo_folder_photo), R.mipmap.bga_pp_ic_holder_light, model.coverPath, mImageSize);
         }
     }
 

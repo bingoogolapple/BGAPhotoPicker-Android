@@ -69,7 +69,7 @@ public class BGAPhotoPageAdapter extends PagerAdapter {
             }
         });
 
-        BGAImage.displayImage(mActivity, imageView, mPreviewImages.get(position), R.mipmap.bga_pp_ic_holder_dark, R.mipmap.bga_pp_ic_holder_dark, BGAPhotoPickerUtil.getScreenWidth(imageView.getContext()), BGAPhotoPickerUtil.getScreenHeight(imageView.getContext()), null);
+        BGAImage.display(mActivity, imageView, R.mipmap.bga_pp_ic_holder_dark, mPreviewImages.get(position), BGAPhotoPickerUtil.getScreenWidth(imageView.getContext()), BGAPhotoPickerUtil.getScreenHeight(imageView.getContext()));
 
         return imageView;
     }

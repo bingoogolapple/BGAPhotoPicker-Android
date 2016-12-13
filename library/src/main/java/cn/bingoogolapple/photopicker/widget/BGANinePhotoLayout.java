@@ -185,7 +185,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
                     mPhotoIv.setCornerRadius(mItemCornerRadius);
                 }
 
-                BGAImage.displayImage(mActivity, mPhotoIv, photos.get(0), mPlaceholderDrawableResId, mPlaceholderDrawableResId, size, size, null);
+                BGAImage.display(mActivity, mPhotoIv, mPlaceholderDrawableResId, photos.get(0), size);
             } else {
                 mPhotoIv.setVisibility(GONE);
                 mPhotoGv.setVisibility(VISIBLE);
@@ -238,13 +238,11 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
     }
 
     private class PhotoAdapter extends BGAAdapterViewAdapter<String> {
-        private int mImageWidth;
-        private int mImageHeight;
+        private int mImageSize;
 
         public PhotoAdapter(Context context) {
             super(context, R.layout.bga_pp_item_nine_photo);
-            mImageWidth = BGAPhotoPickerUtil.getScreenWidth(context) / (mItemSpanCount > 3 ? 10 : 6);
-            mImageHeight = mImageWidth;
+            mImageSize = BGAPhotoPickerUtil.getScreenWidth(context) / (mItemSpanCount > 3 ? 10 : 6);
         }
 
         @Override
@@ -254,7 +252,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
                 imageView.setCornerRadius(mItemCornerRadius);
             }
 
-            BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, mPlaceholderDrawableResId, mPlaceholderDrawableResId, mImageWidth, mImageHeight, null);
+            BGAImage.display(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), mPlaceholderDrawableResId, model, mImageSize);
         }
     }
 

@@ -34,15 +34,13 @@ import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
  */
 public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
     private ArrayList<String> mSelectedImages = new ArrayList<>();
-    private int mImageWidth;
-    private int mImageHeight;
+    private int mImageSize;
     private boolean mTakePhotoEnabled;
     private Activity mActivity;
 
     public BGAPhotoPickerAdapter(Activity activity, RecyclerView recyclerView) {
         super(recyclerView, R.layout.bga_pp_item_photo_picker);
-        mImageWidth = BGAPhotoPickerUtil.getScreenWidth(recyclerView.getContext()) / 6;
-        mImageHeight = mImageWidth;
+        mImageSize = BGAPhotoPickerUtil.getScreenWidth(recyclerView.getContext()) / 6;
         mActivity = activity;
     }
 
@@ -68,7 +66,7 @@ public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
     @Override
     protected void fillData(BGAViewHolderHelper helper, int position, String model) {
         if (getItemViewType(position) == R.layout.bga_pp_item_photo_picker) {
-            BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_photo_picker_photo), model, R.mipmap.bga_pp_ic_holder_dark, R.mipmap.bga_pp_ic_holder_dark, mImageWidth, mImageHeight, null);
+            BGAImage.display(mActivity, helper.getImageView(R.id.iv_item_photo_picker_photo), R.mipmap.bga_pp_ic_holder_dark, model, mImageSize);
 
             if (mSelectedImages.contains(model)) {
                 helper.setImageResource(R.id.iv_item_photo_picker_flag, R.mipmap.bga_pp_ic_cb_checked);

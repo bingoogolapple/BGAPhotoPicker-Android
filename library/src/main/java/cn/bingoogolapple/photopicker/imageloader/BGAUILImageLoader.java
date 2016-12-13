@@ -46,7 +46,7 @@ public class BGAUILImageLoader extends BGAImageLoader {
     }
 
     @Override
-    public void displayImage(Activity activity, ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
+    public void display(Activity activity, ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
         initImageLoader(activity);
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -67,7 +67,7 @@ public class BGAUILImageLoader extends BGAImageLoader {
     }
 
     @Override
-    public void downloadImage(Context context, String path, final DownloadDelegate delegate) {
+    public void download(Context context, String path, final DownloadDelegate delegate) {
         initImageLoader(context);
 
         ImageLoader.getInstance().loadImage(getPath(path), new SimpleImageLoadingListener() {

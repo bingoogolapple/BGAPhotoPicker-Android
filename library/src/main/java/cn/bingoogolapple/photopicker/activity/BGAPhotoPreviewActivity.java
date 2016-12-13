@@ -248,7 +248,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         }
 
         mSavePhotoTask = new BGASavePhotoTask(this, this, file);
-        BGAImage.downloadImage(this, url, new BGAImageLoader.DownloadDelegate() {
+        BGAImage.download(this, url, new BGAImageLoader.DownloadDelegate() {
             @Override
             public void onSuccess(String url, Bitmap bitmap) {
                 mSavePhotoTask.setBitmapAndPerform(bitmap);

@@ -430,13 +430,11 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     private class PhotoAdapter extends BGARecyclerViewAdapter<String> {
-        private int mImageWidth;
-        private int mImageHeight;
+        private int mImageSize;
 
         public PhotoAdapter(RecyclerView recyclerView) {
             super(recyclerView, R.layout.bga_pp_item_nine_photo);
-            mImageWidth = BGAPhotoPickerUtil.getScreenWidth(recyclerView.getContext()) / 6;
-            mImageHeight = mImageWidth;
+            mImageSize = BGAPhotoPickerUtil.getScreenWidth(recyclerView.getContext()) / 6;
         }
 
         @Override
@@ -486,7 +484,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
                 } else {
                     helper.setVisibility(R.id.iv_item_nine_photo_flag, View.GONE);
                 }
-                BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, mPlaceholderDrawableResId, mPlaceholderDrawableResId, mImageWidth, mImageHeight, null);
+                BGAImage.display(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), mPlaceholderDrawableResId, model, mImageSize);
             }
         }
     }
