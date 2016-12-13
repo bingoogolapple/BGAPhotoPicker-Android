@@ -235,7 +235,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         if (url.startsWith("file")) {
             file = new File(url.replace("file://", ""));
             if (file.exists()) {
-                BGAPhotoPickerUtil.showSafe(BGAPhotoPreviewActivity.this, getString(R.string.bga_pp_save_img_success_folder, file.getParentFile().getAbsolutePath()));
+                BGAPhotoPickerUtil.showSafe(getString(R.string.bga_pp_save_img_success_folder, file.getParentFile().getAbsolutePath()));
                 return;
             }
         }
@@ -243,12 +243,12 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         // 通过MD5加密url生成文件名，避免多次保存同一张图片
         file = new File(mSaveImgDir, BGAPhotoPickerUtil.md5(url) + ".png");
         if (file.exists()) {
-            BGAPhotoPickerUtil.showSafe(this, getString(R.string.bga_pp_save_img_success_folder, mSaveImgDir.getAbsolutePath()));
+            BGAPhotoPickerUtil.showSafe(getString(R.string.bga_pp_save_img_success_folder, mSaveImgDir.getAbsolutePath()));
             return;
         }
 
         mSavePhotoTask = new BGASavePhotoTask(this, this, file);
-        BGAImage.download(this, url, new BGAImageLoader.DownloadDelegate() {
+        BGAImage.download(url, new BGAImageLoader.DownloadDelegate() {
             @Override
             public void onSuccess(String url, Bitmap bitmap) {
                 mSavePhotoTask.setBitmapAndPerform(bitmap);
@@ -257,7 +257,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
             @Override
             public void onFailed(String url) {
                 mSavePhotoTask = null;
-                BGAPhotoPickerUtil.show(BGAPhotoPreviewActivity.this, R.string.bga_pp_save_img_failure);
+                BGAPhotoPickerUtil.show(R.string.bga_pp_save_img_failure);
             }
         });
     }

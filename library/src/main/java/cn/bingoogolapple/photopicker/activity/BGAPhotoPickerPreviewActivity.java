@@ -143,7 +143,7 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
                         // 多选
 
                         if (mMaxChooseCount == mSelectedImages.size()) {
-                            BGAPhotoPickerUtil.show(BGAPhotoPickerPreviewActivity.this, getString(R.string.bga_pp_toast_photo_picker_max, mMaxChooseCount));
+                            BGAPhotoPickerUtil.show(getString(R.string.bga_pp_toast_photo_picker_max, mMaxChooseCount));
                         } else {
                             mSelectedImages.add(currentImage);
                             mChooseTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.bga_pp_ic_cb_checked, 0, 0, 0);

@@ -15,7 +15,6 @@
  */
 package cn.bingoogolapple.photopicker.adapter;
 
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -36,12 +35,10 @@ public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
     private ArrayList<String> mSelectedImages = new ArrayList<>();
     private int mImageSize;
     private boolean mTakePhotoEnabled;
-    private Activity mActivity;
 
-    public BGAPhotoPickerAdapter(Activity activity, RecyclerView recyclerView) {
+    public BGAPhotoPickerAdapter(RecyclerView recyclerView) {
         super(recyclerView, R.layout.bga_pp_item_photo_picker);
-        mImageSize = BGAPhotoPickerUtil.getScreenWidth(recyclerView.getContext()) / 6;
-        mActivity = activity;
+        mImageSize = BGAPhotoPickerUtil.getScreenWidth() / 6;
     }
 
     @Override
@@ -66,7 +63,7 @@ public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
     @Override
     protected void fillData(BGAViewHolderHelper helper, int position, String model) {
         if (getItemViewType(position) == R.layout.bga_pp_item_photo_picker) {
-            BGAImage.display(mActivity, helper.getImageView(R.id.iv_item_photo_picker_photo), R.mipmap.bga_pp_ic_holder_dark, model, mImageSize);
+            BGAImage.display(helper.getImageView(R.id.iv_item_photo_picker_photo), R.mipmap.bga_pp_ic_holder_dark, model, mImageSize);
 
             if (mSelectedImages.contains(model)) {
                 helper.setImageResource(R.id.iv_item_photo_picker_flag, R.mipmap.bga_pp_ic_cb_checked);

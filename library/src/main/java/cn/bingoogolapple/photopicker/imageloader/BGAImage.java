@@ -16,7 +16,6 @@
 package cn.bingoogolapple.photopicker.imageloader;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
@@ -61,24 +60,24 @@ public class BGAImage {
         }
     }
 
-    public static void display(Activity activity, ImageView imageView, @DrawableRes int loadingResId, @DrawableRes int failResId, String path, int width, int height, final BGAImageLoader.DisplayDelegate delegate) {
-        getImageLoader().display(activity, imageView, path, loadingResId, failResId, width, height, delegate);
+    public static void display(ImageView imageView, @DrawableRes int loadingResId, @DrawableRes int failResId, String path, int width, int height, final BGAImageLoader.DisplayDelegate delegate) {
+        getImageLoader().display(imageView, path, loadingResId, failResId, width, height, delegate);
     }
 
-    public static void display(Activity activity, ImageView imageView, @DrawableRes int placeholderResId, String path, int width, int height, final BGAImageLoader.DisplayDelegate delegate) {
-        display(activity, imageView, placeholderResId, placeholderResId, path, width, height, delegate);
+    public static void display(ImageView imageView, @DrawableRes int placeholderResId, String path, int width, int height, final BGAImageLoader.DisplayDelegate delegate) {
+        display(imageView, placeholderResId, placeholderResId, path, width, height, delegate);
     }
 
-    public static void display(Activity activity, ImageView imageView, @DrawableRes int placeholderResId, String path, int width, int height) {
-        display(activity, imageView, placeholderResId, path, width, height, null);
+    public static void display(ImageView imageView, @DrawableRes int placeholderResId, String path, int width, int height) {
+        display(imageView, placeholderResId, path, width, height, null);
     }
 
-    public static void display(Activity activity, ImageView imageView, @DrawableRes int placeholderResId, String path, int size) {
-        display(activity, imageView, placeholderResId, path, size, size);
+    public static void display(ImageView imageView, @DrawableRes int placeholderResId, String path, int size) {
+        display(imageView, placeholderResId, path, size, size);
     }
 
-    public static void download(Context context, String path, final BGAImageLoader.DownloadDelegate delegate) {
-        getImageLoader().download(context, path, delegate);
+    public static void download(String path, final BGAImageLoader.DownloadDelegate delegate) {
+        getImageLoader().download(path, delegate);
     }
 
     /**
@@ -91,7 +90,6 @@ public class BGAImage {
     }
 
     /**
-     *
      * @param activity
      */
     public static void resume(Activity activity) {

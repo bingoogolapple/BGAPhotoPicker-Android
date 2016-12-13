@@ -139,14 +139,14 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnRVItemC
             super(recyclerView, R.layout.bga_pp_item_photo_folder);
 
             mData = new ArrayList<>();
-            mImageSize = BGAPhotoPickerUtil.getScreenWidth(mActivity) / 10;
+            mImageSize = BGAPhotoPickerUtil.getScreenWidth() / 10;
         }
 
         @Override
         protected void fillData(BGAViewHolderHelper helper, int position, BGAImageFolderModel model) {
             helper.setText(R.id.tv_item_photo_folder_name, model.name);
             helper.setText(R.id.tv_item_photo_folder_count, String.valueOf(model.getCount()));
-            BGAImage.display(mActivity, helper.getImageView(R.id.iv_item_photo_folder_photo), R.mipmap.bga_pp_ic_holder_light, model.coverPath, mImageSize);
+            BGAImage.display(helper.getImageView(R.id.iv_item_photo_folder_photo), R.mipmap.bga_pp_ic_holder_light, model.coverPath, mImageSize);
         }
     }
 

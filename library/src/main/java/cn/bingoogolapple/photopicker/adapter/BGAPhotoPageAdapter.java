@@ -60,7 +60,7 @@ public class BGAPhotoPageAdapter extends PagerAdapter {
         imageView.setDelegate(new BGAImageView.Delegate() {
             @Override
             public void onDrawableChanged(Drawable drawable) {
-                if (drawable != null && drawable.getIntrinsicHeight() > drawable.getIntrinsicWidth() && drawable.getIntrinsicHeight() > BGAPhotoPickerUtil.getScreenHeight(imageView.getContext())) {
+                if (drawable != null && drawable.getIntrinsicHeight() > drawable.getIntrinsicWidth() && drawable.getIntrinsicHeight() > BGAPhotoPickerUtil.getScreenHeight()) {
                     photoViewAttacher.setIsSetTopCrop(true);
                     photoViewAttacher.setUpdateBaseMatrix();
                 } else {
@@ -69,7 +69,7 @@ public class BGAPhotoPageAdapter extends PagerAdapter {
             }
         });
 
-        BGAImage.display(mActivity, imageView, R.mipmap.bga_pp_ic_holder_dark, mPreviewImages.get(position), BGAPhotoPickerUtil.getScreenWidth(imageView.getContext()), BGAPhotoPickerUtil.getScreenHeight(imageView.getContext()));
+        BGAImage.display(imageView, R.mipmap.bga_pp_ic_holder_dark, mPreviewImages.get(position), BGAPhotoPickerUtil.getScreenWidth(), BGAPhotoPickerUtil.getScreenHeight());
 
         return imageView;
     }
