@@ -16,7 +16,6 @@
 package cn.bingoogolapple.photopicker.imageloader;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.DrawableRes;
 import android.view.View;
@@ -40,9 +39,9 @@ public abstract class BGAImageLoader {
         return path;
     }
 
-    public abstract void displayImage(Activity activity, ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, DisplayDelegate delegate);
+    public abstract void display(ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, DisplayDelegate delegate);
 
-    public abstract void downloadImage(Context context, String path, DownloadDelegate delegate);
+    public abstract void download(String path, DownloadDelegate delegate);
 
     public abstract void pause(Activity activity);
 

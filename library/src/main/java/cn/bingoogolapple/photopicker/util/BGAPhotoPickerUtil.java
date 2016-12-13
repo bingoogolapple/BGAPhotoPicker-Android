@@ -15,12 +15,14 @@
  */
 package cn.bingoogolapple.photopicker.util;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -35,8 +37,26 @@ import java.security.NoSuchAlgorithmException;
  * 描述:
  */
 public class BGAPhotoPickerUtil {
-
+    public static final Application sApp;
     private static Handler sHandler = new Handler(Looper.getMainLooper());
+
+    static {
+        Application app = null;
+        try {
+            app = (Application) Class.forName("android.app.AppGlobals").getMethod("getInitialApplication").invoke(null);
+            if (app == null)
+                throw new IllegalStateException("Static initialization of Applications must be on main thread.");
+        } catch (final Exception e) {
+            Log.e(BGAPhotoPickerUtil.class.getSimpleName(), "Failed to get current application from AppGlobals." + e.getMessage());
+            try {
+                app = (Application) Class.forName("android.app.ActivityThread").getMethod("currentApplication").invoke(null);
+            } catch (final Exception ex) {
+                Log.e(BGAPhotoPickerUtil.class.getSimpleName(), "Failed to get current application from ActivityThread." + e.getMessage());
+            }
+        } finally {
+            sApp = app;
+        }
+    }
 
     private BGAPhotoPickerUtil() {
     }
@@ -56,11 +76,10 @@ public class BGAPhotoPickerUtil {
     /**
      * 获取取屏幕宽度
      *
-     * @param context
      * @return
      */
-    public static int getScreenWidth(Context context) {
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    public static int getScreenWidth() {
+        WindowManager windowManager = (WindowManager) sApp.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(dm);
         return dm.widthPixels;
@@ -69,18 +88,17 @@ public class BGAPhotoPickerUtil {
     /**
      * 获取屏幕高度
      *
-     * @param context
      * @return
      */
-    public static int getScreenHeight(Context context) {
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    public static int getScreenHeight() {
+        WindowManager windowManager = (WindowManager) sApp.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(dm);
         return dm.heightPixels;
     }
 
-    public static int dp2px(Context context, float dpValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
+    public static int dp2px(float dpValue) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, sApp.getResources().getDisplayMetrics());
     }
 
     public static String md5(String... strs) {
@@ -108,15 +126,14 @@ public class BGAPhotoPickerUtil {
     /**
      * 显示吐司
      *
-     * @param context
      * @param text
      */
-    public static void show(Context context, CharSequence text) {
+    public static void show(CharSequence text) {
         if (!TextUtils.isEmpty(text)) {
             if (text.length() < 10) {
-                Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(sApp, text, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+                Toast.makeText(sApp, text, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -124,24 +141,22 @@ public class BGAPhotoPickerUtil {
     /**
      * 显示吐司
      *
-     * @param context
      * @param resId
      */
-    public static void show(Context context, @StringRes int resId) {
-        show(context, context.getResources().getString(resId));
+    public static void show(@StringRes int resId) {
+        show(sApp.getString(resId));
     }
 
     /**
      * 在子线程中显示吐司时使用该方法
      *
-     * @param context
      * @param text
      */
-    public static void showSafe(final Context context, final CharSequence text) {
+    public static void showSafe(final CharSequence text) {
         runInUIThread(new Runnable() {
             @Override
             public void run() {
-                show(context, text);
+                show(text);
             }
         });
     }
@@ -149,10 +164,9 @@ public class BGAPhotoPickerUtil {
     /**
      * 在子线程中显示吐司时使用该方法
      *
-     * @param context
      * @param resId
      */
-    public static void showSafe(Context context, @StringRes int resId) {
-        showSafe(context, context.getResources().getString(resId));
+    public static void showSafe( @StringRes int resId) {
+        showSafe(sApp.getString(resId));
     }
 }

@@ -11,6 +11,10 @@ android {
         versionName VERSION_NAME
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -31,7 +35,7 @@ dependencies {
 //    compile project(':library')
 
     // -------------------- 以下4个库是必须依赖的 ----------------------------
-    compile 'cn.bingoogolapple:bga-photopicker:1.2.0@aar'
+    compile 'cn.bingoogolapple:bga-photopicker:1.2.1@aar'
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support:recyclerview-v7:25.0.1'
     compile 'cn.bingoogolapple:bga-adapter:1.1.5@aar'

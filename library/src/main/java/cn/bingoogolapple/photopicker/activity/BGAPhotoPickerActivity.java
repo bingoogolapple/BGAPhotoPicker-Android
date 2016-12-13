@@ -146,7 +146,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
     @Override
     protected void setListener() {
-        mPicAdapter = new BGAPhotoPickerAdapter(this, mContentRv);
+        mPicAdapter = new BGAPhotoPickerAdapter(mContentRv);
         mPicAdapter.setOnItemChildClickListener(this);
 
         if (getIntent().getBooleanExtra(EXTRA_PAUSE_ON_SCROLL, false)) {
@@ -160,7 +160,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         File imageDir = (File) getIntent().getSerializableExtra(EXTRA_IMAGE_DIR);
         if (imageDir != null) {
             mTakePhotoEnabled = true;
-            mImageCaptureManager = new BGAImageCaptureManager(this, imageDir);
+            mImageCaptureManager = new BGAImageCaptureManager(imageDir);
         }
         // 获取图片选择的最大张数
         mMaxChooseCount = getIntent().getIntExtra(EXTRA_MAX_CHOOSE_COUNT, 1);
@@ -273,7 +273,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
      * 显示只能选择 mMaxChooseCount 张图的提示
      */
     private void toastMaxCountTip() {
-        BGAPhotoPickerUtil.show(this, getString(R.string.bga_pp_toast_photo_picker_max, mMaxChooseCount));
+        BGAPhotoPickerUtil.show(getString(R.string.bga_pp_toast_photo_picker_max, mMaxChooseCount));
     }
 
     @Override
@@ -364,7 +364,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         try {
             startActivityForResult(mImageCaptureManager.getTakePictureIntent(), REQUEST_CODE_TAKE_PHOTO);
         } catch (Exception e) {
-            BGAPhotoPickerUtil.show(this, R.string.bga_pp_photo_not_support);
+            BGAPhotoPickerUtil.show(R.string.bga_pp_photo_not_support);
         }
     }
 

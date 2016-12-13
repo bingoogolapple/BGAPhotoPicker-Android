@@ -66,15 +66,15 @@ public class BGASavePhotoTask extends BGAAsyncTask<Void, Void> {
             // 通知图库更新
             mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mNewFile)));
 
-            BGAPhotoPickerUtil.showSafe(mContext, mContext.getString(R.string.bga_pp_save_img_success_folder, mNewFile.getParentFile().getAbsolutePath()));
+            BGAPhotoPickerUtil.showSafe(mContext.getString(R.string.bga_pp_save_img_success_folder, mNewFile.getParentFile().getAbsolutePath()));
         } catch (Exception e) {
-            BGAPhotoPickerUtil.showSafe(mContext, R.string.bga_pp_save_img_failure);
+            BGAPhotoPickerUtil.showSafe(R.string.bga_pp_save_img_failure);
         } finally {
             if (fos != null) {
                 try {
                     fos.close();
                 } catch (IOException e) {
-                    BGAPhotoPickerUtil.showSafe(mContext, R.string.bga_pp_save_img_failure);
+                    BGAPhotoPickerUtil.showSafe(R.string.bga_pp_save_img_failure);
                 }
             }
             recycleBitmap();

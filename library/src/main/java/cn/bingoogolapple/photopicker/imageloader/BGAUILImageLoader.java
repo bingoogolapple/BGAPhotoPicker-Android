@@ -16,7 +16,6 @@
 package cn.bingoogolapple.photopicker.imageloader;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.DrawableRes;
 import android.view.View;
@@ -30,6 +29,8 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
+
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/6/25 下午5:39
@@ -37,17 +38,17 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
  */
 public class BGAUILImageLoader extends BGAImageLoader {
 
-    private void initImageLoader(Context context) {
+    private void initImageLoader() {
         if (!ImageLoader.getInstance().isInited()) {
             DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
-            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context.getApplicationContext()).threadPoolSize(3).defaultDisplayImageOptions(options).build();
+            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(BGAPhotoPickerUtil.sApp).threadPoolSize(3).defaultDisplayImageOptions(options).build();
             ImageLoader.getInstance().init(config);
         }
     }
 
     @Override
-    public void displayImage(Activity activity, ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
-        initImageLoader(activity);
+    public void display(ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
+        initImageLoader();
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(loadingResId)
@@ -67,8 +68,8 @@ public class BGAUILImageLoader extends BGAImageLoader {
     }
 
     @Override
-    public void downloadImage(Context context, String path, final DownloadDelegate delegate) {
-        initImageLoader(context);
+    public void download(String path, final DownloadDelegate delegate) {
+        initImageLoader();
 
         ImageLoader.getInstance().loadImage(getPath(path), new SimpleImageLoadingListener() {
             @Override
@@ -89,13 +90,13 @@ public class BGAUILImageLoader extends BGAImageLoader {
 
     @Override
     public void pause(Activity activity) {
-        initImageLoader(activity);
+        initImageLoader();
         ImageLoader.getInstance().pause();
     }
 
     @Override
     public void resume(Activity activity) {
-        initImageLoader(activity);
+        initImageLoader();
         ImageLoader.getInstance().resume();
     }
 }

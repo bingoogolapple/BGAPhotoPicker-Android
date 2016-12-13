@@ -16,7 +16,6 @@
 package cn.bingoogolapple.photopicker.util;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -37,18 +36,15 @@ import java.util.Locale;
  * 描述:
  */
 public class BGAImageCaptureManager {
-    private final static String CAPTURED_PHOTO_PATH_KEY = "CAPTURED_PHOTO_PATH_KEY";
+    private final static String CAPTURE_PHOTO_PATH_KEY = "CAPTURE_PHOTO_PATH_KEY";
     private static final SimpleDateFormat PICTURE_NAME_POSTFIX_SDF = new SimpleDateFormat("yyyy-MM-dd_HH-mm_ss", Locale.CHINESE);
     private String mCurrentPhotoPath;
-    private Context mContext;
     private File mImageDir;
 
     /**
-     * @param context
      * @param imageDir 拍照后图片保存的目录
      */
-    public BGAImageCaptureManager(Context context, File imageDir) {
-        mContext = context;
+    public BGAImageCaptureManager(File imageDir) {
         mImageDir = imageDir;
         if (!mImageDir.exists()) {
             mImageDir.mkdirs();
@@ -69,7 +65,7 @@ public class BGAImageCaptureManager {
      */
     public Intent getTakePictureIntent() throws IOException {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(mContext.getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(BGAPhotoPickerUtil.sApp.getPackageManager()) != null) {
             File photoFile = createCaptureFile();
             if (photoFile != null) {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -77,7 +73,7 @@ public class BGAImageCaptureManager {
                 } else {
                     ContentValues contentValues = new ContentValues(1);
                     contentValues.put(MediaStore.Images.Media.DATA, photoFile.getAbsolutePath());
-                    Uri uri = mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                    Uri uri = BGAPhotoPickerUtil.sApp.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 }
             }
@@ -92,7 +88,7 @@ public class BGAImageCaptureManager {
         if (!TextUtils.isEmpty(mCurrentPhotoPath)) {
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             mediaScanIntent.setData(Uri.fromFile(new File(mCurrentPhotoPath)));
-            mContext.sendBroadcast(mediaScanIntent);
+            BGAPhotoPickerUtil.sApp.sendBroadcast(mediaScanIntent);
             mCurrentPhotoPath = null;
         }
     }
@@ -117,18 +113,18 @@ public class BGAImageCaptureManager {
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null && mCurrentPhotoPath != null) {
-            savedInstanceState.putString(CAPTURED_PHOTO_PATH_KEY, mCurrentPhotoPath);
+            savedInstanceState.putString(CAPTURE_PHOTO_PATH_KEY, mCurrentPhotoPath);
         }
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState != null && savedInstanceState.containsKey(CAPTURED_PHOTO_PATH_KEY)) {
-            mCurrentPhotoPath = savedInstanceState.getString(CAPTURED_PHOTO_PATH_KEY);
+        if (savedInstanceState != null && savedInstanceState.containsKey(CAPTURE_PHOTO_PATH_KEY)) {
+            mCurrentPhotoPath = savedInstanceState.getString(CAPTURE_PHOTO_PATH_KEY);
         }
     }
 
     private File createCropFile() throws IOException {
-        File cropFile = File.createTempFile("Crop_" + PICTURE_NAME_POSTFIX_SDF.format(new Date()), ".png", mContext.getExternalCacheDir());
+        File cropFile = File.createTempFile("Crop_" + PICTURE_NAME_POSTFIX_SDF.format(new Date()), ".png", BGAPhotoPickerUtil.sApp.getExternalCacheDir());
         mCurrentPhotoPath = cropFile.getAbsolutePath();
         return cropFile;
     }

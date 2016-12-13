@@ -15,7 +15,6 @@
  */
 package cn.bingoogolapple.photopicker.widget;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -45,7 +44,6 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
     private BGAHeightWrapGridView mPhotoGv;
     private Delegate mDelegate;
     private int mCurrentClickItemPosition;
-    private Activity mActivity;
 
     private int mItemCornerRadius;
     private boolean mShowAsLargeWhenOnlyOne;
@@ -75,9 +73,9 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         mItemWidth = 0;
         mShowAsLargeWhenOnlyOne = true;
         mItemCornerRadius = 0;
-        mItemWhiteSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 4);
+        mItemWhiteSpacing = BGAPhotoPickerUtil.dp2px(4);
         mPlaceholderDrawableResId = R.mipmap.bga_pp_ic_holder_light;
-        mOtherWhiteSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 100);
+        mOtherWhiteSpacing = BGAPhotoPickerUtil.dp2px(100);
         mItemSpanCount = 3;
     }
 
@@ -110,7 +108,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
 
     private void afterInitDefaultAndCustomAttrs() {
         if (mItemWidth == 0) {
-            mItemWidth = (BGAPhotoPickerUtil.getScreenWidth(getContext()) - mOtherWhiteSpacing - (mItemSpanCount - 1) * mItemWhiteSpacing) / mItemSpanCount;
+            mItemWidth = (BGAPhotoPickerUtil.getScreenWidth() - mOtherWhiteSpacing - (mItemSpanCount - 1) * mItemWhiteSpacing) / mItemSpanCount;
         }
 
         mPhotoIv = new BGAImageView(getContext());
@@ -145,28 +143,12 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         }
     }
 
-    public void init(Activity activity) {
-        mActivity = activity;
-    }
-
-    private void initActivity() {
-        if (mActivity == null) {
-            if (getContext() instanceof Activity) {
-                mActivity = (Activity) getContext();
-            } else {
-                throw new RuntimeException("请先调用 " + BGANinePhotoLayout.class.getSimpleName() + " 的 init 方法进行初始化");
-            }
-        }
-    }
-
     /**
      * 设置图片路径数据集合
      *
      * @param photos
      */
     public void setData(ArrayList<String> photos) {
-        initActivity();
-
         if (photos.size() == 0) {
             setVisibility(GONE);
         } else {
@@ -185,7 +167,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
                     mPhotoIv.setCornerRadius(mItemCornerRadius);
                 }
 
-                BGAImage.displayImage(mActivity, mPhotoIv, photos.get(0), mPlaceholderDrawableResId, mPlaceholderDrawableResId, size, size, null);
+                BGAImage.display(mPhotoIv, mPlaceholderDrawableResId, photos.get(0), size);
             } else {
                 mPhotoIv.setVisibility(GONE);
                 mPhotoGv.setVisibility(VISIBLE);
@@ -238,13 +220,11 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
     }
 
     private class PhotoAdapter extends BGAAdapterViewAdapter<String> {
-        private int mImageWidth;
-        private int mImageHeight;
+        private int mImageSize;
 
         public PhotoAdapter(Context context) {
             super(context, R.layout.bga_pp_item_nine_photo);
-            mImageWidth = BGAPhotoPickerUtil.getScreenWidth(context) / (mItemSpanCount > 3 ? 10 : 6);
-            mImageHeight = mImageWidth;
+            mImageSize = BGAPhotoPickerUtil.getScreenWidth() / (mItemSpanCount > 3 ? 10 : 6);
         }
 
         @Override
@@ -254,7 +234,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
                 imageView.setCornerRadius(mItemCornerRadius);
             }
 
-            BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, mPlaceholderDrawableResId, mPlaceholderDrawableResId, mImageWidth, mImageHeight, null);
+            BGAImage.display(helper.getImageView(R.id.iv_item_nine_photo_photo), mPlaceholderDrawableResId, model, mImageSize);
         }
     }
 

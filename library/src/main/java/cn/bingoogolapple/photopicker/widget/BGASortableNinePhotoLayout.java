@@ -15,7 +15,6 @@
  */
 package cn.bingoogolapple.photopicker.widget;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
@@ -69,7 +68,6 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     private int mOtherWhiteSpacing;
     private int mPlaceholderDrawableResId;
     private boolean mEditable;
-    private Activity mActivity;
 
     private int mItemWidth;
 
@@ -99,9 +97,9 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         mItemWidth = 0;
         mItemCornerRadius = 0;
         mPlusDrawableResId = R.mipmap.bga_pp_ic_plus;
-        mItemWhiteSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 4);
+        mItemWhiteSpacing = BGAPhotoPickerUtil.dp2px(4);
         mPlaceholderDrawableResId = R.mipmap.bga_pp_ic_holder_light;
-        mOtherWhiteSpacing = BGAPhotoPickerUtil.dp2px(getContext(), 100);
+        mOtherWhiteSpacing = BGAPhotoPickerUtil.dp2px(100);
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -145,7 +143,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
     private void afterInitDefaultAndCustomAttrs() {
         if (mItemWidth == 0) {
-            mItemWidth = (BGAPhotoPickerUtil.getScreenWidth(getContext()) - mOtherWhiteSpacing) / mItemSpanCount;
+            mItemWidth = (BGAPhotoPickerUtil.getScreenWidth() - mOtherWhiteSpacing) / mItemSpanCount;
         } else {
             mItemWidth += mItemWhiteSpacing;
         }
@@ -164,10 +162,6 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         mPhotoAdapter.setOnItemChildClickListener(this);
         mPhotoAdapter.setOnRVItemClickListener(this);
         setAdapter(mPhotoAdapter);
-    }
-
-    public void init(Activity activity) {
-        mActivity = activity;
     }
 
     /**
@@ -286,24 +280,12 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         mItemCornerRadius = itemCornerRadius;
     }
 
-    private void initActivity() {
-        if (mActivity == null) {
-            if (getContext() instanceof Activity) {
-                mActivity = (Activity) getContext();
-            } else {
-                throw new RuntimeException("请先调用 " + BGASortableNinePhotoLayout.class.getSimpleName() + " 的 init 方法进行初始化");
-            }
-        }
-    }
-
     /**
      * 设置图片路径数据集合
      *
      * @param photos
      */
     public void setData(ArrayList<String> photos) {
-        initActivity();
-
         mPhotoAdapter.setData(photos);
     }
 
@@ -313,8 +295,6 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
      * @param photos
      */
     public void addMoreData(ArrayList<String> photos) {
-        initActivity();
-
         if (photos != null) {
             mPhotoAdapter.getData().addAll(photos);
             mPhotoAdapter.notifyDataSetChanged();
@@ -327,8 +307,6 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
      * @param photo
      */
     public void addLastItem(String photo) {
-        initActivity();
-
         if (!TextUtils.isEmpty(photo)) {
             mPhotoAdapter.getData().add(photo);
             mPhotoAdapter.notifyDataSetChanged();
@@ -430,13 +408,11 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     }
 
     private class PhotoAdapter extends BGARecyclerViewAdapter<String> {
-        private int mImageWidth;
-        private int mImageHeight;
+        private int mImageSize;
 
         public PhotoAdapter(RecyclerView recyclerView) {
             super(recyclerView, R.layout.bga_pp_item_nine_photo);
-            mImageWidth = BGAPhotoPickerUtil.getScreenWidth(recyclerView.getContext()) / 6;
-            mImageHeight = mImageWidth;
+            mImageSize = BGAPhotoPickerUtil.getScreenWidth() / 6;
         }
 
         @Override
@@ -486,7 +462,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
                 } else {
                     helper.setVisibility(R.id.iv_item_nine_photo_flag, View.GONE);
                 }
-                BGAImage.displayImage(mActivity, helper.getImageView(R.id.iv_item_nine_photo_photo), model, mPlaceholderDrawableResId, mPlaceholderDrawableResId, mImageWidth, mImageHeight, null);
+                BGAImage.display(helper.getImageView(R.id.iv_item_nine_photo_photo), mPlaceholderDrawableResId, model, mImageSize);
             }
         }
     }

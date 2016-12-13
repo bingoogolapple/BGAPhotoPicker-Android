@@ -7,7 +7,6 @@
 * [效果图与示例 apk](#效果图与示例-apk)
 * [使用](#使用)
 * [自定义属性说明](#自定义属性说明)
-* [Proguard](#proguard)
 * [关于我](#关于我)
 * [打赏支持](#打赏支持)
 * [License](#license)
@@ -174,55 +173,6 @@ public static Intent newIntent(Context context, File saveImgDir, String photoPat
 ```
 
 ## 详细用法请查看 [Demo](https://github.com/bingoogolapple/BGAPhotoPicker-Android/tree/master/demo):feet:
-
-## Proguard
-
-```java
-## ----------------------------------
-##      UIL相关
-## ----------------------------------
--keep class com.nostra13.universalimageloader.** { *; }
--keepclassmembers class com.nostra13.universalimageloader.** {*;}
--dontwarn com.nostra13.universalimageloader.**
-
-## ----------------------------------
-##      Glide相关
-## ----------------------------------
--keep class com.bumptech.glide.Glide { *; }
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
--dontwarn com.bumptech.glide.**
-
-## ----------------------------------
-##      Picasso相关
-## ----------------------------------
--keep class com.squareup.picasso.Picasso { *; }
--dontwarn com.squareup.okhttp.**
--dontwarn com.squareup.picasso.**
-
-## ----------------------------------
-##      xUtils3相关
-## ----------------------------------
--keepattributes Signature,*Annotation*
--keep public class org.xutils.** {
-    public protected *;
-}
--keep public interface org.xutils.** {
-    public protected *;
-}
--keepclassmembers class * extends org.xutils.** {
-    public protected *;
-}
--keepclassmembers @org.xutils.db.annotation.* class * {*;}
--keepclassmembers @org.xutils.http.annotation.* class * {*;}
--keepclassmembers class * {
-    @org.xutils.view.annotation.Event <methods>;
-}
--dontwarn org.xutils.**
-```
 
 ## 关于我
 
