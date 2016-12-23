@@ -102,12 +102,6 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onDestroy() {
-        setContentView(new View(this));
-        super.onDestroy();
-    }
-
     /**
      * 查找View
      *

@@ -224,7 +224,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
 
         public PhotoAdapter(Context context) {
             super(context, R.layout.bga_pp_item_nine_photo);
-            mImageSize = BGAPhotoPickerUtil.getScreenWidth() / (mItemSpanCount > 3 ? 10 : 6);
+            mImageSize = BGAPhotoPickerUtil.getScreenWidth() / (mItemSpanCount > 3 ? 8 : 6);
         }
 
         @Override

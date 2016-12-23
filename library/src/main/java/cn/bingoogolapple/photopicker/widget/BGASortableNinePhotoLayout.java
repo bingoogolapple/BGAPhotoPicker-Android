@@ -412,7 +412,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
 
         public PhotoAdapter(RecyclerView recyclerView) {
             super(recyclerView, R.layout.bga_pp_item_nine_photo);
-            mImageSize = BGAPhotoPickerUtil.getScreenWidth() / 6;
+            mImageSize = BGAPhotoPickerUtil.getScreenWidth() / (mItemSpanCount > 3 ? 8 : 6);
         }
 
         @Override
