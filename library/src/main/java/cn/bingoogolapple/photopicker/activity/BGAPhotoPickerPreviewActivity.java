@@ -278,20 +278,6 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        mTitleTv = null;
-        mSubmitTv = null;
-        mContentHvp = null;
-        mChooseRl = null;
-        mChooseTv = null;
-
-        mSelectedImages = null;
-        mPhotoPageAdapter = null;
-
-        super.onDestroy();
-    }
-
     private void showTitleBarAndChooseBar() {
         if (mToolbar != null) {
             ViewCompat.animate(mToolbar).translationY(0).setInterpolator(new DecelerateInterpolator(2)).setListener(new ViewPropertyAnimatorListenerAdapter() {

@@ -278,13 +278,6 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
             mSavePhotoTask.cancelTask();
             mSavePhotoTask = null;
         }
-
-        mTitleTv = null;
-        mDownloadIv = null;
-        mContentHvp = null;
-        mPhotoPageAdapter = null;
-        mSaveImgDir = null;
-
         super.onDestroy();
     }
 }

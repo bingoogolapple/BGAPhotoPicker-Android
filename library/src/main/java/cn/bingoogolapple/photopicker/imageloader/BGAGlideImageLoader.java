@@ -40,7 +40,7 @@ public class BGAGlideImageLoader extends BGAImageLoader {
     @Override
     public void display(final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
         final String finalPath = getPath(path);
-        Activity activity = (Activity) imageView.getContext();
+        Activity activity = getActivity(imageView);
         Glide.with(activity).load(finalPath).placeholder(loadingResId).error(failResId).override(width, height).dontAnimate().listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
