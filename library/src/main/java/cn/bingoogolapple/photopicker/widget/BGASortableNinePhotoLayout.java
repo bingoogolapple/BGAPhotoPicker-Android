@@ -495,6 +495,8 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
                 return false;
             }
             mPhotoAdapter.moveItem(source.getAdapterPosition(), target.getAdapterPosition());
+            
+            mDelegate. onNinePhotoItemExchanged(BGASortableNinePhotoLayout.this);
             return true;
         }
 
@@ -532,5 +534,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         void onClickDeleteNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models);
 
         void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models);
+        
+        void onNinePhotoItemExchanged(BGASortableNinePhotoLayout sortableNinePhotoLayout);
     }
 }
