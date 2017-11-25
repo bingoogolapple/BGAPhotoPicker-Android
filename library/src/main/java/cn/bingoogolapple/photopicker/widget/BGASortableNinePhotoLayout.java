@@ -368,7 +368,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     @Override
     public void onItemChildClick(ViewGroup parent, View childView, int position) {
         if (mDelegate != null) {
-            mDelegate.onClickDeleteNinePhotoItem(this, childView, position, mPhotoAdapter.getItem(position), (ArrayList<String>) mPhotoAdapter.getData());
+            mDelegate.onClickDeleteNinePhotoItem(this, childView, position, mPhotoAdapter.getItem(position), getData());
         }
     }
 
@@ -376,11 +376,11 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
     public void onRVItemClick(ViewGroup parent, View itemView, int position) {
         if (mPhotoAdapter.isPlusItem(position)) {
             if (mDelegate != null) {
-                mDelegate.onClickAddNinePhotoItem(this, itemView, position, (ArrayList<String>) mPhotoAdapter.getData());
+                mDelegate.onClickAddNinePhotoItem(this, itemView, position, getData());
             }
         } else {
             if (mDelegate != null && ViewCompat.getScaleX(itemView) <= 1.0f) {
-                mDelegate.onClickNinePhotoItem(this, itemView, position, mPhotoAdapter.getItem(position), (ArrayList<String>) mPhotoAdapter.getData());
+                mDelegate.onClickNinePhotoItem(this, itemView, position, mPhotoAdapter.getItem(position), getData());
             }
         }
     }
@@ -486,7 +486,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
             if (mPhotoAdapter.isPlusItem(viewHolder.getAdapterPosition())) {
                 dragFlags = ItemTouchHelper.ACTION_STATE_IDLE;
             }
-            int swipeFlags = ACTION_STATE_IDLE;
+            int swipeFlags = ItemTouchHelper.ACTION_STATE_IDLE;
             return makeMovementFlags(dragFlags, swipeFlags);
         }
 
@@ -496,6 +496,9 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
                 return false;
             }
             mPhotoAdapter.moveItem(source.getAdapterPosition(), target.getAdapterPosition());
+            if (mDelegate != null) {
+                mDelegate.onNinePhotoItemExchanged(BGASortableNinePhotoLayout.this, source.getAdapterPosition(), target.getAdapterPosition(), getData());
+            }
             return true;
         }
 
@@ -533,5 +536,7 @@ public class BGASortableNinePhotoLayout extends RecyclerView implements BGAOnIte
         void onClickDeleteNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models);
 
         void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models);
+
+        void onNinePhotoItemExchanged(BGASortableNinePhotoLayout sortableNinePhotoLayout, int fromPosition, int toPosition, ArrayList<String> models);
     }
 }
