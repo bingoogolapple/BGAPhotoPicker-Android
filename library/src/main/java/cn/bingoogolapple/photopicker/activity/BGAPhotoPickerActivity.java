@@ -34,8 +34,9 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAOnItemChildClickListener;
-import cn.bingoogolapple.androidcommon.adapter.BGAOnNoDoubleClickListener;
+import cn.bingoogolapple.baseadapter.BGAGridDivider;
+import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
+import cn.bingoogolapple.baseadapter.BGAOnNoDoubleClickListener;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.adapter.BGAPhotoPickerAdapter;
 import cn.bingoogolapple.photopicker.imageloader.BGARVOnScrollListener;
@@ -45,7 +46,6 @@ import cn.bingoogolapple.photopicker.util.BGAAsyncTask;
 import cn.bingoogolapple.photopicker.util.BGAImageCaptureManager;
 import cn.bingoogolapple.photopicker.util.BGALoadPhotoTask;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
-import cn.bingoogolapple.photopicker.util.BGASpaceItemDecoration;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -141,7 +141,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.bga_pp_activity_photo_picker);
-        mContentRv = getViewById(R.id.rv_photo_picker_content);
+        mContentRv = findViewById(R.id.rv_photo_picker_content);
     }
 
     @Override
@@ -173,7 +173,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, SPAN_COUNT, LinearLayoutManager.VERTICAL, false);
         mContentRv.setLayoutManager(layoutManager);
-        mContentRv.addItemDecoration(new BGASpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.bga_pp_size_photo_divider)));
+        mContentRv.addItemDecoration(BGAGridDivider.newInstanceWithSpaceRes(R.dimen.bga_pp_size_photo_divider));
 
         ArrayList<String> selectedImages = getIntent().getStringArrayListExtra(EXTRA_SELECTED_IMAGES);
         if (selectedImages != null && selectedImages.size() > mMaxChooseCount) {
@@ -214,9 +214,9 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         MenuItem menuItem = menu.findItem(R.id.item_photo_picker_title);
         View actionView = menuItem.getActionView();
 
-        mTitleTv = (TextView) actionView.findViewById(R.id.tv_photo_picker_title);
-        mArrowIv = (ImageView) actionView.findViewById(R.id.iv_photo_picker_arrow);
-        mSubmitTv = (TextView) actionView.findViewById(R.id.tv_photo_picker_submit);
+        mTitleTv = actionView.findViewById(R.id.tv_photo_picker_title);
+        mArrowIv = actionView.findViewById(R.id.iv_photo_picker_arrow);
+        mSubmitTv = actionView.findViewById(R.id.tv_photo_picker_submit);
 
         mTitleTv.setOnClickListener(mOnClickShowPhotoFolderListener);
         mArrowIv.setOnClickListener(mOnClickShowPhotoFolderListener);

@@ -45,17 +45,19 @@
 
 ```groovy
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
-    compile 'cn.bingoogolapple:bga-adapter:1.1.5@aar'
+    // -------------------- 以下4个库是必须依赖的 ----------------------------
+    implementation 'cn.bingoogolapple:bga-photopicker:latestVersion@aar'
+    implementation 'com.android.support:appcompat-v7:27.0.1'
+    implementation 'com.android.support:support-v4:27.0.1'
+    implementation 'com.android.support:recyclerview-v7:27.0.1'
+    implementation 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
+    // -------------------- 以上4个库是必须依赖的 ----------------------------
 
-    compile 'cn.bingoogolapple:bga-photopicker:latestVersion@aar'
-
-    // 必须依赖下面四个图片加载库中的某一个
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-//    compile 'com.squareup.picasso:picasso:2.5.2'
-//    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-//    compile 'org.xutils:xutils:3.3.36'
+    // 目前支持常见的 4 种图片加载库，必须在下面四个图片加载库中选择一个添加依赖
+    implementation 'com.github.bumptech.glide:glide:4.3.1'
+//    implementation 'com.squareup.picasso:picasso:2.5.2'
+//    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+//    implementation 'org.xutils:xutils:3.5.0'
 }
 ```
 

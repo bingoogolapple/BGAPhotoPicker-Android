@@ -74,15 +74,15 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_moment_add);
-        mSingleChoiceCb = getViewById(R.id.cb_moment_add_single_choice);
-        mTakePhotoCb = getViewById(R.id.cb_moment_add_take_photo);
+        mSingleChoiceCb = findViewById(R.id.cb_moment_add_single_choice);
+        mTakePhotoCb = findViewById(R.id.cb_moment_add_take_photo);
 
-        mEditableCb = getViewById(R.id.cb_moment_add_editable);
-        mPlusCb = getViewById(R.id.cb_moment_add_plus);
-        mSortableCb = getViewById(R.id.cb_moment_add_sortable);
+        mEditableCb = findViewById(R.id.cb_moment_add_editable);
+        mPlusCb = findViewById(R.id.cb_moment_add_plus);
+        mSortableCb = findViewById(R.id.cb_moment_add_sortable);
 
-        mContentEt = getViewById(R.id.et_moment_add_content);
-        mPhotosSnpl = getViewById(R.id.snpl_moment_add_photos);
+        mContentEt = findViewById(R.id.et_moment_add_content);
+        mPhotosSnpl = findViewById(R.id.snpl_moment_add_photos);
     }
 
     @Override

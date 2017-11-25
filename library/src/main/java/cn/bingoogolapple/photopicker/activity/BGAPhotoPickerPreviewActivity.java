@@ -31,7 +31,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAOnNoDoubleClickListener;
+import cn.bingoogolapple.baseadapter.BGAOnNoDoubleClickListener;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.adapter.BGAPhotoPageAdapter;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
@@ -116,9 +116,9 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
     @Override
     protected void initView(Bundle savedInstanceState) {
         setNoLinearContentView(R.layout.bga_pp_activity_photo_picker_preview);
-        mContentHvp = getViewById(R.id.hvp_photo_picker_preview_content);
-        mChooseRl = getViewById(R.id.rl_photo_picker_preview_choose);
-        mChooseTv = getViewById(R.id.tv_photo_picker_preview_choose);
+        mContentHvp = findViewById(R.id.hvp_photo_picker_preview_content);
+        mChooseRl = findViewById(R.id.rl_photo_picker_preview_choose);
+        mChooseTv = findViewById(R.id.tv_photo_picker_preview_choose);
     }
 
     @Override
@@ -209,8 +209,8 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         MenuItem menuItem = menu.findItem(R.id.item_photo_picker_preview_title);
         View actionView = menuItem.getActionView();
 
-        mTitleTv = (TextView) actionView.findViewById(R.id.tv_photo_picker_preview_title);
-        mSubmitTv = (TextView) actionView.findViewById(R.id.tv_photo_picker_preview_submit);
+        mTitleTv = actionView.findViewById(R.id.tv_photo_picker_preview_title);
+        mSubmitTv = actionView.findViewById(R.id.tv_photo_picker_preview_submit);
         mSubmitTv.setOnClickListener(new BGAOnNoDoubleClickListener() {
             @Override
             public void onNoDoubleClick(View v) {

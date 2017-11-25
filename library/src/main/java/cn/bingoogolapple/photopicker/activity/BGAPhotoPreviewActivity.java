@@ -32,7 +32,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAOnNoDoubleClickListener;
+import cn.bingoogolapple.baseadapter.BGAOnNoDoubleClickListener;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.adapter.BGAPhotoPageAdapter;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
@@ -110,7 +110,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
     @Override
     protected void initView(Bundle savedInstanceState) {
         setNoLinearContentView(R.layout.bga_pp_activity_photo_preview);
-        mContentHvp = getViewById(R.id.hvp_photo_preview_content);
+        mContentHvp = findViewById(R.id.hvp_photo_preview_content);
     }
 
     @Override
@@ -159,8 +159,8 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         MenuItem menuItem = menu.findItem(R.id.item_photo_preview_title);
         View actionView = menuItem.getActionView();
 
-        mTitleTv = (TextView) actionView.findViewById(R.id.tv_photo_preview_title);
-        mDownloadIv = (ImageView) actionView.findViewById(R.id.iv_photo_preview_download);
+        mTitleTv = actionView.findViewById(R.id.tv_photo_preview_title);
+        mDownloadIv = actionView.findViewById(R.id.iv_photo_preview_download);
         mDownloadIv.setOnClickListener(new BGAOnNoDoubleClickListener() {
             @Override
             public void onNoDoubleClick(View v) {

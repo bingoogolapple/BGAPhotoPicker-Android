@@ -30,6 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import cn.bingoogolapple.baseadapter.BGABaseAdapterUtil;
+
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/6/24 下午5:45
@@ -65,7 +67,7 @@ public class BGAImageCaptureManager {
      */
     public Intent getTakePictureIntent() throws IOException {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(BGAPhotoPickerUtil.sApp.getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(BGABaseAdapterUtil.getApp().getPackageManager()) != null) {
             File photoFile = createCaptureFile();
             if (photoFile != null) {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -73,7 +75,7 @@ public class BGAImageCaptureManager {
                 } else {
                     ContentValues contentValues = new ContentValues(1);
                     contentValues.put(MediaStore.Images.Media.DATA, photoFile.getAbsolutePath());
-                    Uri uri = BGAPhotoPickerUtil.sApp.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                    Uri uri = BGABaseAdapterUtil.getApp().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 }
             }
@@ -88,7 +90,7 @@ public class BGAImageCaptureManager {
         if (!TextUtils.isEmpty(mCurrentPhotoPath)) {
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             mediaScanIntent.setData(Uri.fromFile(new File(mCurrentPhotoPath)));
-            BGAPhotoPickerUtil.sApp.sendBroadcast(mediaScanIntent);
+            BGABaseAdapterUtil.getApp().sendBroadcast(mediaScanIntent);
             mCurrentPhotoPath = null;
         }
     }
@@ -124,7 +126,7 @@ public class BGAImageCaptureManager {
     }
 
     private File createCropFile() throws IOException {
-        File cropFile = File.createTempFile("Crop_" + PICTURE_NAME_POSTFIX_SDF.format(new Date()), ".png", BGAPhotoPickerUtil.sApp.getExternalCacheDir());
+        File cropFile = File.createTempFile("Crop_" + PICTURE_NAME_POSTFIX_SDF.format(new Date()), ".png", BGABaseAdapterUtil.getApp().getExternalCacheDir());
         mCurrentPhotoPath = cropFile.getAbsolutePath();
         return cropFile;
     }

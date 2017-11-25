@@ -66,11 +66,11 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity {
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(R.layout.bga_pp_toolbar_viewstub);
-        mToolbar = getViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ViewStubCompat viewStub = getViewById(R.id.viewStub);
+        ViewStubCompat viewStub = findViewById(R.id.viewStub);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) viewStub.getLayoutParams();
         lp.addRule(RelativeLayout.BELOW, R.id.toolbar);
 
@@ -80,10 +80,10 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity {
 
     public void setNoLinearContentView(@LayoutRes int layoutResID) {
         super.setContentView(R.layout.bga_pp_toolbar_viewstub);
-        mToolbar = getViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ViewStubCompat viewStub = getViewById(R.id.viewStub);
+        ViewStubCompat viewStub = findViewById(R.id.viewStub);
         viewStub.setLayoutResource(layoutResID);
         viewStub.inflate();
     }
@@ -101,16 +101,4 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * 查找View
-     *
-     * @param id   控件的id
-     * @param <VT> View类型
-     * @return
-     */
-    protected <VT extends View> VT getViewById(@IdRes int id) {
-        return (VT) findViewById(id);
-    }
-
 }

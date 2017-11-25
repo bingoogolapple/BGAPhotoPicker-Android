@@ -31,7 +31,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
-import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
+import cn.bingoogolapple.baseadapter.BGABaseAdapterUtil;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -63,7 +63,7 @@ public class BGAGlideImageLoader extends BGAImageLoader {
     @Override
     public void download(String path, final DownloadDelegate delegate) {
         final String finalPath = getPath(path);
-        Glide.with(BGAPhotoPickerUtil.sApp).asBitmap().load(finalPath).into(new SimpleTarget<Bitmap>() {
+        Glide.with(BGABaseAdapterUtil.getApp()).asBitmap().load(finalPath).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                 if (delegate != null) {

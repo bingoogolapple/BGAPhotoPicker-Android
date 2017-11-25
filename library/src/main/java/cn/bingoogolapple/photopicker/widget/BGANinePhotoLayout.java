@@ -26,8 +26,9 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAAdapterViewAdapter;
-import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
+import cn.bingoogolapple.baseadapter.BGAAdapterViewAdapter;
+import cn.bingoogolapple.baseadapter.BGABaseAdapterUtil;
+import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
@@ -73,9 +74,9 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         mItemWidth = 0;
         mShowAsLargeWhenOnlyOne = true;
         mItemCornerRadius = 0;
-        mItemWhiteSpacing = BGAPhotoPickerUtil.dp2px(4);
+        mItemWhiteSpacing = BGABaseAdapterUtil.dp2px(4);
         mPlaceholderDrawableResId = R.mipmap.bga_pp_ic_holder_light;
-        mOtherWhiteSpacing = BGAPhotoPickerUtil.dp2px(100);
+        mOtherWhiteSpacing = BGABaseAdapterUtil.dp2px(100);
         mItemSpanCount = 3;
     }
 

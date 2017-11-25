@@ -27,9 +27,9 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
-import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
-import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
+import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
+import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
+import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
 import cn.bingoogolapple.photopicker.model.BGAImageFolderModel;
@@ -56,8 +56,8 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnRVItemC
 
     @Override
     protected void initView() {
-        mRootLl = getViewById(R.id.ll_photo_folder_root);
-        mContentRv = getViewById(R.id.rv_photo_folder_content);
+        mRootLl = findViewById(R.id.ll_photo_folder_root);
+        mContentRv = findViewById(R.id.rv_photo_folder_content);
     }
 
     @Override
