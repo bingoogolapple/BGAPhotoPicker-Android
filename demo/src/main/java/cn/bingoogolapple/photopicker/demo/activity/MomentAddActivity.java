@@ -202,12 +202,12 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_PHOTO) {
             if (mSingleChoiceCb.isChecked()) {
-                mPhotosSnpl.setData(BGAPhotoPickerActivity.getSelectedImages(data));
+                mPhotosSnpl.setData(BGAPhotoPickerActivity.getSelectedPhotos(data));
             } else {
-                mPhotosSnpl.addMoreData(BGAPhotoPickerActivity.getSelectedImages(data));
+                mPhotosSnpl.addMoreData(BGAPhotoPickerActivity.getSelectedPhotos(data));
             }
         } else if (requestCode == REQUEST_CODE_PHOTO_PREVIEW) {
-            mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedImages(data));
+            mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedPhotos(data));
         }
     }
 }

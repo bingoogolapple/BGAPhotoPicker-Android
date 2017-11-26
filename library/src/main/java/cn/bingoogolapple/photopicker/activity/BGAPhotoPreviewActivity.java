@@ -49,8 +49,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  * 描述:图片预览界面
  */
 public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements PhotoViewAttacher.OnViewTapListener, BGAAsyncTask.Callback<Void> {
-    private static final String EXTRA_SAVE_IMG_DIR = "EXTRA_SAVE_IMG_DIR";
-    private static final String EXTRA_PREVIEW_IMAGES = "EXTRA_PREVIEW_IMAGES";
+    private static final String EXTRA_SAVE_PHOTO_DIR = "EXTRA_SAVE_PHOTO_DIR";
+    private static final String EXTRA_PREVIEW_PHOTOS = "EXTRA_PREVIEW_PHOTOS";
     private static final String EXTRA_CURRENT_POSITION = "EXTRA_CURRENT_POSITION";
     private static final String EXTRA_IS_SINGLE_PREVIEW = "EXTRA_IS_SINGLE_PREVIEW";
     private static final String EXTRA_PHOTO_PATH = "EXTRA_PHOTO_PATH";
@@ -62,7 +62,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
 
     private boolean mIsSinglePreview;
 
-    private File mSaveImgDir;
+    private File mSavePhotoDir;
 
     private boolean mIsHidden = false;
     private BGASavePhotoTask mSavePhotoTask;
@@ -76,15 +76,15 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
      * 获取查看多张图片的intent
      *
      * @param context
-     * @param saveImgDir      保存图片的目录，如果传null，则没有保存图片功能
-     * @param previewImages   当前预览的图片目录里的图片路径集合
+     * @param savePhotoDir      保存图片的目录，如果传null，则没有保存图片功能
+     * @param previewPhotos   当前预览的图片目录里的图片路径集合
      * @param currentPosition 当前预览图片的位置
      * @return
      */
-    public static Intent newIntent(Context context, File saveImgDir, ArrayList<String> previewImages, int currentPosition) {
+    public static Intent newIntent(Context context, File savePhotoDir, ArrayList<String> previewPhotos, int currentPosition) {
         Intent intent = new Intent(context, BGAPhotoPreviewActivity.class);
-        intent.putExtra(EXTRA_SAVE_IMG_DIR, saveImgDir);
-        intent.putStringArrayListExtra(EXTRA_PREVIEW_IMAGES, previewImages);
+        intent.putExtra(EXTRA_SAVE_PHOTO_DIR, savePhotoDir);
+        intent.putStringArrayListExtra(EXTRA_PREVIEW_PHOTOS, previewPhotos);
         intent.putExtra(EXTRA_CURRENT_POSITION, currentPosition);
         intent.putExtra(EXTRA_IS_SINGLE_PREVIEW, false);
         return intent;
@@ -100,7 +100,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
      */
     public static Intent newIntent(Context context, File saveImgDir, String photoPath) {
         Intent intent = new Intent(context, BGAPhotoPreviewActivity.class);
-        intent.putExtra(EXTRA_SAVE_IMG_DIR, saveImgDir);
+        intent.putExtra(EXTRA_SAVE_PHOTO_DIR, saveImgDir);
         intent.putExtra(EXTRA_PHOTO_PATH, photoPath);
         intent.putExtra(EXTRA_CURRENT_POSITION, 0);
         intent.putExtra(EXTRA_IS_SINGLE_PREVIEW, true);
@@ -125,22 +125,22 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mSaveImgDir = (File) getIntent().getSerializableExtra(EXTRA_SAVE_IMG_DIR);
-        if (mSaveImgDir != null && !mSaveImgDir.exists()) {
-            mSaveImgDir.mkdirs();
+        mSavePhotoDir = (File) getIntent().getSerializableExtra(EXTRA_SAVE_PHOTO_DIR);
+        if (mSavePhotoDir != null && !mSavePhotoDir.exists()) {
+            mSavePhotoDir.mkdirs();
         }
 
-        ArrayList<String> previewImages = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_IMAGES);
+        ArrayList<String> previewPhotos = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_PHOTOS);
 
         mIsSinglePreview = getIntent().getBooleanExtra(EXTRA_IS_SINGLE_PREVIEW, false);
         if (mIsSinglePreview) {
-            previewImages = new ArrayList<>();
-            previewImages.add(getIntent().getStringExtra(EXTRA_PHOTO_PATH));
+            previewPhotos = new ArrayList<>();
+            previewPhotos.add(getIntent().getStringExtra(EXTRA_PHOTO_PATH));
         }
 
         int currentPosition = getIntent().getIntExtra(EXTRA_CURRENT_POSITION, 0);
 
-        mPhotoPageAdapter = new BGAPhotoPageAdapter(this, this, previewImages);
+        mPhotoPageAdapter = new BGAPhotoPageAdapter(this, previewPhotos);
         mContentHvp.setAdapter(mPhotoPageAdapter);
         mContentHvp.setCurrentItem(currentPosition);
 
@@ -170,7 +170,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
             }
         });
 
-        if (mSaveImgDir == null) {
+        if (mSavePhotoDir == null) {
             mDownloadIv.setVisibility(View.INVISIBLE);
         }
 
@@ -241,9 +241,9 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         }
 
         // 通过MD5加密url生成文件名，避免多次保存同一张图片
-        file = new File(mSaveImgDir, BGAPhotoPickerUtil.md5(url) + ".png");
+        file = new File(mSavePhotoDir, BGAPhotoPickerUtil.md5(url) + ".png");
         if (file.exists()) {
-            BGAPhotoPickerUtil.showSafe(getString(R.string.bga_pp_save_img_success_folder, mSaveImgDir.getAbsolutePath()));
+            BGAPhotoPickerUtil.showSafe(getString(R.string.bga_pp_save_img_success_folder, mSavePhotoDir.getAbsolutePath()));
             return;
         }
 

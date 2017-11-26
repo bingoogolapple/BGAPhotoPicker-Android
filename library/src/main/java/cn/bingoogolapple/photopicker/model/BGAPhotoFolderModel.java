@@ -22,21 +22,21 @@ import java.util.ArrayList;
  * 创建时间:16/6/24 下午6:18
  * 描述:
  */
-public class BGAImageFolderModel {
+public class BGAPhotoFolderModel {
     public String name;
     public String coverPath;
-    private ArrayList<String> mImages = new ArrayList<>();
+    private ArrayList<String> mPhotos = new ArrayList<>();
     private boolean mTakePhotoEnabled;
 
-    public BGAImageFolderModel(boolean takePhotoEnabled) {
+    public BGAPhotoFolderModel(boolean takePhotoEnabled) {
         mTakePhotoEnabled = takePhotoEnabled;
         if (takePhotoEnabled) {
             // 拍照
-            mImages.add("");
+            mPhotos.add("");
         }
     }
 
-    public BGAImageFolderModel(String name, String coverPath) {
+    public BGAPhotoFolderModel(String name, String coverPath) {
         this.name = name;
         this.coverPath = coverPath;
     }
@@ -45,15 +45,15 @@ public class BGAImageFolderModel {
         return mTakePhotoEnabled;
     }
 
-    public void addLastImage(String imagePath) {
-        mImages.add(imagePath);
+    public void addLastPhoto(String photoPath) {
+        mPhotos.add(photoPath);
     }
 
-    public ArrayList<String> getImages() {
-        return mImages;
+    public ArrayList<String> getPhotos() {
+        return mPhotos;
     }
 
     public int getCount() {
-        return mTakePhotoEnabled ? mImages.size() - 1 : mImages.size();
+        return mTakePhotoEnabled ? mPhotos.size() - 1 : mPhotos.size();
     }
 }
