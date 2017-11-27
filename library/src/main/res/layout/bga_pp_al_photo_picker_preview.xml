@@ -19,18 +19,21 @@
         android:paddingLeft="@dimen/bga_pp_size_level2"
         android:paddingRight="@dimen/bga_pp_size_level2"
         android:singleLine="true"
-        android:text="@string/bga_pp_confirm" />
+        android:text="@string/bga_pp_confirm"
+        android:textColor="@color/bga_pp_common_textColor" />
 
     <TextView
         android:id="@+id/tv_photo_picker_preview_title"
         style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:clickable="true"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxEms="8"
         android:paddingRight="@dimen/bga_pp_size_level1"
         android:singleLine="true"
+        android:textColor="@color/bga_pp_common_textColor"
         tools:background="#71CE7E"
         tools:text="1/12" />
 

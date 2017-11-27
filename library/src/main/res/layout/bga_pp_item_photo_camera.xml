@@ -3,14 +3,14 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#303d42">
+                android:background="@color/bga_pp_photo_item_bg">
 
     <cn.bingoogolapple.photopicker.widget.BGAImageView
         android:id="@+id/iv_item_photo_camera_camera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="center"
-        android:src="@mipmap/bga_pp_ic_gallery_camera"
+        android:src="@mipmap/bga_pp_ic_camera"
         app:bga_iv_square="true"/>
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_marginBottom="@dimen/bga_pp_size_level3"
         android:gravity="center"
         android:text="@string/bga_pp_take_picture"
-        android:textColor="#adb2bb"
+        android:textColor="@color/bga_pp_take_photo_textColor"
         android:textSize="@dimen/bga_pp_textSize_level1"/>
 
 </RelativeLayout>
