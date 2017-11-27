@@ -29,7 +29,13 @@
 
 ## 效果图与示例 apk
 
-![bga-photopicker3](https://cloud.githubusercontent.com/assets/8949716/17476407/7d54831e-5d92-11e6-83d0-4049039e0899.gif)![photopickercustom](https://cloud.githubusercontent.com/assets/8949716/18590019/cde4acdc-7c5f-11e6-8877-b702aba7ae0c.png)
+| Demo | 自定义 |
+| ------------ | ------------- |
+| ![1](https://cloud.githubusercontent.com/assets/8949716/17476407/7d54831e-5d92-11e6-83d0-4049039e0899.gif) | ![2](https://cloud.githubusercontent.com/assets/8949716/18590019/cde4acdc-7c5f-11e6-8877-b702aba7ae0c.png)  |
+
+| 自定义 | 自定义 |
+| ------------ | ------------- |
+| ![3](https://user-images.githubusercontent.com/8949716/33283054-99d82070-d3e5-11e7-97a6-d5d2b265f7df.png) | ![4](https://user-images.githubusercontent.com/8949716/33283055-9a10126e-d3e5-11e7-8e12-22a1f0644ac1.png)  |
 
 [点击下载 BGAPhotoPickerDemo.apk](http://fir.im/PhotoPickerDemo) 或扫描下面的二维码安装
 
@@ -109,6 +115,49 @@ public static Intent newIntent(Context context, File saveImgDir, ArrayList<Strin
  */
 public static Intent newIntent(Context context, File saveImgDir, String photoPath)
 ```
+
+### 3.自定义样式
+
+* 可以在你项目的 mipmap-xxhdpi 目录中添加 https://github.com/bingoogolapple/BGAPhotoPicker-Android/tree/master/library/src/main/res/mipmap-xxhdpi 中相应的同名图片文件来替换图片样式
+* 可以在你项目的 colors.xml 文件中添加同名的颜色资源来自定义图片选择器的颜色
+
+```xml
+<!-- ========================== 自定义 PhotoPicker 颜色 START ========================== -->
+<!-- PhotoPicker 状态栏的颜色 -->
+<color name="bga_pp_colorPrimaryDark">@color/colorPrimaryDark</color>
+<!-- PhotoPicker 导航栏的颜色 -->
+<color name="bga_pp_navigationBarColor">@color/navigationBarColor</color>
+<!-- PhotoPicker Toolbar 的颜色 -->
+<color name="bga_pp_colorPrimary">@color/colorPrimary</color>
+<!-- 图片选择器库里所有Activity界面的背景色 -->
+<color name="bga_pp_activity_bg">@android:color/white</color>
+<!-- 文字颜色 -->
+<color name="bga_pp_common_textColor">@android:color/white</color>
+<!-- 文件夹名称颜色 -->
+<color name="bga_pp_folder_name_textColor">#282828</color>
+<!-- 文件夹中照片数量颜色 -->
+<color name="bga_pp_folder_count_textColor">#585858</color>
+<!-- 图片条目背景色 -->
+<color name="bga_pp_photo_item_bg">#303d42</color>
+<!-- 拍摄照片文字颜色 -->
+<color name="bga_pp_take_photo_textColor">#adb2bb</color>
+<!-- 图片处于选中状态时的遮罩层颜色 -->
+<color name="bga_pp_photo_selected_mask">#4DFFFFFF</color>
+<!-- 右上角确认按钮不可用时的颜色 -->
+<color name="bga_pp_btn_confirm_disabled">@android:color/transparent</color>
+<!-- 右上角确认按钮可用时的颜色 -->
+<color name="bga_pp_btn_confirm_enabled">@android:color/transparent</color>
+<!-- 右上角确认按钮按下时的颜色 -->
+<color name="bga_pp_btn_confirm_pressed">@android:color/transparent</color>
+<!-- 预览界面底部背景色 -->
+<color name="bga_pp_preview_bottom_bg">@color/colorPrimary</color>
+<!-- 数据加载对话框加载进度条的颜色 -->
+<color name="bga_pp_loading_progress_startColor">@android:color/white</color>
+<color name="bga_pp_loading_progress_centerColor">@color/colorPrimaryDark</color>
+<color name="bga_pp_loading_progress_endColor">@color/colorPrimaryDarkTrans</color>
+<!-- ========================== 自定义 PhotoPicker 颜色 END ========================== -->
+```
+
 ## 自定义属性说明
 
 ```xml
