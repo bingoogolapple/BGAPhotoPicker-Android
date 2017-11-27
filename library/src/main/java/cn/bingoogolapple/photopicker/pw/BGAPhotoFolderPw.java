@@ -27,12 +27,12 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
-import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
-import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
+import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
+import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
+import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
-import cn.bingoogolapple.photopicker.model.BGAImageFolderModel;
+import cn.bingoogolapple.photopicker.model.BGAPhotoFolderModel;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 
 
@@ -56,8 +56,8 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnRVItemC
 
     @Override
     protected void initView() {
-        mRootLl = getViewById(R.id.ll_photo_folder_root);
-        mContentRv = getViewById(R.id.rv_photo_folder_content);
+        mRootLl = findViewById(R.id.ll_photo_folder_root);
+        mContentRv = findViewById(R.id.rv_photo_folder_content);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnRVItemC
      *
      * @param datas
      */
-    public void setData(ArrayList<BGAImageFolderModel> datas) {
+    public void setData(ArrayList<BGAPhotoFolderModel> datas) {
         mFolderAdapter.setData(datas);
     }
 
@@ -132,7 +132,7 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnRVItemC
         dismiss();
     }
 
-    private class FolderAdapter extends BGARecyclerViewAdapter<BGAImageFolderModel> {
+    private class FolderAdapter extends BGARecyclerViewAdapter<BGAPhotoFolderModel> {
         private int mImageSize;
 
         public FolderAdapter(RecyclerView recyclerView) {
@@ -143,7 +143,7 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnRVItemC
         }
 
         @Override
-        protected void fillData(BGAViewHolderHelper helper, int position, BGAImageFolderModel model) {
+        protected void fillData(BGAViewHolderHelper helper, int position, BGAPhotoFolderModel model) {
             helper.setText(R.id.tv_item_photo_folder_name, model.name);
             helper.setText(R.id.tv_item_photo_folder_count, String.valueOf(model.getCount()));
             BGAImage.display(helper.getImageView(R.id.iv_item_photo_folder_photo), R.mipmap.bga_pp_ic_holder_light, model.coverPath, mImageSize);

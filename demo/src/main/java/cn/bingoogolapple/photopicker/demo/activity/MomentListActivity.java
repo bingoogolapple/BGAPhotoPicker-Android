@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
-import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemLongClickListener;
-import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
-import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
+import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
+import cn.bingoogolapple.baseadapter.BGAOnRVItemLongClickListener;
+import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
+import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.activity.BGAPPToolbarActivity;
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.demo.R;
@@ -53,8 +53,8 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_moment_list);
-        mDownLoadableCb = getViewById(R.id.cb_moment_list_downloadable);
-        mMomentRv = getViewById(R.id.rv_moment_list_moments);
+        mDownLoadableCb = findViewById(R.id.cb_moment_list_downloadable);
+        mMomentRv = findViewById(R.id.rv_moment_list_moments);
     }
 
     @Override
@@ -70,7 +70,6 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
     protected void processLogic(Bundle savedInstanceState) {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setTitle("朋友圈列表");
-
 
         mMomentRv.setLayoutManager(new LinearLayoutManager(this));
         mMomentRv.setAdapter(mMomentAdapter);
@@ -107,6 +106,8 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
     public void onClick(View v) {
         if (v.getId() == R.id.tv_moment_list_add) {
             startActivityForResult(new Intent(this, MomentAddActivity.class), REQUEST_CODE_ADD_MOMENT);
+        } else if (v.getId() == R.id.tv_moment_list_system) {
+            startActivity(new Intent(this, SystemGalleryActivity.class));
         }
     }
 

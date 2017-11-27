@@ -29,7 +29,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
+import cn.bingoogolapple.baseadapter.BGABaseAdapterUtil;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -41,7 +41,7 @@ public class BGAUILImageLoader extends BGAImageLoader {
     private void initImageLoader() {
         if (!ImageLoader.getInstance().isInited()) {
             DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
-            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(BGAPhotoPickerUtil.sApp).threadPoolSize(3).defaultDisplayImageOptions(options).build();
+            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(BGABaseAdapterUtil.getApp()).threadPoolSize(3).defaultDisplayImageOptions(options).build();
             ImageLoader.getInstance().init(config);
         }
     }

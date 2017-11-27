@@ -25,7 +25,7 @@ import org.xutils.common.Callback;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
-import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
+import cn.bingoogolapple.baseadapter.BGABaseAdapterUtil;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -36,7 +36,7 @@ public class BGAXUtilsImageLoader extends BGAImageLoader {
 
     @Override
     public void display(final ImageView imageView, String path, @DrawableRes int loadingResId, @DrawableRes int failResId, int width, int height, final DisplayDelegate delegate) {
-        x.Ext.init(BGAPhotoPickerUtil.sApp);
+        x.Ext.init(BGABaseAdapterUtil.getApp());
 
         ImageOptions options = new ImageOptions.Builder()
                 .setLoadingDrawableId(loadingResId)
@@ -69,7 +69,7 @@ public class BGAXUtilsImageLoader extends BGAImageLoader {
 
     @Override
     public void download(String path, final DownloadDelegate delegate) {
-        x.Ext.init(BGAPhotoPickerUtil.sApp);
+        x.Ext.init(BGABaseAdapterUtil.getApp());
 
         final String finalPath = getPath(path);
         x.image().loadDrawable(finalPath, new ImageOptions.Builder().build(), new Callback.CommonCallback<Drawable>() {

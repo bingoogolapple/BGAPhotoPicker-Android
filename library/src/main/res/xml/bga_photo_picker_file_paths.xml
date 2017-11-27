@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- 从相册选择图片裁剪时，不确定用户选择图片的路径，所以这里设置根目录 -->
+    <root-path
+        name="bga_photo_picker_root"
+        path="." />
+</paths>

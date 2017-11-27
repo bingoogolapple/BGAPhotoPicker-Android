@@ -1,17 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="cn.bingoogolapple.photopicker">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-
-    <uses-sdk tools:overrideLibrary="org.xutils" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application>
         <!--图片预览界面-->
         <activity
             android:name="cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity"
-            android:configChanges="keyboardHidden|orientation"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/BGAPPTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
@@ -19,7 +17,7 @@
         <!--图片选择界面-->
         <activity
             android:name="cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity"
-            android:configChanges="keyboardHidden|orientation"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/BGAPPTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
@@ -27,9 +25,19 @@
         <!--图片选择预览界面-->
         <activity
             android:name="cn.bingoogolapple.photopicker.activity.BGAPhotoPickerPreviewActivity"
-            android:configChanges="keyboardHidden|orientation"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/BGAPPTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
+        
+        <provider
+            android:name="cn.bingoogolapple.photopicker.util.BGAPhotoFileProvider"
+            android:authorities="${applicationId}.bga_photo_picker.file_provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/bga_photo_picker_file_paths" />
+        </provider>
     </application>
 </manifest>

@@ -15,15 +15,12 @@
  */
 package cn.bingoogolapple.photopicker.util;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -31,32 +28,15 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import cn.bingoogolapple.baseadapter.BGABaseAdapterUtil;
+
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/6/24 下午6:30
  * 描述:
  */
 public class BGAPhotoPickerUtil {
-    public static final Application sApp;
     private static Handler sHandler = new Handler(Looper.getMainLooper());
-
-    static {
-        Application app = null;
-        try {
-            app = (Application) Class.forName("android.app.AppGlobals").getMethod("getInitialApplication").invoke(null);
-            if (app == null)
-                throw new IllegalStateException("Static initialization of Applications must be on main thread.");
-        } catch (final Exception e) {
-            Log.e(BGAPhotoPickerUtil.class.getSimpleName(), "Failed to get current application from AppGlobals." + e.getMessage());
-            try {
-                app = (Application) Class.forName("android.app.ActivityThread").getMethod("currentApplication").invoke(null);
-            } catch (final Exception ex) {
-                Log.e(BGAPhotoPickerUtil.class.getSimpleName(), "Failed to get current application from ActivityThread." + e.getMessage());
-            }
-        } finally {
-            sApp = app;
-        }
-    }
 
     private BGAPhotoPickerUtil() {
     }
@@ -79,7 +59,7 @@ public class BGAPhotoPickerUtil {
      * @return
      */
     public static int getScreenWidth() {
-        WindowManager windowManager = (WindowManager) sApp.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) BGABaseAdapterUtil.getApp().getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(dm);
         return dm.widthPixels;
@@ -91,14 +71,10 @@ public class BGAPhotoPickerUtil {
      * @return
      */
     public static int getScreenHeight() {
-        WindowManager windowManager = (WindowManager) sApp.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) BGABaseAdapterUtil.getApp().getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(dm);
         return dm.heightPixels;
-    }
-
-    public static int dp2px(float dpValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, sApp.getResources().getDisplayMetrics());
     }
 
     public static String md5(String... strs) {
@@ -131,9 +107,9 @@ public class BGAPhotoPickerUtil {
     public static void show(CharSequence text) {
         if (!TextUtils.isEmpty(text)) {
             if (text.length() < 10) {
-                Toast.makeText(sApp, text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(BGABaseAdapterUtil.getApp(), text, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(sApp, text, Toast.LENGTH_LONG).show();
+                Toast.makeText(BGABaseAdapterUtil.getApp(), text, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -144,7 +120,7 @@ public class BGAPhotoPickerUtil {
      * @param resId
      */
     public static void show(@StringRes int resId) {
-        show(sApp.getString(resId));
+        show(BGABaseAdapterUtil.getApp().getString(resId));
     }
 
     /**
@@ -166,7 +142,7 @@ public class BGAPhotoPickerUtil {
      *
      * @param resId
      */
-    public static void showSafe( @StringRes int resId) {
-        showSafe(sApp.getString(resId));
+    public static void showSafe(@StringRes int resId) {
+        showSafe(BGABaseAdapterUtil.getApp().getString(resId));
     }
 }

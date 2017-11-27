@@ -74,15 +74,15 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_moment_add);
-        mSingleChoiceCb = getViewById(R.id.cb_moment_add_single_choice);
-        mTakePhotoCb = getViewById(R.id.cb_moment_add_take_photo);
+        mSingleChoiceCb = findViewById(R.id.cb_moment_add_single_choice);
+        mTakePhotoCb = findViewById(R.id.cb_moment_add_take_photo);
 
-        mEditableCb = getViewById(R.id.cb_moment_add_editable);
-        mPlusCb = getViewById(R.id.cb_moment_add_plus);
-        mSortableCb = getViewById(R.id.cb_moment_add_sortable);
+        mEditableCb = findViewById(R.id.cb_moment_add_editable);
+        mPlusCb = findViewById(R.id.cb_moment_add_plus);
+        mSortableCb = findViewById(R.id.cb_moment_add_sortable);
 
-        mContentEt = getViewById(R.id.et_moment_add_content);
-        mPhotosSnpl = getViewById(R.id.snpl_moment_add_photos);
+        mContentEt = findViewById(R.id.et_moment_add_content);
+        mPhotosSnpl = findViewById(R.id.snpl_moment_add_photos);
     }
 
     @Override
@@ -162,6 +162,11 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
         startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mPhotosSnpl.getMaxItemCount(), models, models, position, false), REQUEST_CODE_PHOTO_PREVIEW);
     }
 
+    @Override
+    public void onNinePhotoItemExchanged(BGASortableNinePhotoLayout sortableNinePhotoLayout, int fromPosition, int toPosition, ArrayList<String> models) {
+        Toast.makeText(this, "排序发生变化", Toast.LENGTH_SHORT).show();
+    }
+
     @AfterPermissionGranted(REQUEST_CODE_PERMISSION_PHOTO_PICKER)
     private void choicePhotoWrapper() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
@@ -197,12 +202,12 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_PHOTO) {
             if (mSingleChoiceCb.isChecked()) {
-                mPhotosSnpl.setData(BGAPhotoPickerActivity.getSelectedImages(data));
+                mPhotosSnpl.setData(BGAPhotoPickerActivity.getSelectedPhotos(data));
             } else {
-                mPhotosSnpl.addMoreData(BGAPhotoPickerActivity.getSelectedImages(data));
+                mPhotosSnpl.addMoreData(BGAPhotoPickerActivity.getSelectedPhotos(data));
             }
         } else if (requestCode == REQUEST_CODE_PHOTO_PREVIEW) {
-            mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedImages(data));
+            mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedPhotos(data));
         }
     }
 }

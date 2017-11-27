@@ -25,7 +25,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
+import cn.bingoogolapple.baseadapter.BGABaseAdapterUtil;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -51,7 +51,7 @@ public class BGAPicassoImageLoader extends BGAImageLoader {
     @Override
     public void download(String path, final DownloadDelegate delegate) {
         final String finalPath = getPath(path);
-        Picasso.with(BGAPhotoPickerUtil.sApp).load(finalPath).into(new Target() {
+        Picasso.with(BGABaseAdapterUtil.getApp()).load(finalPath).into(new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 if (delegate != null) {

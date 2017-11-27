@@ -81,7 +81,7 @@ public abstract class BGABasePopupWindow extends PopupWindow implements View.OnC
      * @param <VT> View类型
      * @return
      */
-    protected <VT extends View> VT getViewById(@IdRes int id) {
-        return (VT) getContentView().findViewById(id);
+    protected <VT extends View> VT findViewById(@IdRes int id) {
+        return getContentView().findViewById(id);
     }
 }

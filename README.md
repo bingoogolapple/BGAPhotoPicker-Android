@@ -39,23 +39,25 @@
 
 ### 1.添加 Gradle 依赖
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker) 「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。请不要再来问我「latestVersion」是什么了
+[![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-photopicker/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-photopicker/_latestVersion) bga-photopicker 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。请不要再来问我「latestVersion」是什么了
 
 由于需要支持微博长图预览，该库中已经引入了 [PhotoView](https://github.com/chrisbanes/PhotoView) 的源码并进行了修改，所以你的项目中就不要再重复引入 [PhotoView](https://github.com/chrisbanes/PhotoView) 了
 
 ```groovy
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
-    compile 'cn.bingoogolapple:bga-adapter:1.1.5@aar'
+    // -------------------- 以下4个库是必须依赖的 ----------------------------
+    implementation 'cn.bingoogolapple:bga-photopicker:latestVersion@aar'
+    implementation 'com.android.support:appcompat-v7:27.0.1'
+    implementation 'com.android.support:support-v4:27.0.1'
+    implementation 'com.android.support:recyclerview-v7:27.0.1'
+    implementation 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
+    // -------------------- 以上4个库是必须依赖的 ----------------------------
 
-    compile 'cn.bingoogolapple:bga-photopicker:latestVersion@aar'
-
-    // 必须依赖下面四个图片加载库中的某一个
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-//    compile 'com.squareup.picasso:picasso:2.5.2'
-//    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-//    compile 'org.xutils:xutils:3.3.36'
+    // 目前支持常见的 4 种图片加载库，必须在下面四个图片加载库中选择一个添加依赖
+    implementation 'com.github.bumptech.glide:glide:4.3.1'
+//    implementation 'com.squareup.picasso:picasso:2.5.2'
+//    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+//    implementation 'org.xutils:xutils:3.5.0'
 }
 ```
 
@@ -66,13 +68,13 @@ dependencies {
 ```java
 /**
  * @param context        应用程序上下文
- * @param imageDir       拍照后图片保存的目录。如果传null表示没有拍照功能，如果不为null则具有拍照功能，
+ * @param photoDir       拍照后图片保存的目录。如果传null表示没有拍照功能，如果不为null则具有拍照功能，
  * @param maxChooseCount 图片选择张数的最大值
- * @param selectedImages 当前已选中的图片路径集合，可以传null
+ * @param selectedPhotos 当前已选中的图片路径集合，可以传null
  * @param pauseOnScroll  滚动列表时是否暂停加载图片
  * @return
  */
-public static Intent newIntent(Context context, File imageDir, int maxChooseCount, ArrayList<String> selectedImages, boolean pauseOnScroll)
+public static Intent newIntent(Context context, File photoDir, int maxChooseCount, ArrayList<String> selectedPhotos, boolean pauseOnScroll)
 
 /**
  * 获取已选择的图片集合
@@ -80,7 +82,7 @@ public static Intent newIntent(Context context, File imageDir, int maxChooseCoun
  * @param intent
  * @return
  */
-public static ArrayList<String> getSelectedImages(Intent intent)
+public static ArrayList<String> getSelectedPhotos(Intent intent)
 ```
 
 > BGAPhotoPreviewActivity
@@ -91,11 +93,11 @@ public static ArrayList<String> getSelectedImages(Intent intent)
  *
  * @param context
  * @param saveImgDir      保存图片的目录，如果传null，则没有保存图片功能
- * @param previewImages   当前预览的图片目录里的图片路径集合
+ * @param previewPhotos   当前预览的图片目录里的图片路径集合
  * @param currentPosition 当前预览图片的位置
  * @return
  */
-public static Intent newIntent(Context context, File saveImgDir, ArrayList<String> previewImages, int currentPosition)
+public static Intent newIntent(Context context, File saveImgDir, ArrayList<String> previewPhotos, int currentPosition)
 
 /**
  * 获取查看单张图片的intent

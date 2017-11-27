@@ -19,11 +19,11 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
-import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
+import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
+import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
-import cn.bingoogolapple.photopicker.model.BGAImageFolderModel;
+import cn.bingoogolapple.photopicker.model.BGAPhotoFolderModel;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 
 /**
@@ -32,13 +32,13 @@ import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
  * 描述:
  */
 public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
-    private ArrayList<String> mSelectedImages = new ArrayList<>();
-    private int mImageSize;
+    private ArrayList<String> mSelectedPhotos = new ArrayList<>();
+    private int mPhotoSize;
     private boolean mTakePhotoEnabled;
 
     public BGAPhotoPickerAdapter(RecyclerView recyclerView) {
         super(recyclerView, R.layout.bga_pp_item_photo_picker);
-        mImageSize = BGAPhotoPickerUtil.getScreenWidth() / 6;
+        mPhotoSize = BGAPhotoPickerUtil.getScreenWidth() / 6;
     }
 
     @Override
@@ -63,9 +63,9 @@ public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
     @Override
     protected void fillData(BGAViewHolderHelper helper, int position, String model) {
         if (getItemViewType(position) == R.layout.bga_pp_item_photo_picker) {
-            BGAImage.display(helper.getImageView(R.id.iv_item_photo_picker_photo), R.mipmap.bga_pp_ic_holder_dark, model, mImageSize);
+            BGAImage.display(helper.getImageView(R.id.iv_item_photo_picker_photo), R.mipmap.bga_pp_ic_holder_dark, model, mPhotoSize);
 
-            if (mSelectedImages.contains(model)) {
+            if (mSelectedPhotos.contains(model)) {
                 helper.setImageResource(R.id.iv_item_photo_picker_flag, R.mipmap.bga_pp_ic_cb_checked);
                 helper.getImageView(R.id.iv_item_photo_picker_photo).setColorFilter(helper.getConvertView().getResources().getColor(R.color.bga_pp_photo_selected_mask));
             } else {
@@ -75,23 +75,23 @@ public class BGAPhotoPickerAdapter extends BGARecyclerViewAdapter<String> {
         }
     }
 
-    public void setSelectedImages(ArrayList<String> selectedImages) {
-        if (selectedImages != null) {
-            mSelectedImages = selectedImages;
+    public void setSelectedPhotos(ArrayList<String> selectedPhotos) {
+        if (selectedPhotos != null) {
+            mSelectedPhotos = selectedPhotos;
         }
         notifyDataSetChanged();
     }
 
-    public ArrayList<String> getSelectedImages() {
-        return mSelectedImages;
+    public ArrayList<String> getSelectedPhotos() {
+        return mSelectedPhotos;
     }
 
     public int getSelectedCount() {
-        return mSelectedImages.size();
+        return mSelectedPhotos.size();
     }
 
-    public void setImageFolderModel(BGAImageFolderModel imageFolderModel) {
-        mTakePhotoEnabled = imageFolderModel.isTakePhotoEnabled();
-        setData(imageFolderModel.getImages());
+    public void setPhotoFolderModel(BGAPhotoFolderModel photoFolderModel) {
+        mTakePhotoEnabled = photoFolderModel.isTakePhotoEnabled();
+        setData(photoFolderModel.getPhotos());
     }
 }

@@ -27,19 +27,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import cn.bingoogolapple.photopicker.R;
-import cn.bingoogolapple.photopicker.model.BGAImageFolderModel;
+import cn.bingoogolapple.photopicker.model.BGAPhotoFolderModel;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/7/8 上午10:32
  * 描述:
  */
-public class BGALoadPhotoTask extends BGAAsyncTask<Void, ArrayList<BGAImageFolderModel>> {
+public class BGALoadPhotoTask extends BGAAsyncTask<Void, ArrayList<BGAPhotoFolderModel>> {
     private Context mContext;
     private boolean mTakePhotoEnabled;
 
 
-    public BGALoadPhotoTask(Callback<ArrayList<BGAImageFolderModel>> callback, Context context, boolean takePhotoEnabled) {
+    public BGALoadPhotoTask(Callback<ArrayList<BGAPhotoFolderModel>> callback, Context context, boolean takePhotoEnabled) {
         super(callback);
         mContext = context.getApplicationContext();
         mTakePhotoEnabled = takePhotoEnabled;
@@ -61,14 +61,14 @@ public class BGALoadPhotoTask extends BGAAsyncTask<Void, ArrayList<BGAImageFolde
     }
 
     @Override
-    protected ArrayList<BGAImageFolderModel> doInBackground(Void... voids) {
-        ArrayList<BGAImageFolderModel> imageFolderModels = new ArrayList<>();
+    protected ArrayList<BGAPhotoFolderModel> doInBackground(Void... voids) {
+        ArrayList<BGAPhotoFolderModel> imageFolderModels = new ArrayList<>();
 
-        BGAImageFolderModel allImageFolderModel = new BGAImageFolderModel(mTakePhotoEnabled);
+        BGAPhotoFolderModel allImageFolderModel = new BGAPhotoFolderModel(mTakePhotoEnabled);
         allImageFolderModel.name = mContext.getString(R.string.bga_pp_all_image);
         imageFolderModels.add(allImageFolderModel);
 
-        HashMap<String, BGAImageFolderModel> imageFolderModelMap = new HashMap<>();
+        HashMap<String, BGAPhotoFolderModel> imageFolderModelMap = new HashMap<>();
 
         Cursor cursor = null;
         try {
@@ -80,7 +80,7 @@ public class BGALoadPhotoTask extends BGAAsyncTask<Void, ArrayList<BGAImageFolde
                     MediaStore.Images.Media.DATE_ADDED + " DESC"
             );
 
-            BGAImageFolderModel otherImageFolderModel;
+            BGAPhotoFolderModel otherImageFolderModel;
             if (cursor != null && cursor.getCount() > 0) {
                 boolean firstInto = true;
                 while (cursor.moveToNext()) {
@@ -95,7 +95,7 @@ public class BGALoadPhotoTask extends BGAAsyncTask<Void, ArrayList<BGAImageFolde
                         firstInto = false;
                     }
                     // 所有图片目录每次都添加
-                    allImageFolderModel.addLastImage(imagePath);
+                    allImageFolderModel.addLastPhoto(imagePath);
 
                     String folderPath = null;
                     // 其他图片目录
@@ -119,10 +119,10 @@ public class BGALoadPhotoTask extends BGAAsyncTask<Void, ArrayList<BGAImageFolde
                             if (TextUtils.isEmpty(folderName)) {
                                 folderName = "/";
                             }
-                            otherImageFolderModel = new BGAImageFolderModel(folderName, imagePath);
+                            otherImageFolderModel = new BGAPhotoFolderModel(folderName, imagePath);
                             imageFolderModelMap.put(folderPath, otherImageFolderModel);
                         }
-                        otherImageFolderModel.addLastImage(imagePath);
+                        otherImageFolderModel.addLastPhoto(imagePath);
                     }
                 }
 

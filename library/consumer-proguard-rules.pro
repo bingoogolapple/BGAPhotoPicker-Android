@@ -10,11 +10,11 @@
 ## ----------------------------------
 -keep class com.bumptech.glide.Glide { *; }
 -keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
 -keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
   **[] $VALUES;
   public *;
 }
--dontwarn com.bumptech.glide.**
 
 ## ----------------------------------
 ##      Picasso 相关
@@ -41,7 +41,6 @@
 -keepclassmembers class * {
     @org.xutils.view.annotation.Event <methods>;
 }
--dontwarn org.xutils.**
 
 ## ----------------------------------
 ##      DataBinding 相关
@@ -49,3 +48,8 @@
 -keepclasseswithmembers class * extends android.databinding.ViewDataBinding{
     <methods>;
 }
+
+## ----------------------------------
+##      BGAPhotoPicker 相关
+## ----------------------------------
+-dontwarn cn.bingoogolapple.photopicker.imageloader.**

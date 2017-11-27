@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            style="@style/MatchMatch">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <LinearLayout style="@style/MatchMatch.Vertical">
+    <LinearLayout
+        style="@style/MatchMatch.Vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
         <LinearLayout
             style="@style/MatchWrap.Horizontal"
@@ -14,14 +19,14 @@
                 style="@style/AutoWrap"
                 android:text="是否是单选"
                 android:textColor="@color/colorPrimary"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
             <CheckBox
                 android:id="@+id/cb_moment_add_take_photo"
                 style="@style/AutoWrap"
                 android:text="是否开启拍照功能"
                 android:textColor="@color/colorPrimary"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -36,7 +41,7 @@
                 android:checked="true"
                 android:text="是否可编辑"
                 android:textColor="@color/colorPrimary"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
             <CheckBox
                 android:id="@+id/cb_moment_add_plus"
@@ -44,7 +49,7 @@
                 android:checked="true"
                 android:text="是否显示加号"
                 android:textColor="@color/colorPrimary"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
             <CheckBox
                 android:id="@+id/cb_moment_add_sortable"
@@ -52,7 +57,7 @@
                 android:checked="true"
                 android:text="是否拖拽排序"
                 android:textColor="@color/colorPrimary"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -65,12 +70,12 @@
             <TextView
                 android:id="@+id/tv_moment_add_choice_photo"
                 style="@style/AutoWrapTv"
-                android:text="选择图片"/>
+                android:text="选择图片" />
 
             <TextView
                 android:id="@+id/tv_moment_add_publish"
                 style="@style/AutoWrapTv"
-                android:text="发布"/>
+                android:text="发布" />
         </LinearLayout>
 
         <EditText
@@ -83,7 +88,7 @@
             android:hint="这一刻的想法..."
             android:lines="4"
             android:textColor="#474747"
-            android:textColorHint="#C6C6C6"/>
+            android:textColorHint="#C6C6C6" />
 
         <cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout
             android:id="@+id/snpl_moment_add_photos"
@@ -101,6 +106,6 @@
             app:bga_snpl_placeholderDrawable="@mipmap/bga_pp_ic_holder_dark"
             app:bga_snpl_plusDrawable="@mipmap/bga_pp_ic_plus"
             app:bga_snpl_plusEnable="true"
-            app:bga_snpl_sortable="true"/>
+            app:bga_snpl_sortable="true" />
     </LinearLayout>
 </ScrollView>
