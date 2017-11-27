@@ -25,6 +25,7 @@
         android:paddingRight="@dimen/bga_pp_size_level1"
         android:singleLine="true"
         android:text="@string/bga_pp_view_photo"
+        android:textColor="@color/bga_pp_common_textColor"
         tools:background="#71CE7E" />
 
 </RelativeLayout>

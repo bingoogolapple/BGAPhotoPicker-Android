@@ -120,7 +120,7 @@ public class SystemGalleryActivity extends BGAPPToolbarActivity implements EasyP
                     e.printStackTrace();
                 }
             } else if (requestCode == REQUEST_CODE_CROP) {
-                BGAImage.display(mAvatarIv, R.mipmap.bga_pp_ic_holder_dark, mPhotoHelper.getCropFilePath(), BGABaseAdapterUtil.dp2px(200));
+                BGAImage.display(mAvatarIv, R.mipmap.bga_pp_ic_holder_light, mPhotoHelper.getCropFilePath(), BGABaseAdapterUtil.dp2px(200));
             }
         } else {
             if (requestCode == REQUEST_CODE_CROP) {

@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentBottom="true"
-        android:background="?attr/colorPrimary">
+        android:background="@color/bga_pp_preview_bottom_bg">
 
         <TextView
             android:id="@+id/tv_photo_picker_preview_choose"
@@ -23,15 +23,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/bga_pp_size_level2"
             android:clickable="true"
             android:drawableLeft="@mipmap/bga_pp_ic_cb_normal"
-            android:drawablePadding="@dimen/bga_pp_textSize_level1"
+            android:drawablePadding="@dimen/bga_pp_size_level1"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/bga_pp_size_level2"
-            android:paddingRight="@dimen/bga_pp_size_level2"
+            android:paddingLeft="@dimen/bga_pp_size_level4"
+            android:paddingRight="@dimen/bga_pp_size_level4"
             android:text="@string/bga_pp_choose"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/bga_pp_common_textColor" />
 
     </RelativeLayout>
 

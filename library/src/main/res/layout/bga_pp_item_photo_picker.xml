@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#303d42">
+    android:background="@color/bga_pp_photo_item_bg">
 
     <cn.bingoogolapple.photopicker.widget.BGAImageView
         android:id="@+id/iv_item_photo_picker_photo"

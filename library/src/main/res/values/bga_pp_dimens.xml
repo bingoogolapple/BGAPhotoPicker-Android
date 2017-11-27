@@ -5,6 +5,7 @@
     <dimen name="bga_pp_size_level1">4dp</dimen>
     <dimen name="bga_pp_size_level2">8dp</dimen>
     <dimen name="bga_pp_size_level3">12dp</dimen>
+    <dimen name="bga_pp_size_level4">16dp</dimen>
 
     <dimen name="bga_pp_textSize_level1">12sp</dimen>
     <dimen name="bga_pp_textSize_level2">16sp</dimen>
