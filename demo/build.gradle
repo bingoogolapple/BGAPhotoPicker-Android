@@ -32,10 +32,10 @@ dependencies {
     implementation 'pub.devrel:easypermissions:1.0.1'
     // 以上几个库是演示案例所使用到的
 
-    implementation project(':library')
+//    implementation project(':library')
 
     // -------------------- 以下4个库是必须依赖的 ----------------------------
-//    implementation 'cn.bingoogolapple:bga-photopicker:1.2.4@aar'
+    implementation 'cn.bingoogolapple:bga-photopicker:1.2.4@aar'
     implementation 'com.android.support:appcompat-v7:27.0.1'
     implementation 'com.android.support:support-v4:27.0.1'
     implementation 'com.android.support:recyclerview-v7:27.0.1'

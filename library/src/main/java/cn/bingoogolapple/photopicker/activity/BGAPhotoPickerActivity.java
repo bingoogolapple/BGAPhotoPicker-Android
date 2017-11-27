@@ -372,7 +372,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         try {
             startActivityForResult(mPhotoHelper.getTakePhotoIntent(), REQUEST_CODE_TAKE_PHOTO);
         } catch (Exception e) {
-            BGAPhotoPickerUtil.show(R.string.bga_pp_photo_not_support);
+            BGAPhotoPickerUtil.show(R.string.bga_pp_not_support_take_photo);
         }
     }
 

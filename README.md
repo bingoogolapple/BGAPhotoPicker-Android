@@ -39,7 +39,7 @@
 
 ### 1.添加 Gradle 依赖
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-photopicker) 「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。请不要再来问我「latestVersion」是什么了
+[![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-photopicker/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-photopicker/_latestVersion) bga-photopicker 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。请不要再来问我「latestVersion」是什么了
 
 由于需要支持微博长图预览，该库中已经引入了 [PhotoView](https://github.com/chrisbanes/PhotoView) 的源码并进行了修改，所以你的项目中就不要再重复引入 [PhotoView](https://github.com/chrisbanes/PhotoView) 了
 
@@ -68,13 +68,13 @@ dependencies {
 ```java
 /**
  * @param context        应用程序上下文
- * @param imageDir       拍照后图片保存的目录。如果传null表示没有拍照功能，如果不为null则具有拍照功能，
+ * @param photoDir       拍照后图片保存的目录。如果传null表示没有拍照功能，如果不为null则具有拍照功能，
  * @param maxChooseCount 图片选择张数的最大值
- * @param selectedImages 当前已选中的图片路径集合，可以传null
+ * @param selectedPhotos 当前已选中的图片路径集合，可以传null
  * @param pauseOnScroll  滚动列表时是否暂停加载图片
  * @return
  */
-public static Intent newIntent(Context context, File imageDir, int maxChooseCount, ArrayList<String> selectedImages, boolean pauseOnScroll)
+public static Intent newIntent(Context context, File photoDir, int maxChooseCount, ArrayList<String> selectedPhotos, boolean pauseOnScroll)
 
 /**
  * 获取已选择的图片集合
@@ -82,7 +82,7 @@ public static Intent newIntent(Context context, File imageDir, int maxChooseCoun
  * @param intent
  * @return
  */
-public static ArrayList<String> getSelectedImages(Intent intent)
+public static ArrayList<String> getSelectedPhotos(Intent intent)
 ```
 
 > BGAPhotoPreviewActivity
@@ -93,11 +93,11 @@ public static ArrayList<String> getSelectedImages(Intent intent)
  *
  * @param context
  * @param saveImgDir      保存图片的目录，如果传null，则没有保存图片功能
- * @param previewImages   当前预览的图片目录里的图片路径集合
+ * @param previewPhotos   当前预览的图片目录里的图片路径集合
  * @param currentPosition 当前预览图片的位置
  * @return
  */
-public static Intent newIntent(Context context, File saveImgDir, ArrayList<String> previewImages, int currentPosition)
+public static Intent newIntent(Context context, File saveImgDir, ArrayList<String> previewPhotos, int currentPosition)
 
 /**
  * 获取查看单张图片的intent

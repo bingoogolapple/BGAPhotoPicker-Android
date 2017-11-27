@@ -15,8 +15,9 @@
  */
 package cn.bingoogolapple.photopicker.util;
 
-import android.content.ContentValues;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -79,10 +80,24 @@ public class BGAPhotoHelper {
     private File createCropFile() throws IOException {
         File cropFile = File.createTempFile(
                 "Crop_" + PHOTO_NAME_POSTFIX_SDF.format(new Date()),
-                ".png",
+                ".jpg",
                 BGABaseAdapterUtil.getApp().getExternalCacheDir());
         mCropFilePath = cropFile.getAbsolutePath();
         return cropFile;
+    }
+
+    /**
+     * 获取从系统相册选图片意图
+     *
+     * @return
+     */
+    public Intent getChooseSystemGalleryIntent() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
+        return intent;
     }
 
     /**
@@ -147,16 +162,19 @@ public class BGAPhotoHelper {
      */
     public Intent getCropIntent(String inputFilePath, int width, int height) throws IOException {
         Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(Uri.fromFile(new File(inputFilePath)), "image/*");
-        intent.putExtra("crop", "true");
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
+        intent.setDataAndType(BGAPhotoHelper.createFileUri(new File(inputFilePath)), "image/*");
+        intent.putExtra("crop", true);
+        intent.putExtra("aspectX", width);
+        intent.putExtra("aspectY", height);
         intent.putExtra("outputX", width);
         intent.putExtra("outputY", height);
         intent.putExtra("return-data", false);
         intent.putExtra("scale", true);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createCropFile()));
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra("noFaceDetection", true);
         return intent;
     }
@@ -168,14 +186,43 @@ public class BGAPhotoHelper {
      * @return
      */
     public static Uri createFileUri(File file) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            return Uri.fromFile(file);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            String authority = BGABaseAdapterUtil.getApp().getApplicationInfo().packageName + ".bga_photo_picker.file_provider";
+            return BGAPhotoFileProvider.getUriForFile(BGABaseAdapterUtil.getApp(), authority, file);
         } else {
-            ContentValues contentValues = new ContentValues(1);
-            contentValues.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
-            Uri uri = BGABaseAdapterUtil.getApp().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-            return uri;
+            return Uri.fromFile(file);
         }
+    }
+
+    /**
+     * 从 Uri 中获取文件路劲
+     *
+     * @param uri
+     * @return
+     */
+    public static String getFilePathFromUri(Uri uri) {
+        if (uri == null) {
+            return null;
+        }
+
+        String scheme = uri.getScheme();
+        String filePath = null;
+        if (TextUtils.isEmpty(scheme) || TextUtils.equals(ContentResolver.SCHEME_FILE, scheme)) {
+            filePath = uri.getPath();
+        } else if (TextUtils.equals(ContentResolver.SCHEME_CONTENT, scheme)) {
+            String[] filePathColumn = {MediaStore.MediaColumns.DATA};
+            Cursor cursor = BGABaseAdapterUtil.getApp().getContentResolver().query(uri, filePathColumn, null, null, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    if (columnIndex > -1) {
+                        filePath = cursor.getString(columnIndex);
+                    }
+                }
+                cursor.close();
+            }
+        }
+        return filePath;
     }
 
     public static void onRestoreInstanceState(BGAPhotoHelper photoHelper, Bundle savedInstanceState) {

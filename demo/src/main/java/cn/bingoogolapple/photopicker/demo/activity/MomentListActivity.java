@@ -71,7 +71,6 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setTitle("朋友圈列表");
 
-
         mMomentRv.setLayoutManager(new LinearLayoutManager(this));
         mMomentRv.setAdapter(mMomentAdapter);
 
@@ -107,6 +106,8 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
     public void onClick(View v) {
         if (v.getId() == R.id.tv_moment_list_add) {
             startActivityForResult(new Intent(this, MomentAddActivity.class), REQUEST_CODE_ADD_MOMENT);
+        } else if (v.getId() == R.id.tv_moment_list_system) {
+            startActivity(new Intent(this, SystemGalleryActivity.class));
         }
     }
 

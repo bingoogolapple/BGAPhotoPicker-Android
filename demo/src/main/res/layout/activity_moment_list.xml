@@ -3,7 +3,7 @@
     style="@style/MatchMatch.Vertical">
 
     <LinearLayout
-        style="@style/MatchWrap.Horizontal"
+        style="@style/MatchWrap.Vertical"
         android:gravity="center_vertical">
 
         <CheckBox
@@ -20,6 +20,11 @@
             android:id="@+id/tv_moment_list_add"
             style="@style/MatchWrapTv"
             android:text="添加朋友圈" />
+
+        <TextView
+            android:id="@+id/tv_moment_list_system"
+            style="@style/MatchWrapTv"
+            android:text="测试系统相册" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
