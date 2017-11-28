@@ -76,7 +76,7 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
      * 获取查看多张图片的intent
      *
      * @param context
-     * @param savePhotoDir      保存图片的目录，如果传null，则没有保存图片功能
+     * @param savePhotoDir    保存图片的目录，如果传null，则没有保存图片功能
      * @param previewPhotos   当前预览的图片目录里的图片路径集合
      * @param currentPosition 当前预览图片的位置
      * @return
@@ -251,7 +251,9 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         BGAImage.download(url, new BGAImageLoader.DownloadDelegate() {
             @Override
             public void onSuccess(String url, Bitmap bitmap) {
-                mSavePhotoTask.setBitmapAndPerform(bitmap);
+                if (mSavePhotoTask != null) {
+                    mSavePhotoTask.setBitmapAndPerform(bitmap);
+                }
             }
 
             @Override

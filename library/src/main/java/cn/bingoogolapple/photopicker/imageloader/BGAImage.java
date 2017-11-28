@@ -17,6 +17,7 @@ package cn.bingoogolapple.photopicker.imageloader;
 
 import android.app.Activity;
 import android.support.annotation.DrawableRes;
+import android.util.Log;
 import android.widget.ImageView;
 
 /**
@@ -25,6 +26,7 @@ import android.widget.ImageView;
  * 描述:
  */
 public class BGAImage {
+    private static final String TAG = BGAImage.class.getSimpleName();
     private static BGAImageLoader sImageLoader;
 
     private BGAImage() {
@@ -61,7 +63,11 @@ public class BGAImage {
     }
 
     public static void display(ImageView imageView, @DrawableRes int loadingResId, @DrawableRes int failResId, String path, int width, int height, final BGAImageLoader.DisplayDelegate delegate) {
-        getImageLoader().display(imageView, path, loadingResId, failResId, width, height, delegate);
+        try {
+            getImageLoader().display(imageView, path, loadingResId, failResId, width, height, delegate);
+        } catch (Exception e) {
+            Log.d(TAG, "显示图片失败：" + e.getMessage());
+        }
     }
 
     public static void display(ImageView imageView, @DrawableRes int placeholderResId, String path, int width, int height, final BGAImageLoader.DisplayDelegate delegate) {
@@ -77,7 +83,11 @@ public class BGAImage {
     }
 
     public static void download(String path, final BGAImageLoader.DownloadDelegate delegate) {
-        getImageLoader().download(path, delegate);
+        try {
+            getImageLoader().download(path, delegate);
+        } catch (Exception e) {
+            Log.d(TAG, "下载图片失败：" + e.getMessage());
+        }
     }
 
     /**
