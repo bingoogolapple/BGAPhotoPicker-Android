@@ -28,10 +28,10 @@ import pub.devrel.easypermissions.EasyPermissions;
  * 你自己项目里「可以不继承 BGAPPToolbarActivity」，我在这里继承 BGAPPToolbarActivity 只是为了方便写 Demo
  */
 public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermissions.PermissionCallbacks, BGASortableNinePhotoLayout.Delegate {
-    private static final int REQUEST_CODE_PERMISSION_PHOTO_PICKER = 1;
+    private static final int PRC_PHOTO_PICKER = 1;
 
-    private static final int REQUEST_CODE_CHOOSE_PHOTO = 1;
-    private static final int REQUEST_CODE_PHOTO_PREVIEW = 2;
+    private static final int RC_CHOOSE_PHOTO = 1;
+    private static final int RC_PHOTO_PREVIEW = 2;
 
     private static final String EXTRA_MOMENT = "EXTRA_MOMENT";
 
@@ -159,7 +159,14 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
 
     @Override
     public void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models) {
-        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mPhotosSnpl.getMaxItemCount(), models, models, position, false), REQUEST_CODE_PHOTO_PREVIEW);
+        Intent photoPickerPreviewIntent = new BGAPhotoPickerPreviewActivity.IntentBuilder(this)
+                .previewPhotos(models) // 当前预览的图片路径集合
+                .selectedPhotos(models) // 当前已选中的图片路径集合
+                .maxChooseCount(mPhotosSnpl.getMaxItemCount()) // 图片选择张数的最大值
+                .currentPosition(position) // 当前预览图片的索引
+                .isFromTakePhoto(false) // 是否是拍完照后跳转过来
+                .build();
+        startActivityForResult(photoPickerPreviewIntent, RC_PHOTO_PREVIEW);
     }
 
     @Override
@@ -167,16 +174,22 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
         Toast.makeText(this, "排序发生变化", Toast.LENGTH_SHORT).show();
     }
 
-    @AfterPermissionGranted(REQUEST_CODE_PERMISSION_PHOTO_PICKER)
+    @AfterPermissionGranted(PRC_PHOTO_PICKER)
     private void choicePhotoWrapper() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
         if (EasyPermissions.hasPermissions(this, perms)) {
             // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
             File takePhotoDir = new File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerTakePhoto");
 
-            startActivityForResult(BGAPhotoPickerActivity.newIntent(this, mTakePhotoCb.isChecked() ? takePhotoDir : null, mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount(), null, false), REQUEST_CODE_CHOOSE_PHOTO);
+            Intent photoPickerIntent = new BGAPhotoPickerActivity.IntentBuilder(this)
+                    .cameraFileDir(mTakePhotoCb.isChecked() ? takePhotoDir : null) // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话则不开启图库里的拍照功能
+                    .maxChooseCount(mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount()) // 图片选择张数的最大值
+                    .selectedPhotos(null) // 当前已选中的图片路径集合
+                    .pauseOnScroll(false) // 滚动列表时是否暂停加载图片
+                    .build();
+            startActivityForResult(photoPickerIntent, RC_CHOOSE_PHOTO);
         } else {
-            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片\n\n2.拍照", REQUEST_CODE_PERMISSION_PHOTO_PICKER, perms);
+            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片\n\n2.拍照", PRC_PHOTO_PICKER, perms);
         }
     }
 
@@ -192,7 +205,7 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-        if (requestCode == REQUEST_CODE_PERMISSION_PHOTO_PICKER) {
+        if (requestCode == PRC_PHOTO_PICKER) {
             Toast.makeText(this, "您拒绝了「图片选择」所需要的相关权限!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -200,13 +213,13 @@ public class MomentAddActivity extends BGAPPToolbarActivity implements EasyPermi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_PHOTO) {
+        if (resultCode == RESULT_OK && requestCode == RC_CHOOSE_PHOTO) {
             if (mSingleChoiceCb.isChecked()) {
                 mPhotosSnpl.setData(BGAPhotoPickerActivity.getSelectedPhotos(data));
             } else {
                 mPhotosSnpl.addMoreData(BGAPhotoPickerActivity.getSelectedPhotos(data));
             }
-        } else if (requestCode == REQUEST_CODE_PHOTO_PREVIEW) {
+        } else if (requestCode == RC_PHOTO_PREVIEW) {
             mPhotosSnpl.setData(BGAPhotoPickerPreviewActivity.getSelectedPhotos(data));
         }
     }

@@ -18,6 +18,7 @@ package cn.bingoogolapple.photopicker.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -33,6 +34,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import cn.bingoogolapple.baseadapter.BGAGridDivider;
 import cn.bingoogolapple.baseadapter.BGAOnItemChildClickListener;
@@ -67,7 +69,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
     /**
      * 预览照片的请求码
      */
-    private static final int REQUEST_CODE_PREVIEW = 2;
+    private static final int RC_PREVIEW = 2;
 
     private static final int SPAN_COUNT = 3;
 
@@ -113,21 +115,51 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         }
     };
 
-    /**
-     * @param context        应用程序上下文
-     * @param cameraFileDir       拍照后图片保存的目录。如果传null表示没有拍照功能，如果不为null则具有拍照功能，
-     * @param maxChooseCount 图片选择张数的最大值
-     * @param selectedPhotos 当前已选中的图片路径集合，可以传null
-     * @param pauseOnScroll  滚动列表时是否暂停加载图片
-     * @return
-     */
-    public static Intent newIntent(Context context, File cameraFileDir, int maxChooseCount, ArrayList<String> selectedPhotos, boolean pauseOnScroll) {
-        Intent intent = new Intent(context, BGAPhotoPickerActivity.class);
-        intent.putExtra(EXTRA_CAMERA_FILE_DIR, cameraFileDir);
-        intent.putExtra(EXTRA_MAX_CHOOSE_COUNT, maxChooseCount);
-        intent.putStringArrayListExtra(EXTRA_SELECTED_PHOTOS, selectedPhotos);
-        intent.putExtra(EXTRA_PAUSE_ON_SCROLL, pauseOnScroll);
-        return intent;
+    public static class IntentBuilder {
+        private Intent mIntent;
+
+        public IntentBuilder(Context context) {
+            mIntent = new Intent(context, BGAPhotoPickerActivity.class);
+        }
+
+        /**
+         * 拍照后图片保存的目录。如果传 null 表示没有拍照功能，如果不为 null 则具有拍照功能，
+         */
+        public IntentBuilder cameraFileDir(@Nullable File cameraFileDir) {
+            mIntent.putExtra(EXTRA_CAMERA_FILE_DIR, cameraFileDir);
+            return this;
+        }
+
+        /**
+         * 图片选择张数的最大值
+         *
+         * @param maxChooseCount
+         * @return
+         */
+        public IntentBuilder maxChooseCount(int maxChooseCount) {
+            mIntent.putExtra(EXTRA_MAX_CHOOSE_COUNT, maxChooseCount);
+            return this;
+        }
+
+        /**
+         * 当前已选中的图片路径集合，可以传 null
+         */
+        public IntentBuilder selectedPhotos(@Nullable ArrayList<String> selectedPhotos) {
+            mIntent.putStringArrayListExtra(EXTRA_SELECTED_PHOTOS, selectedPhotos);
+            return this;
+        }
+
+        /**
+         * 滚动列表时是否暂停加载图片，默认为 false
+         */
+        public IntentBuilder pauseOnScroll(boolean pauseOnScroll) {
+            mIntent.putExtra(EXTRA_PAUSE_ON_SCROLL, pauseOnScroll);
+            return this;
+        }
+
+        public Intent build() {
+            return mIntent;
+        }
     }
 
     /**
@@ -287,10 +319,17 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
-                ArrayList<String> photos = new ArrayList<>();
-                photos.add(mPhotoHelper.getCameraFilePath());
-                startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, 1, photos, photos, 0, true), REQUEST_CODE_PREVIEW);
-            } else if (requestCode == REQUEST_CODE_PREVIEW) {
+                ArrayList<String> photos = new ArrayList<>(Arrays.asList(mPhotoHelper.getCameraFilePath()));
+
+                Intent photoPickerPreview = new BGAPhotoPickerPreviewActivity.IntentBuilder(this)
+                        .isFromTakePhoto(true)
+                        .maxChooseCount(1)
+                        .previewPhotos(photos)
+                        .selectedPhotos(photos)
+                        .currentPosition(0)
+                        .build();
+                startActivityForResult(photoPickerPreview, RC_PREVIEW);
+            } else if (requestCode == RC_PREVIEW) {
                 if (BGAPhotoPickerPreviewActivity.getIsFromTakePhoto(data)) {
                     // 从拍照预览界面返回，刷新图库
                     mPhotoHelper.refreshGallery();
@@ -298,7 +337,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
                 returnSelectedPhotos(BGAPhotoPickerPreviewActivity.getSelectedPhotos(data));
             }
-        } else if (resultCode == RESULT_CANCELED && requestCode == REQUEST_CODE_PREVIEW) {
+        } else if (resultCode == RESULT_CANCELED && requestCode == RC_PREVIEW) {
             if (BGAPhotoPickerPreviewActivity.getIsFromTakePhoto(data)) {
                 // 从拍照预览界面返回，删除之前拍的照片
                 mPhotoHelper.deleteCameraFile();
@@ -386,9 +425,15 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
         if (mCurrentPhotoFolderModel.isTakePhotoEnabled()) {
             currentPosition--;
         }
-        startActivityForResult(BGAPhotoPickerPreviewActivity.newIntent(this, mMaxChooseCount, mPicAdapter
-                        .getSelectedPhotos(), (ArrayList<String>) mPicAdapter.getData(), currentPosition, false),
-                REQUEST_CODE_PREVIEW);
+
+        Intent photoPickerPreviewIntent = new BGAPhotoPickerPreviewActivity.IntentBuilder(this)
+                .previewPhotos((ArrayList<String>) mPicAdapter.getData())
+                .selectedPhotos(mPicAdapter.getSelectedPhotos())
+                .maxChooseCount(mMaxChooseCount)
+                .currentPosition(currentPosition)
+                .isFromTakePhoto(false)
+                .build();
+        startActivityForResult(photoPickerPreviewIntent, RC_PREVIEW);
     }
 
     /**

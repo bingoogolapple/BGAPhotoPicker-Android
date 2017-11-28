@@ -36,9 +36,9 @@ import pub.devrel.easypermissions.EasyPermissions;
  * BGAOnRVItemClickListener和BGAOnRVItemLongClickListener这两个接口是为了测试事件传递是否正确，你自己的项目里可以不实现这两个接口
  */
 public class MomentListActivity extends BGAPPToolbarActivity implements EasyPermissions.PermissionCallbacks, BGANinePhotoLayout.Delegate, BGAOnRVItemClickListener, BGAOnRVItemLongClickListener {
-    private static final int REQUEST_CODE_PERMISSION_PHOTO_PREVIEW = 1;
+    private static final int PRC_PHOTO_PREVIEW = 1;
 
-    private static final int REQUEST_CODE_ADD_MOMENT = 1;
+    private static final int RC_ADD_MOMENT = 1;
 
     private RecyclerView mMomentRv;
     private MomentAdapter mMomentAdapter;
@@ -105,7 +105,7 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
 
     public void onClick(View v) {
         if (v.getId() == R.id.tv_moment_list_add) {
-            startActivityForResult(new Intent(this, MomentAddActivity.class), REQUEST_CODE_ADD_MOMENT);
+            startActivityForResult(new Intent(this, MomentAddActivity.class), RC_ADD_MOMENT);
         } else if (v.getId() == R.id.tv_moment_list_system) {
             startActivity(new Intent(this, SystemGalleryActivity.class));
         }
@@ -114,7 +114,7 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_ADD_MOMENT) {
+        if (resultCode == RESULT_OK && requestCode == RC_ADD_MOMENT) {
             mMomentAdapter.addFirstItem(MomentAddActivity.getMoment(data));
             mMomentRv.smoothScrollToPosition(0);
         }
@@ -123,28 +123,29 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
     /**
      * 图片预览，兼容6.0动态权限
      */
-    @AfterPermissionGranted(REQUEST_CODE_PERMISSION_PHOTO_PREVIEW)
+    @AfterPermissionGranted(PRC_PHOTO_PREVIEW)
     private void photoPreviewWrapper() {
         if (mCurrentClickNpl == null) {
             return;
         }
 
-        // 保存图片的目录，改成你自己要保存图片的目录。如果不传递该参数的话就不会显示右上角的保存按钮
-        File downloadDir = new File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerDownload");
-
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
+            File downloadDir = new File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerDownload");
+            BGAPhotoPreviewActivity.IntentBuilder photoPreviewIntentBuilder = new BGAPhotoPreviewActivity.IntentBuilder(this)
+                    .saveImgDir(downloadDir); // 保存图片的目录，如果传 null，则没有保存图片功能
+
             if (mCurrentClickNpl.getItemCount() == 1) {
                 // 预览单张图片
-
-                startActivity(BGAPhotoPreviewActivity.newIntent(this, mDownLoadableCb.isChecked() ? downloadDir : null, mCurrentClickNpl.getCurrentClickItem()));
+                photoPreviewIntentBuilder.previewPhoto(mCurrentClickNpl.getCurrentClickItem());
             } else if (mCurrentClickNpl.getItemCount() > 1) {
                 // 预览多张图片
-
-                startActivity(BGAPhotoPreviewActivity.newIntent(this, mDownLoadableCb.isChecked() ? downloadDir : null, mCurrentClickNpl.getData(), mCurrentClickNpl.getCurrentClickItemPosition()));
+                photoPreviewIntentBuilder.previewPhotos(mCurrentClickNpl.getData())
+                        .currentPosition(mCurrentClickNpl.getCurrentClickItemPosition()); // 当前预览图片的索引
             }
+            startActivity(photoPreviewIntentBuilder.build());
         } else {
-            EasyPermissions.requestPermissions(this, "图片预览需要以下权限:\n\n1.访问设备上的照片", REQUEST_CODE_PERMISSION_PHOTO_PREVIEW, perms);
+            EasyPermissions.requestPermissions(this, "图片预览需要以下权限:\n\n1.访问设备上的照片", PRC_PHOTO_PREVIEW, perms);
         }
     }
 
@@ -160,7 +161,7 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-        if (requestCode == REQUEST_CODE_PERMISSION_PHOTO_PREVIEW) {
+        if (requestCode == PRC_PHOTO_PREVIEW) {
             Toast.makeText(this, "您拒绝了「图片预览」所需要的相关权限!", Toast.LENGTH_SHORT).show();
         }
     }

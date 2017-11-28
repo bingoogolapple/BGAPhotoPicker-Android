@@ -17,9 +17,11 @@ package cn.bingoogolapple.photopicker.pw;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -79,15 +81,26 @@ public class BGAPhotoFolderPw extends BGABasePopupWindow implements BGAOnRVItemC
     /**
      * 设置目录数据集合
      *
-     * @param datas
+     * @param data
      */
-    public void setData(ArrayList<BGAPhotoFolderModel> datas) {
-        mFolderAdapter.setData(datas);
+    public void setData(ArrayList<BGAPhotoFolderModel> data) {
+        mFolderAdapter.setData(data);
     }
 
     @Override
     public void show() {
-        showAsDropDown(mAnchorView);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            int[] location = new int[2];
+            mAnchorView.getLocationInWindow(location);
+            int offsetY = location[1] + mAnchorView.getHeight();
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
+                setHeight(BGAPhotoPickerUtil.getScreenHeight() - offsetY);
+            }
+            showAtLocation(mAnchorView, Gravity.NO_GRAVITY, 0, offsetY);
+        } else {
+            showAsDropDown(mAnchorView);
+        }
+
         ViewCompat.animate(mContentRv).translationY(-mWindowRootView.getHeight()).setDuration(0).start();
         ViewCompat.animate(mContentRv).translationY(0).setDuration(ANIM_DURATION).start();
         ViewCompat.animate(mRootLl).alpha(0).setDuration(0).start();
