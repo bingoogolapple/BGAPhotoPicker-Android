@@ -74,23 +74,56 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
      */
     private boolean mIsFromTakePhoto;
 
-    /**
-     * @param context         应用程序上下文
-     * @param maxChooseCount  图片选择张数的最大值
-     * @param selectedPhotos  当前已选中的图片路径集合，可以传null
-     * @param previewPhotos   当前预览的图片目录里的图片路径集合
-     * @param currentPosition 当前预览图片的位置
-     * @param isFromTakePhoto 是否是拍完照后跳转过来
-     * @return
-     */
-    public static Intent newIntent(Context context, int maxChooseCount, ArrayList<String> selectedPhotos, ArrayList<String> previewPhotos, int currentPosition, boolean isFromTakePhoto) {
-        Intent intent = new Intent(context, BGAPhotoPickerPreviewActivity.class);
-        intent.putStringArrayListExtra(EXTRA_SELECTED_PHOTOS, selectedPhotos);
-        intent.putStringArrayListExtra(EXTRA_PREVIEW_PHOTOS, previewPhotos);
-        intent.putExtra(EXTRA_MAX_CHOOSE_COUNT, maxChooseCount);
-        intent.putExtra(EXTRA_CURRENT_POSITION, currentPosition);
-        intent.putExtra(EXTRA_IS_FROM_TAKE_PHOTO, isFromTakePhoto);
-        return intent;
+    public static class IntentBuilder {
+        private Intent mIntent;
+
+        public IntentBuilder(Context context) {
+            mIntent = new Intent(context, BGAPhotoPickerPreviewActivity.class);
+        }
+
+        /**
+         * 图片选择张数的最大值
+         */
+        public IntentBuilder maxChooseCount(int maxChooseCount) {
+            mIntent.putExtra(EXTRA_MAX_CHOOSE_COUNT, maxChooseCount);
+            return this;
+        }
+
+        /**
+         * 当前已选中的图片路径集合
+         */
+        public IntentBuilder selectedPhotos(ArrayList<String> selectedPhotos) {
+            mIntent.putStringArrayListExtra(EXTRA_SELECTED_PHOTOS, selectedPhotos);
+            return this;
+        }
+
+        /**
+         * 当前预览的图片路径集合
+         */
+        public IntentBuilder previewPhotos(ArrayList<String> previewPhotos) {
+            mIntent.putStringArrayListExtra(EXTRA_PREVIEW_PHOTOS, previewPhotos);
+            return this;
+        }
+
+        /**
+         * 当前预览图片的索引
+         */
+        public IntentBuilder currentPosition(int currentPosition) {
+            mIntent.putExtra(EXTRA_CURRENT_POSITION, currentPosition);
+            return this;
+        }
+
+        /**
+         * 是否是拍完照后跳转过来
+         */
+        public IntentBuilder isFromTakePhoto(boolean isFromTakePhoto) {
+            mIntent.putExtra(EXTRA_IS_FROM_TAKE_PHOTO, isFromTakePhoto);
+            return this;
+        }
+
+        public Intent build() {
+            return mIntent;
+        }
     }
 
     /**
@@ -171,6 +204,10 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
         }
 
         mSelectedPhotos = getIntent().getStringArrayListExtra(EXTRA_SELECTED_PHOTOS);
+        if (mSelectedPhotos == null) {
+            mSelectedPhotos = new ArrayList<>();
+        }
+
         ArrayList<String> previewPhotos = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_PHOTOS);
         if (TextUtils.isEmpty(previewPhotos.get(0))) {
             // 从BGAPhotoPickerActivity跳转过来时，如果有开启拍照功能，则第0项为""

@@ -70,51 +70,91 @@ dependencies {
 
 ### 2.接口说明
 
-> BGAPhotoPickerActivity
+> BGAPhotoPickerActivity - 选择图片
 
-```java
-/**
- * @param context        应用程序上下文
- * @param photoDir       拍照后图片保存的目录。如果传null表示没有拍照功能，如果不为null则具有拍照功能，
- * @param maxChooseCount 图片选择张数的最大值
- * @param selectedPhotos 当前已选中的图片路径集合，可以传null
- * @param pauseOnScroll  滚动列表时是否暂停加载图片
- * @return
- */
-public static Intent newIntent(Context context, File photoDir, int maxChooseCount, ArrayList<String> selectedPhotos, boolean pauseOnScroll)
+```Java
+@AfterPermissionGranted(PRC_PHOTO_PICKER)
+private void choicePhotoWrapper() {
+    String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+    if (EasyPermissions.hasPermissions(this, perms)) {
+        // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
+        File takePhotoDir = new File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerTakePhoto");
 
-/**
- * 获取已选择的图片集合
- *
- * @param intent
- * @return
- */
-public static ArrayList<String> getSelectedPhotos(Intent intent)
+        Intent photoPickerIntent = new BGAPhotoPickerActivity.IntentBuilder(this)
+                .cameraFileDir(mTakePhotoCb.isChecked() ? takePhotoDir : null) // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话则不开启图库里的拍照功能
+                .maxChooseCount(mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount()) // 图片选择张数的最大值
+                .selectedPhotos(null) // 当前已选中的图片路径集合
+                .pauseOnScroll(false) // 滚动列表时是否暂停加载图片
+                .build();
+        startActivityForResult(photoPickerIntent, RC_CHOOSE_PHOTO);
+    } else {
+        EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片\n\n2.拍照", PRC_PHOTO_PICKER, perms);
+    }
+}
 ```
 
-> BGAPhotoPreviewActivity
+> BGAPhotoPickerActivity - 获取已选择的图片集合
 
-```java
-/**
- * 获取查看多张图片的intent
- *
- * @param context
- * @param saveImgDir      保存图片的目录，如果传null，则没有保存图片功能
- * @param previewPhotos   当前预览的图片目录里的图片路径集合
- * @param currentPosition 当前预览图片的位置
- * @return
- */
-public static Intent newIntent(Context context, File saveImgDir, ArrayList<String> previewPhotos, int currentPosition)
+```Java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (resultCode == RESULT_OK && requestCode == RC_CHOOSE_PHOTO) {
+        List<String> selectedPhotos = BGAPhotoPickerActivity.getSelectedPhotos(data);
+    }
+}
+```
 
-/**
- * 获取查看单张图片的intent
- *
- * @param context
- * @param saveImgDir 保存图片的目录，如果传null，则没有保存图片功能
- * @param photoPath  图片路径
- * @return
- */
-public static Intent newIntent(Context context, File saveImgDir, String photoPath)
+> BGAPhotoPickerPreviewActivity - 预览已选择的图片
+
+```Java
+Intent photoPickerPreviewIntent = new BGAPhotoPickerPreviewActivity.IntentBuilder(this)
+        .previewPhotos(models) // 当前预览的图片路径集合
+        .selectedPhotos(models) // 当前已选中的图片路径集合
+        .maxChooseCount(mPhotosSnpl.getMaxItemCount()) // 图片选择张数的最大值
+        .currentPosition(position) // 当前预览图片的位置
+        .isFromTakePhoto(false) // 是否是拍完照后跳转过来
+        .build();
+startActivityForResult(photoPickerPreviewIntent, RC_PHOTO_PREVIEW);
+```
+
+> BGAPhotoPickerPreviewActivity - 获取预览界面已选择的图片集合
+
+```Java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == RC_PHOTO_PREVIEW) {
+        // 在预览界面按返回也会回传预览界面已选择的图片集合
+        List<String> selectedPhotos = BGAPhotoPickerPreviewActivity.getSelectedPhotos(data);
+    }
+}
+```
+
+> BGAPhotoPreviewActivity - 图片预览
+
+```Java
+@AfterPermissionGranted(PRC_PHOTO_PREVIEW)
+private void photoPreviewWrapper() {
+    String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    if (EasyPermissions.hasPermissions(this, perms)) {
+        File downloadDir = new File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerDownload");
+        BGAPhotoPreviewActivity.IntentBuilder photoPreviewIntentBuilder = new BGAPhotoPreviewActivity.IntentBuilder(this)
+                .saveImgDir(downloadDir); // 保存图片的目录，如果传 null，则没有保存图片功能
+
+        if (mCurrentClickNpl.getItemCount() == 1) {
+            // 预览单张图片
+            photoPreviewIntentBuilder.previewPhoto(mCurrentClickNpl.getCurrentClickItem());
+        } else if (mCurrentClickNpl.getItemCount() > 1) {
+            // 预览多张图片
+            photoPreviewIntentBuilder.previewPhotos(mCurrentClickNpl.getData())
+                    .currentPosition(mCurrentClickNpl.getCurrentClickItemPosition()); // 当前预览图片的索引
+        }
+        startActivity(photoPreviewIntentBuilder.build());
+    } else {
+        EasyPermissions.requestPermissions(this, "图片预览需要以下权限:\n\n1.访问设备上的照片", PRC_PHOTO_PREVIEW, perms);
+    }
+}
 ```
 
 ### 3.自定义样式

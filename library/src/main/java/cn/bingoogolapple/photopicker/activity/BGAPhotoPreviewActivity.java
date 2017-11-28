@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import cn.bingoogolapple.baseadapter.BGAOnNoDoubleClickListener;
 import cn.bingoogolapple.photopicker.R;
@@ -52,8 +54,6 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
     private static final String EXTRA_SAVE_PHOTO_DIR = "EXTRA_SAVE_PHOTO_DIR";
     private static final String EXTRA_PREVIEW_PHOTOS = "EXTRA_PREVIEW_PHOTOS";
     private static final String EXTRA_CURRENT_POSITION = "EXTRA_CURRENT_POSITION";
-    private static final String EXTRA_IS_SINGLE_PREVIEW = "EXTRA_IS_SINGLE_PREVIEW";
-    private static final String EXTRA_PHOTO_PATH = "EXTRA_PHOTO_PATH";
 
     private TextView mTitleTv;
     private ImageView mDownloadIv;
@@ -72,39 +72,48 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
      */
     private long mLastShowHiddenTime;
 
-    /**
-     * 获取查看多张图片的intent
-     *
-     * @param context
-     * @param savePhotoDir    保存图片的目录，如果传null，则没有保存图片功能
-     * @param previewPhotos   当前预览的图片目录里的图片路径集合
-     * @param currentPosition 当前预览图片的位置
-     * @return
-     */
-    public static Intent newIntent(Context context, File savePhotoDir, ArrayList<String> previewPhotos, int currentPosition) {
-        Intent intent = new Intent(context, BGAPhotoPreviewActivity.class);
-        intent.putExtra(EXTRA_SAVE_PHOTO_DIR, savePhotoDir);
-        intent.putStringArrayListExtra(EXTRA_PREVIEW_PHOTOS, previewPhotos);
-        intent.putExtra(EXTRA_CURRENT_POSITION, currentPosition);
-        intent.putExtra(EXTRA_IS_SINGLE_PREVIEW, false);
-        return intent;
-    }
+    public static class IntentBuilder {
+        private Intent mIntent;
 
-    /**
-     * 获取查看单张图片的intent
-     *
-     * @param context
-     * @param saveImgDir 保存图片的目录，如果传null，则没有保存图片功能
-     * @param photoPath  图片路径
-     * @return
-     */
-    public static Intent newIntent(Context context, File saveImgDir, String photoPath) {
-        Intent intent = new Intent(context, BGAPhotoPreviewActivity.class);
-        intent.putExtra(EXTRA_SAVE_PHOTO_DIR, saveImgDir);
-        intent.putExtra(EXTRA_PHOTO_PATH, photoPath);
-        intent.putExtra(EXTRA_CURRENT_POSITION, 0);
-        intent.putExtra(EXTRA_IS_SINGLE_PREVIEW, true);
-        return intent;
+        public IntentBuilder(Context context) {
+            mIntent = new Intent(context, BGAPhotoPreviewActivity.class);
+        }
+
+        /**
+         * 保存图片的目录，如果传 null，则没有保存图片功能
+         */
+        public IntentBuilder saveImgDir(@Nullable File saveImgDir) {
+            mIntent.putExtra(EXTRA_SAVE_PHOTO_DIR, saveImgDir);
+            return this;
+        }
+
+        /**
+         * 当前预览的图片路径
+         */
+        public IntentBuilder previewPhoto(String photoPath) {
+            mIntent.putStringArrayListExtra(EXTRA_PREVIEW_PHOTOS, new ArrayList<>(Arrays.asList(photoPath)));
+            return this;
+        }
+
+        /**
+         * 当前预览的图片路径集合
+         */
+        public IntentBuilder previewPhotos(ArrayList<String> previewPhotos) {
+            mIntent.putStringArrayListExtra(EXTRA_PREVIEW_PHOTOS, previewPhotos);
+            return this;
+        }
+
+        /**
+         * 当前预览的图片索引
+         */
+        public IntentBuilder currentPosition(int currentPosition) {
+            mIntent.putExtra(EXTRA_CURRENT_POSITION, currentPosition);
+            return this;
+        }
+
+        public Intent build() {
+            return mIntent;
+        }
     }
 
     @Override
@@ -131,14 +140,11 @@ public class BGAPhotoPreviewActivity extends BGAPPToolbarActivity implements Pho
         }
 
         ArrayList<String> previewPhotos = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_PHOTOS);
-
-        mIsSinglePreview = getIntent().getBooleanExtra(EXTRA_IS_SINGLE_PREVIEW, false);
-        if (mIsSinglePreview) {
-            previewPhotos = new ArrayList<>();
-            previewPhotos.add(getIntent().getStringExtra(EXTRA_PHOTO_PATH));
-        }
-
         int currentPosition = getIntent().getIntExtra(EXTRA_CURRENT_POSITION, 0);
+        mIsSinglePreview = previewPhotos.size() == 1;
+        if (mIsSinglePreview) {
+            currentPosition = 0;
+        }
 
         mPhotoPageAdapter = new BGAPhotoPageAdapter(this, previewPhotos);
         mContentHvp.setAdapter(mPhotoPageAdapter);
