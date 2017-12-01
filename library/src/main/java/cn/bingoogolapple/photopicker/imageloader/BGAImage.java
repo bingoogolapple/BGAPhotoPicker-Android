@@ -53,6 +53,15 @@ public class BGAImage {
         return sImageLoader;
     }
 
+    /**
+     * 设置开发者自定义 ImageLoader
+     *
+     * @param imageLoader
+     */
+    public static void setImageLoader(BGAImageLoader imageLoader) {
+        sImageLoader = imageLoader;
+    }
+
     private static final boolean isClassExists(String classFullName) {
         try {
             Class.forName(classFullName);

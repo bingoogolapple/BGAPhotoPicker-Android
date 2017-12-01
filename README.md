@@ -1,6 +1,8 @@
 :running:BGAPhotoPicker-Android:running:
 ============
 
+[兼容 Glide3](https://github.com/bingoogolapple/BGAPhotoPicker-Android/issues/118)
+
 ## 目录
 
 * [功能介绍](#功能介绍)
