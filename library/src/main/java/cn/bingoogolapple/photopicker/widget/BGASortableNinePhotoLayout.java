@@ -19,12 +19,12 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -43,7 +43,7 @@ import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.imageloader.BGAImage;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
 
-import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_IDLE;
+import static androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_IDLE;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com

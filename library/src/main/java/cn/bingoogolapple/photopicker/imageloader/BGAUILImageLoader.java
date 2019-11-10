@@ -17,7 +17,7 @@ package cn.bingoogolapple.photopicker.imageloader;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 import android.view.View;
 import android.widget.ImageView;
 

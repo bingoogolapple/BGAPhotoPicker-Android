@@ -18,7 +18,7 @@ package cn.bingoogolapple.photopicker.imageloader;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Callback;

@@ -27,7 +27,7 @@
             android:text="测试系统相册" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_moment_list_moments"
         style="@style/MatchMatch" />
 

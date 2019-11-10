@@ -16,13 +16,12 @@
 package cn.bingoogolapple.photopicker.activity;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.ViewStubCompat;
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.ViewStubCompat;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import cn.bingoogolapple.photopicker.R;

@@ -1,6 +1,6 @@
 package cn.bingoogolapple.photopicker.util;
 
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com

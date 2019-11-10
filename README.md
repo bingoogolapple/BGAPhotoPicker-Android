@@ -48,7 +48,8 @@
 
 ### 1.添加 Gradle 依赖
 
-[![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-photopicker/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-photopicker/_latestVersion) bga-photopicker 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。请不要再来问我「latestVersion」是什么了
+* androidx 项目用 [![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-photopicker/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-photopicker/_latestVersion) bga-photopicker 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。请不要再来问我「latestVersion」是什么了
+* 非 androidx 项目用 1.2.8 版本
 
 由于需要支持微博长图预览，该库中已经引入了 [PhotoView](https://github.com/chrisbanes/PhotoView) 的源码并进行了修改，所以你的项目中就不要再重复引入 [PhotoView](https://github.com/chrisbanes/PhotoView) 了
 
@@ -56,17 +57,18 @@
 dependencies {
     // -------------------- 以下4个库是必须依赖的 ----------------------------
     implementation 'cn.bingoogolapple:bga-photopicker:latestVersion@aar'
-    implementation 'com.android.support:appcompat-v7:27.0.1'
-    implementation 'com.android.support:support-v4:27.0.1'
-    implementation 'com.android.support:recyclerview-v7:27.0.1'
-    implementation 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'cn.bingoogolapple:bga-baseadapter:2.0.0@aar'
     // -------------------- 以上4个库是必须依赖的 ----------------------------
 
     // 目前支持常见的 4 种图片加载库，必须在下面四个图片加载库中选择一个添加依赖
-    implementation 'com.github.bumptech.glide:glide:4.3.1'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
 //    implementation 'com.squareup.picasso:picasso:2.5.2'
 //    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-//    implementation 'org.xutils:xutils:3.5.0'
+//    implementation 'org.xutils:xutils:3.8.3'
 }
 ```
 
@@ -270,9 +272,9 @@ private void photoPreviewWrapper() {
 
 ## 关于我
 
-| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群
-| ------------ | ------------- | ------------ | ------------ |
-| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+| 个人主页 | 邮箱 | BGA系列开源库QQ群
+| ------------- | ------------ | ------------ |
+| <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://bgashare.bingoogolapple.cn/BGA_CODE_CLUB.png?imageView2/2/w/200) |
 
 ## 打赏支持
 
@@ -281,12 +283,12 @@ private void photoPreviewWrapper() {
 如果您目前正打算购买通往墙外的梯子，可以使用我的邀请码「YFQ9Q3B」购买 [Lantern](https://github.com/getlantern/forum)，双方都赠送三个月的专业版使用时间:beers:
 
 <p align="center">
-  <img src="http://7xk9dj.com1.z0.glb.clouddn.com/bga_pay.png" width="450">
+  <img src="http://bgashare.bingoogolapple.cn/bga_pay.png?imageView2/2/w/450" width="450">
 </p>
 
 ## License
 
-    Copyright 2016 bingoogolapple
+    Copyright 2015 bingoogolapple
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
