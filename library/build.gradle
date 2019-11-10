@@ -19,15 +19,18 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    compileOnly 'com.android.support:support-v4:27.0.2'
-    compileOnly 'com.android.support:recyclerview-v7:27.0.2'
-    compileOnly 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
-    compileOnly 'com.github.bumptech.glide:glide:4.5.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    compileOnly 'androidx.legacy:legacy-support-v4:1.0.0'
+    compileOnly 'androidx.recyclerview:recyclerview:1.0.0'
+    compileOnly 'cn.bingoogolapple:bga-baseadapter:2.0.0@aar'
+    compileOnly 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     compileOnly 'com.squareup.picasso:picasso:2.5.2'
     compileOnly 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compileOnly 'org.xutils:xutils:3.5.0'
 }
 
-// gradle clean build bintrayUpload
-//apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
+// ./gradlew :library:clean :library:build :library:bintrayUpload -PpublishAar
+if (hasProperty("publishAar")) {
+    apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
+}

@@ -1,6 +1,6 @@
 package cn.bingoogolapple.photopicker.adapters;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 
 import java.util.ArrayList;
 

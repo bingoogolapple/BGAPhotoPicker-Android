@@ -45,9 +45,12 @@
 ## ----------------------------------
 ##      DataBinding 相关
 ## ----------------------------------
--keepclasseswithmembers class * extends android.databinding.ViewDataBinding{
+-keepclasseswithmembers class * extends androidx.databinding.ViewDataBinding {
     <methods>;
 }
+
+-dontwarn androidx.databinding.DataBindingUtil
+-dontwarn androidx.databinding.ViewDataBinding
 
 ## ----------------------------------
 ##      BGAPhotoPicker 相关

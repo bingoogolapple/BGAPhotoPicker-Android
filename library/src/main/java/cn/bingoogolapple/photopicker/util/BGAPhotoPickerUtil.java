@@ -18,7 +18,7 @@ package cn.bingoogolapple.photopicker.util;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
