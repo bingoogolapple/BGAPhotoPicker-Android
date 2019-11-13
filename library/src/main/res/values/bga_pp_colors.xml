@@ -32,4 +32,6 @@
     <color name="bga_pp_loading_progress_startColor">@android:color/white</color>
     <color name="bga_pp_loading_progress_centerColor">#17C7D1</color>
     <color name="bga_pp_loading_progress_endColor">#CC17C7D1</color>
+    <!-- 18 图半透明黑色蒙层 -->
+    <color name="bga_pp_eighteen_maskColor">#CC000000</color>
 </resources>

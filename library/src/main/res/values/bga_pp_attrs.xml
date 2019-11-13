@@ -44,6 +44,10 @@
         <attr name="bga_npl_itemWidth" format="dimension|reference"/>
         <!-- 列数,默认值为 3，当该值大于 3 并且数据源里只有四张图片时不会显示成 2 列 -->
         <attr name="bga_npl_itemSpanCount" format="integer"/>
+        <!-- 不展开之前最多显示多少图 -->
+        <attr name="bga_npl_maxItemDisplayBeforeExpand" format="integer" />
+        <!-- 是否展开 -->
+        <attr name="bga_npl_isExpand" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="BGAImageView">
