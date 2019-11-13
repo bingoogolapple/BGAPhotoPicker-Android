@@ -48,6 +48,8 @@
         <attr name="bga_npl_maxItemDisplayBeforeExpand" format="integer" />
         <!-- 是否展开 -->
         <attr name="bga_npl_isExpand" format="boolean" />
+        <!-- 未展开时在最后一张图上显示的蒙层 -->
+        <attr name="bga_npl_maskBackground" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="BGAImageView">

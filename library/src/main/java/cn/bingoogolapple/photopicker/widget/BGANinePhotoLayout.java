@@ -17,6 +17,9 @@ package cn.bingoogolapple.photopicker.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +62,8 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
     private int mMaxItemDisplayedBeforeExpand;
     private boolean mIsExpand;
 
+    private Drawable mExpandMaskBackground;
+
     public BGANinePhotoLayout(Context context) {
         this(context, null);
     }
@@ -84,6 +89,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         mItemSpanCount = 3;
         mMaxItemDisplayedBeforeExpand = 9;
         mIsExpand = false;
+        mExpandMaskBackground = new ColorDrawable(getContext().getResources().getColor(R.color.bga_pp_eighteen_maskColor));
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -119,6 +125,8 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
             } else {
                 mMaxItemDisplayedBeforeExpand = max;
             }
+        } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_maskBackground) {
+            mExpandMaskBackground = typedArray.getDrawable(attr);
         }
     }
 
@@ -277,6 +285,11 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
 
         private void displayExpandMaskIfNeed(BGAViewHolderHelper helper, int position) {
             TextView maskTv = helper.getView(R.id.tv_expand_remain_mask);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                maskTv.setBackground(mExpandMaskBackground);
+            } else {
+                maskTv.setBackgroundDrawable(mExpandMaskBackground);
+            }
             int remain = mData.size() - mMaxItemDisplayedBeforeExpand;
             if (remain > 0 && !mIsExpand && position == mMaxItemDisplayedBeforeExpand - 1) {
                 maskTv.setVisibility(VISIBLE);
