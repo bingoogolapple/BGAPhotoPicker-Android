@@ -50,6 +50,8 @@
         <attr name="bga_npl_isExpand" format="boolean" />
         <!-- 未展开时在最后一张图上显示的蒙层 -->
         <attr name="bga_npl_maskBackground" format="reference" />
+        <!-- 蒙层字体颜色 -->
+        <attr name="bga_npm_maskTextColor"  format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="BGAImageView">

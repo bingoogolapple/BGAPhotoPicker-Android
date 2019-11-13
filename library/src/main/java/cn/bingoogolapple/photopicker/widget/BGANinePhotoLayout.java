@@ -63,6 +63,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
     private boolean mIsExpand;
 
     private Drawable mExpandMaskBackground;
+    private int mExpandMaskTextColor;
 
     public BGANinePhotoLayout(Context context) {
         this(context, null);
@@ -90,6 +91,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         mMaxItemDisplayedBeforeExpand = 9;
         mIsExpand = false;
         mExpandMaskBackground = new ColorDrawable(getContext().getResources().getColor(R.color.bga_pp_eighteen_maskColor));
+        mExpandMaskTextColor = getContext().getResources().getColor(R.color.bga_pp_eighteen_maskTextColor);
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -127,6 +129,8 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
             }
         } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_maskBackground) {
             mExpandMaskBackground = typedArray.getDrawable(attr);
+        } else if (attr == R.styleable.BGANinePhotoLayout_bga_npm_maskTextColor) {
+            mExpandMaskTextColor = typedArray.getColor(attr, mExpandMaskTextColor);
         }
     }
 
@@ -290,6 +294,7 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
             } else {
                 maskTv.setBackgroundDrawable(mExpandMaskBackground);
             }
+            maskTv.setTextColor(mExpandMaskTextColor);
             int remain = mData.size() - mMaxItemDisplayedBeforeExpand;
             if (remain > 0 && !mIsExpand && position == mMaxItemDisplayedBeforeExpand - 1) {
                 maskTv.setVisibility(VISIBLE);
