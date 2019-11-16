@@ -50,6 +50,8 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
     private static final String EXTRA_CURRENT_POSITION = "EXTRA_CURRENT_POSITION";
     private static final String EXTRA_IS_FROM_TAKE_PHOTO = "EXTRA_IS_FROM_TAKE_PHOTO";
 
+    private static ArrayList<String> sPreviewPhotos;
+
     private TextView mTitleTv;
     private TextView mSubmitTv;
     private BGAHackyViewPager mContentHvp;
@@ -101,7 +103,11 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
          * 当前预览的图片路径集合
          */
         public IntentBuilder previewPhotos(ArrayList<String> previewPhotos) {
-            mIntent.putStringArrayListExtra(EXTRA_PREVIEW_PHOTOS, previewPhotos);
+            if (previewPhotos.size() > 1000) {
+                sPreviewPhotos = previewPhotos;
+            } else {
+                mIntent.putStringArrayListExtra(EXTRA_PREVIEW_PHOTOS, previewPhotos);
+            }
             return this;
         }
 
@@ -208,7 +214,13 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
             mSelectedPhotos = new ArrayList<>();
         }
 
-        ArrayList<String> previewPhotos = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_PHOTOS);
+        ArrayList<String> previewPhotos;
+        if (sPreviewPhotos != null) {
+            previewPhotos = sPreviewPhotos;
+            sPreviewPhotos = null;
+        } else {
+            previewPhotos = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_PHOTOS);
+        }
         if (TextUtils.isEmpty(previewPhotos.get(0))) {
             // 从BGAPhotoPickerActivity跳转过来时，如果有开启拍照功能，则第0项为""
             previewPhotos.remove(0);

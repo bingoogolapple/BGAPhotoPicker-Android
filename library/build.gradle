@@ -29,5 +29,7 @@ dependencies {
     compileOnly 'org.xutils:xutils:3.5.0'
 }
 
-// gradle clean build bintrayUpload
-//apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
+// ./gradlew :library:clean :library:build :library:bintrayUpload -PpublishAar
+if (hasProperty("publishAar")) {
+    apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
+}
