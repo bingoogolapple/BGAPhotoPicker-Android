@@ -18,9 +18,6 @@ package cn.bingoogolapple.photopicker.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.core.view.ViewCompat;
-import androidx.viewpager.widget.ViewPager;
-import androidx.core.view.ViewPropertyAnimatorListenerAdapter;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +28,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewPropertyAnimatorListenerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import cn.bingoogolapple.baseadapter.BGAOnNoDoubleClickListener;
 import cn.bingoogolapple.photopicker.R;
 import cn.bingoogolapple.photopicker.adapter.BGAPhotoPageAdapter;
@@ -49,6 +49,8 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
     private static final String EXTRA_MAX_CHOOSE_COUNT = "EXTRA_MAX_CHOOSE_COUNT";
     private static final String EXTRA_CURRENT_POSITION = "EXTRA_CURRENT_POSITION";
     private static final String EXTRA_IS_FROM_TAKE_PHOTO = "EXTRA_IS_FROM_TAKE_PHOTO";
+
+    private static ArrayList<String> sPreviewPhotos;
 
     private TextView mTitleTv;
     private TextView mSubmitTv;
@@ -101,7 +103,11 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
          * 当前预览的图片路径集合
          */
         public IntentBuilder previewPhotos(ArrayList<String> previewPhotos) {
-            mIntent.putStringArrayListExtra(EXTRA_PREVIEW_PHOTOS, previewPhotos);
+            if (previewPhotos.size() > 1000) {
+                sPreviewPhotos = previewPhotos;
+            } else {
+                mIntent.putStringArrayListExtra(EXTRA_PREVIEW_PHOTOS, previewPhotos);
+            }
             return this;
         }
 
@@ -208,7 +214,13 @@ public class BGAPhotoPickerPreviewActivity extends BGAPPToolbarActivity implemen
             mSelectedPhotos = new ArrayList<>();
         }
 
-        ArrayList<String> previewPhotos = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_PHOTOS);
+        ArrayList<String> previewPhotos;
+        if (sPreviewPhotos != null) {
+            previewPhotos = sPreviewPhotos;
+            sPreviewPhotos = null;
+        } else {
+            previewPhotos = getIntent().getStringArrayListExtra(EXTRA_PREVIEW_PHOTOS);
+        }
         if (TextUtils.isEmpty(previewPhotos.get(0))) {
             // 从BGAPhotoPickerActivity跳转过来时，如果有开启拍照功能，则第0项为""
             previewPhotos.remove(0);

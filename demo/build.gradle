@@ -34,7 +34,7 @@ dependencies {
 //    implementation project(':library')
 
     // -------------------- 以下4个库是必须依赖的 ----------------------------
-    implementation 'cn.bingoogolapple:bga-photopicker:2.0.1@aar'
+    implementation 'cn.bingoogolapple:bga-photopicker:2.0.2@aar'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
