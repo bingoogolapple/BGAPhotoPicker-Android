@@ -10,4 +10,5 @@
     <string name="bga_pp_download_img_failure">下载到图片失败</string>
     <string name="bga_pp_save_img_failure">保存图片失败，再试试?</string>
     <string name="bga_pp_save_img_success_folder">图片已保存至 %s 文件夹</string>
+    <string name="bga_pp_format_remain_image">+%1$d</string>
 </resources>

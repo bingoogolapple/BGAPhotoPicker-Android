@@ -18,6 +18,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.baseadapter.BGAOnRVItemLongClickListener;
 import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
@@ -99,6 +100,11 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
         moments.add(new Moment("6张网络图片", new ArrayList<>(Arrays.asList("http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered11.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered12.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered13.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered14.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered15.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered16.png"))));
         moments.add(new Moment("7张网络图片", new ArrayList<>(Arrays.asList("http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered11.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered12.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered13.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered14.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered15.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered16.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered17.png"))));
         moments.add(new Moment("8张网络图片", new ArrayList<>(Arrays.asList("http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered11.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered12.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered13.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered14.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered15.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered16.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered17.png", "http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered18.png"))));
+        ArrayList<String> photos = new ArrayList<>();
+        for (int i = 1; i < 19; i++) {
+            photos.add("http://bgashare.bingoogolapple.cn/refreshlayout/images/staggered" + i + ".png");
+        }
+        moments.add(new Moment("18张网络图片", photos));
 
         mMomentAdapter.setData(moments);
     }
@@ -132,8 +138,12 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
             File downloadDir = new File(Environment.getExternalStorageDirectory(), "BGAPhotoPickerDownload");
-            BGAPhotoPreviewActivity.IntentBuilder photoPreviewIntentBuilder = new BGAPhotoPreviewActivity.IntentBuilder(this)
-                    .saveImgDir(downloadDir); // 保存图片的目录，如果传 null，则没有保存图片功能
+            BGAPhotoPreviewActivity.IntentBuilder photoPreviewIntentBuilder = new BGAPhotoPreviewActivity.IntentBuilder(this);
+
+            if (mDownLoadableCb.isChecked()) {
+                // 保存图片的目录，如果传 null，则没有保存图片功能
+                photoPreviewIntentBuilder.saveImgDir(downloadDir);
+            }
 
             if (mCurrentClickNpl.getItemCount() == 1) {
                 // 预览单张图片
@@ -170,6 +180,12 @@ public class MomentListActivity extends BGAPPToolbarActivity implements EasyPerm
     public void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
         mCurrentClickNpl = ninePhotoLayout;
         photoPreviewWrapper();
+    }
+
+    @Override
+    public void onClickExpand(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+        ninePhotoLayout.setIsExpand(true);
+        ninePhotoLayout.flushItems();
     }
 
     @Override

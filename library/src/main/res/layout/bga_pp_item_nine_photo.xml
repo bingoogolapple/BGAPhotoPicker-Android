@@ -11,7 +11,20 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         app:bga_iv_square="true"
-        tools:src="@mipmap/bga_pp_ic_holder_light" />
+        tools:src="@mipmap/bga_pp_ic_holder_light"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_expand_remain_mask"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/iv_item_nine_photo_photo"
+        android:layout_alignBottom="@id/iv_item_nine_photo_photo"
+        android:background="@color/bga_pp_eighteen_maskColor"
+        android:gravity="center"
+        android:textColor="@color/bga_pp_eighteen_maskTextColor"
+        android:textSize="58sp"
+        tools:text="+1" />
 
     <ImageView
         android:id="@+id/iv_item_nine_photo_flag"

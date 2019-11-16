@@ -17,11 +17,15 @@ package cn.bingoogolapple.photopicker.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +59,12 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
 
     private int mItemWidth;
 
+    private int mMaxItemDisplayedBeforeExpand;
+    private boolean mIsExpand;
+
+    private Drawable mExpandMaskBackground;
+    private int mExpandMaskTextColor;
+
     public BGANinePhotoLayout(Context context) {
         this(context, null);
     }
@@ -78,6 +88,10 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         mPlaceholderDrawableResId = R.mipmap.bga_pp_ic_holder_light;
         mOtherWhiteSpacing = BGABaseAdapterUtil.dp2px(100);
         mItemSpanCount = 3;
+        mMaxItemDisplayedBeforeExpand = 9;
+        mIsExpand = false;
+        mExpandMaskBackground = new ColorDrawable(getContext().getResources().getColor(R.color.bga_pp_eighteen_maskColor));
+        mExpandMaskTextColor = getContext().getResources().getColor(R.color.bga_pp_eighteen_maskTextColor);
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -104,6 +118,19 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
             mItemWidth = typedArray.getDimensionPixelSize(attr, mItemWidth);
         } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_itemSpanCount) {
             mItemSpanCount = typedArray.getInteger(attr, mItemSpanCount);
+        } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_isExpand) {
+            mIsExpand = typedArray.getBoolean(attr, mIsExpand);
+        } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_maxItemDisplayBeforeExpand) {
+            int max = typedArray.getInteger(attr, mMaxItemDisplayedBeforeExpand);
+            if (max < 0) {
+                throw new IllegalArgumentException("Max Item Displayed Before Expand cannot be negative!");
+            } else {
+                mMaxItemDisplayedBeforeExpand = max;
+            }
+        } else if (attr == R.styleable.BGANinePhotoLayout_bga_npl_maskBackground) {
+            mExpandMaskBackground = typedArray.getDrawable(attr);
+        } else if (attr == R.styleable.BGANinePhotoLayout_bga_npm_maskTextColor) {
+            mExpandMaskTextColor = typedArray.getColor(attr, mExpandMaskTextColor);
         }
     }
 
@@ -131,7 +158,11 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         mCurrentClickItemPosition = position;
-        if (mDelegate != null) {
+        if (!mIsExpand
+                && position == mMaxItemDisplayedBeforeExpand - 1
+                && mPhotoAdapter.getData().size() > mMaxItemDisplayedBeforeExpand) {
+            mDelegate.onClickExpand(this, view, mCurrentClickItemPosition, mPhotoAdapter.getItem(mCurrentClickItemPosition), mPhotoAdapter.getData());
+        } else if (mDelegate != null) {
             mDelegate.onClickNinePhotoItem(this, view, mCurrentClickItemPosition, mPhotoAdapter.getItem(mCurrentClickItemPosition), mPhotoAdapter.getData());
         }
     }
@@ -220,6 +251,18 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
         return mCurrentClickItemPosition;
     }
 
+    public boolean isExpand() {
+        return mIsExpand;
+    }
+
+    public void setIsExpand(boolean mIsExpand) {
+        this.mIsExpand = mIsExpand;
+    }
+
+    public void flushItems() {
+        mPhotoAdapter.notifyDataSetChanged();
+    }
+
     private class PhotoAdapter extends BGAAdapterViewAdapter<String> {
         private int mImageSize;
 
@@ -234,12 +277,38 @@ public class BGANinePhotoLayout extends FrameLayout implements AdapterView.OnIte
                 BGAImageView imageView = helper.getView(R.id.iv_item_nine_photo_photo);
                 imageView.setCornerRadius(mItemCornerRadius);
             }
-
+            displayExpandMaskIfNeed(helper, position);
             BGAImage.display(helper.getImageView(R.id.iv_item_nine_photo_photo), mPlaceholderDrawableResId, model, mImageSize);
+        }
+
+        @Override
+        public int getCount() {
+            return mIsExpand || mData.size() <= mMaxItemDisplayedBeforeExpand ?
+                    super.getCount() : mData.subList(0, mMaxItemDisplayedBeforeExpand).size();
+        }
+
+        private void displayExpandMaskIfNeed(BGAViewHolderHelper helper, int position) {
+            TextView maskTv = helper.getView(R.id.tv_expand_remain_mask);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                maskTv.setBackground(mExpandMaskBackground);
+            } else {
+                maskTv.setBackgroundDrawable(mExpandMaskBackground);
+            }
+            maskTv.setTextColor(mExpandMaskTextColor);
+            int remain = mData.size() - mMaxItemDisplayedBeforeExpand;
+            if (remain > 0 && !mIsExpand && position == mMaxItemDisplayedBeforeExpand - 1) {
+                maskTv.setVisibility(VISIBLE);
+                String remainText = maskTv.getContext().getString(R.string.bga_pp_format_remain_image, remain);
+                maskTv.setText(remainText);
+            } else {
+                maskTv.setVisibility(GONE);
+            }
         }
     }
 
     public interface Delegate {
         void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models);
+
+        void onClickExpand(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models);
     }
 }
