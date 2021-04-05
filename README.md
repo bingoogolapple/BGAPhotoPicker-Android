@@ -48,19 +48,19 @@
 
 ### 1.添加 Gradle 依赖
 
-* androidx 项目用 [![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-photopicker/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-photopicker/_latestVersion) bga-photopicker 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。请不要再来问我「latestVersion」是什么了
-* 非 androidx 项目用 1.2.9 版本
+* 把 `maven { url 'https://jitpack.io' }` 添加到 root build.gradle 的 repositories 中
+* 在 app build.gradle 中添加如下依赖，末尾的「latestVersion」指的是徽章 [![](https://jitpack.io/v/bingoogolapple/BGAPhotoPicker-Android.svg)](https://jitpack.io/#bingoogolapple/BGAPhotoPicker-Android) 里的版本名称，请自行替换
 
 由于需要支持微博长图预览，该库中已经引入了 [PhotoView](https://github.com/chrisbanes/PhotoView) 的源码并进行了修改，所以你的项目中就不要再重复引入 [PhotoView](https://github.com/chrisbanes/PhotoView) 了
 
 ```groovy
 dependencies {
     // -------------------- 以下4个库是必须依赖的 ----------------------------
-    implementation 'cn.bingoogolapple:bga-photopicker:latestVersion@aar'
+    implementation 'com.github.bingoogolapple:BGAPhotoPicker-Android:latestVersion'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'cn.bingoogolapple:bga-baseadapter:2.0.0@aar'
+    implementation 'com.github.bingoogolapple:BGABaseAdapter-Android:2.0.1'
     // -------------------- 以上4个库是必须依赖的 ----------------------------
 
     // 目前支持常见的 4 种图片加载库，必须在下面四个图片加载库中选择一个添加依赖
